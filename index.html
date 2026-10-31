@@ -126,8 +126,12 @@
         </div>
       </div>
 
-      <!-- User Active Profile Badge -->
+      <!-- User Active Profile Badge & Quick Action -->
       <div class="flex items-center gap-3">
+        <button onclick="openGenerateRpsModal()" class="py-2 px-3.5 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold rounded-xl shadow-md flex items-center gap-1.5 transition transform hover:scale-105 active:scale-95 cursor-pointer">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
+          <span>+ Buat / Generate RPS</span>
+        </button>
         <div class="hidden md:flex flex-col text-right">
           <span class="text-sm font-semibold text-slate-800" id="headerLecturerName">Dr. Budi Santoso, S.Ft., M.Fis., Ftr.</span>
           <span class="text-xs text-slate-500" id="headerLecturerProdi">Dosen Fisioterapi • NIDN: 0412088901</span>
@@ -144,7 +148,7 @@
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       
       <!-- Top Announcement Pill -->
-      <div class="flex justify-center mb-5">
+      <div class="flex justify-center mb-4">
         <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white border border-sky-200 text-sky-800 text-xs font-medium shadow-sm">
           <span class="w-2 h-2 rounded-full bg-sky-500"></span>
           <span>Dirancang Khusus untuk Dosen Fisioterapi (D4 & Profesi) Berbasis Kurikulum OBE & Kerangka ICF</span>
@@ -152,13 +156,36 @@
       </div>
 
       <!-- Main Headline -->
-      <div class="text-center max-w-4xl mx-auto mb-8">
+      <div class="text-center max-w-4xl mx-auto mb-6">
         <h2 class="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-slate-900 tracking-tight leading-tight">
           Pusat Kendali Otomatisasi Dokumen Akademik & Administratif Dosen Fisioterapi
         </h2>
         <p class="mt-4 text-base sm:text-lg text-slate-600 leading-relaxed max-w-3xl mx-auto">
           Layaknya struktur <span class="font-semibold text-sky-700">thalamus</span> yang mengintegrasikan dan menyalurkan sinyal ke korteks otak, <strong>Thalamus</strong> menurunkan CPL menjadi RPS, Modul Ajar, dan Materi secara berantai, menyusun dokumen tugas tambahan dari nol, serta merapikan sistematika siap cetak di laptop Anda secara <em>Local-First</em>.
         </p>
+
+        <!-- PUSAT AKSI CEPAT DOSEN (ONE-CLICK QUICK COMMAND BAR) -->
+        <div class="mt-6 flex flex-wrap items-center justify-center gap-2.5">
+          <button onclick="openGenerateRpsModal()" class="py-2.5 px-4 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold rounded-xl shadow-md flex items-center gap-2 transition transform hover:-translate-y-0.5">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
+            <span>+ Buat / Generate RPS Baru</span>
+          </button>
+          
+          <button onclick="document.getElementById('uploadTemplateRpsFile').click()" class="py-2.5 px-4 bg-white hover:bg-sky-50 border border-sky-300 text-sky-800 text-xs font-bold rounded-xl shadow-sm flex items-center gap-2 transition transform hover:-translate-y-0.5">
+            <svg class="w-4 h-4 text-sky-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"/></svg>
+            <span>Upload Template RPS (.docx)</span>
+          </button>
+
+          <button onclick="document.getElementById('uploadCplFile').click()" class="py-2.5 px-4 bg-white hover:bg-teal-50 border border-teal-300 text-teal-800 text-xs font-bold rounded-xl shadow-sm flex items-center gap-2 transition transform hover:-translate-y-0.5">
+            <svg class="w-4 h-4 text-teal-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+            <span>Upload CPL Kurikulum (.xlsx/.csv)</span>
+          </button>
+
+          <button onclick="document.getElementById('refinerDocInput').click()" class="py-2.5 px-4 bg-white hover:bg-indigo-50 border border-indigo-300 text-indigo-800 text-xs font-bold rounded-xl shadow-sm flex items-center gap-2 transition transform hover:-translate-y-0.5">
+            <svg class="w-4 h-4 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
+            <span>Perbaiki Sistematika Draf</span>
+          </button>
+        </div>
       </div>
 
       <!-- JENJANG SELECTOR TABS (PRD Core Requirement: D4 vs Profesi) -->
@@ -362,9 +389,13 @@
           </div>
         </div>
 
-        <div class="mt-6">
-          <button onclick="openRefinerModal()" class="w-full py-2.5 px-4 bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-semibold rounded-xl shadow-sm hover:shadow transition flex items-center justify-center gap-2">
-            <span>Audit & Format Draf</span>
+        <div class="mt-6 flex flex-col sm:flex-row gap-2">
+          <button onclick="document.getElementById('refinerDocInput').click()" class="flex-1 py-2.5 px-3 bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold rounded-xl shadow-sm hover:shadow transition flex items-center justify-center gap-1.5 cursor-pointer">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"/></svg>
+            <span>Upload Berkas Draf</span>
+          </button>
+          <button onclick="openRefinerModal()" class="py-2.5 px-3 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold rounded-xl transition flex items-center justify-center gap-1">
+            <span>Buka Diff</span>
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
           </button>
         </div>
@@ -1027,15 +1058,36 @@
 
       <div class="mt-4 space-y-4 text-xs text-slate-700 max-h-[460px] overflow-y-auto pr-1">
         <!-- Template Reference Status Box -->
-        <div class="bg-emerald-50/80 p-3 rounded-xl border border-emerald-200 flex items-center justify-between">
+        <div class="bg-emerald-50/80 p-3 rounded-xl border border-emerald-200 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
           <div class="flex items-center gap-2">
             <svg class="w-5 h-5 text-emerald-600 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
             <div>
-              <div class="font-bold text-emerald-950">Acuan Format Template Institusi:</div>
+              <div class="font-bold text-emerald-950">Acuan Format Template Institusi Aktif:</div>
               <div class="text-[11px] text-emerald-800 font-mono font-medium" id="modalTemplateRefDisplay">template_rps_fisioterapi_resmi.docx</div>
             </div>
           </div>
-          <span class="badge-green text-[10px] font-bold px-2 py-0.5 rounded flex-shrink-0">Format Seragam 100%</span>
+          <div class="flex items-center gap-2 flex-shrink-0">
+            <span class="badge-green text-[10px] font-bold px-2 py-0.5 rounded">Format Seragam 100%</span>
+            <button onclick="document.getElementById('uploadTemplateRpsFile').click()" class="text-[11px] py-1 px-2.5 bg-white border border-emerald-300 text-emerald-800 hover:bg-emerald-100 font-semibold rounded-lg shadow-sm transition">
+              Ganti Template
+            </button>
+          </div>
+        </div>
+
+        <!-- Course Preset Selector from Curriculum DB -->
+        <div class="bg-sky-50/80 p-3 rounded-xl border border-sky-200">
+          <label class="block font-bold text-sky-950 mb-1">Pilih Mata Kuliah dari Kurikulum CPL Tersimpan:</label>
+          <select id="genRpsCoursePresetDropdown" onchange="applyCoursePresetToModal(this.value)" class="w-full p-2 border border-sky-300 rounded-lg text-xs bg-white font-bold text-slate-800 focus:ring-2 focus:ring-sky-500 focus:outline-none">
+            <option value="FST-402">FST-402: Fisioterapi Muskuloskeletal Terapan (D4 - Sem 4, 3 SKS)</option>
+            <option value="FST-405">FST-405: Fisioterapi Neuromuskular Terapan (D4 - Sem 4, 3 SKS)</option>
+            <option value="FST-408">FST-408: Fisioterapi Kardiorespirasi & Vaskular (D4 - Sem 5, 3 SKS)</option>
+            <option value="FST-412">FST-412: Fisioterapi Pediatri & Tumbuh Kembang (D4 - Sem 5, 2 SKS)</option>
+            <option value="FST-305">FST-305: Elektroterapi & Modalitas Fisik (D4 - Sem 3, 3 SKS)</option>
+            <option value="PRF-701">PRF-701: Stase Praktik Fisioterapi Neuromuskular (Profesi - Sem 1, 4 SKS)</option>
+            <option value="PRF-702">PRF-702: Stase Praktik Fisioterapi Muskuloskeletal (Profesi - Sem 1, 4 SKS)</option>
+            <option value="CUSTOM">+ Ketik Mata Kuliah Baru / Khusus...</option>
+          </select>
+          <span class="text-[10px] text-sky-700 mt-1 block">*Memilih mata kuliah akan otomatis mengisi CPL, CPMK, Sub-CPMK, dan parameter OBE.</span>
         </div>
 
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
@@ -1068,8 +1120,8 @@
         </div>
 
         <div>
-          <label class="block font-semibold text-slate-700 mb-1.5">Pilih CPL Prodi yang Dibebankan pada Mata Kuliah Ini:</label>
-          <div class="space-y-1.5 bg-slate-50 p-3 rounded-xl border border-slate-200">
+          <label class="block font-semibold text-slate-700 mb-1.5">CPL Prodi yang Dibebankan pada Mata Kuliah Ini (Sesuai Kurikulum Terimpor):</label>
+          <div class="space-y-1.5 bg-slate-50 p-3 rounded-xl border border-slate-200" id="modalCplCheckboxesContainer">
             <label class="flex items-start gap-2 cursor-pointer text-[11px] text-slate-800">
               <input type="checkbox" id="chkCpl01" checked class="mt-0.5 rounded text-sky-600 focus:ring-sky-500">
               <span><strong>CPL-01 (Sikap):</strong> Bertanggung jawab atas pekerjaan fisioterapi secara mandiri.</span>
@@ -1079,30 +1131,44 @@
               <span><strong>CPL-02 (Keterampilan Khusus):</strong> Mampu melakukan pemeriksaan spesifik dan pengukuran laboratorium.</span>
             </label>
             <label class="flex items-start gap-2 cursor-pointer text-[11px] text-slate-800">
-              <input type="checkbox" id="chkCpl03" checked class="mt-0.5 rounded text-sky-600 focus:ring-sky-500">
+              <input type="checkbox" id="chkCpl03" class="mt-0.5 rounded text-sky-600 focus:ring-sky-500">
               <span><strong>CPL-03 (Pengetahuan):</strong> Menguasai konsep patofisiologi dan anatomi terapan gerak fungsional.</span>
             </label>
             <label class="flex items-start gap-2 cursor-pointer text-[11px] text-slate-800">
               <input type="checkbox" id="chkCpl04" checked class="mt-0.5 rounded text-sky-600 focus:ring-sky-500">
               <span><strong>CPL-04 (Intervensi):</strong> Merumuskan program terapi latihan dan modalitas fisioterapi berbasis bukti.</span>
             </label>
+            <label class="flex items-start gap-2 cursor-pointer text-[11px] text-slate-800">
+              <input type="checkbox" id="chkCplKlinik01" class="mt-0.5 rounded text-teal-600 focus:ring-teal-500">
+              <span><strong>CPL-KLINIK-01 (Profesi ICF):</strong> Penalaran klinis komprehensif berbasis kerangka ICF stase RS.</span>
+            </label>
+          </div>
+        </div>
+
+        <!-- Dynamic CPMK Summary Box -->
+        <div class="bg-amber-50/70 p-3 rounded-lg border border-amber-200 text-[11px] text-amber-900 space-y-1">
+          <div class="font-bold text-amber-950 flex items-center gap-1.5">
+            <svg class="w-4 h-4 text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+            <span>CPMK & Distribusi Evaluasi 16 Minggu:</span>
+          </div>
+          <div id="modalCpmkPreviewDisplay" class="font-medium text-slate-700">
+            • <strong>CPMK-1:</strong> Asesmen dan pengukuran spesifik fisioterapi.<br>
+            • <strong>CPMK-2:</strong> Perumusan intervensi, terapi latihan terarah, dan evaluasi hasil klinis.<br>
+            • <strong>Evaluasi:</strong> UTS (20%) + UAS (40%) + Praktikum Lab (25%) + Sikap & Partisipasi (15%) = 100%.
           </div>
         </div>
 
         <div class="bg-sky-50 p-3 rounded-lg border border-sky-100 text-[11px] text-sky-900 space-y-1">
-          <div class="font-bold text-sky-950">Alur Penurunan Berantai Otomatis:</div>
-          <div>1. CPL Terpilih &rarr; Rumusan CPMK 1 & CPMK 2 spesifik mata kuliah</div>
-          <div>2. CPMK &rarr; Rincian 16 Pertemuan Sub-CPMK lengkap dengan Taksonomi (C/P/A) & Indikator</div>
-          <div>3. Validasi Bobot Evaluasi otomatis seimbang (Total 100%)</div>
-          <div>4. Injeksi otomatis seluruh data ke template baku Word (.docx) kampus</div>
+          <div class="font-bold text-sky-950">Injeksi Otomatis ke Template Word:</div>
+          <div>Dokumen RPS 16 minggu akan dihasilkan dengan format tabel, tata letak, dan kop sesuai template acuan aktif.</div>
         </div>
       </div>
 
       <div class="mt-5 pt-3 border-t border-slate-200 flex items-center justify-between">
         <button onclick="closeModal('modalGenerateRps')" class="px-4 py-2 text-xs font-semibold text-slate-600 hover:bg-slate-100 rounded-xl transition">Batal</button>
-        <button onclick="executeGenerateRps()" class="px-5 py-2.5 text-xs font-bold bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl shadow-md transition flex items-center gap-2">
+        <button onclick="executeGenerateRps()" class="px-5 py-2.5 text-xs font-bold bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl shadow-md transition flex items-center gap-2 cursor-pointer">
           <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
-          <span>⚡ Mulai Generasikan RPS 16 Minggu</span>
+          <span>⚡ Generasikan RPS Lengkap (16 Minggu)</span>
         </button>
       </div>
     </div>
@@ -1230,65 +1296,100 @@
 
   <!-- MODAL 3: CPL CURRICULUM LIST & MATRIX -->
   <div id="modalCplList" class="fixed inset-0 z-50 hidden flex items-center justify-center modal-backdrop p-4">
-    <div class="bg-white rounded-2xl max-w-2xl w-full p-6 shadow-2xl border border-slate-200 animate-in fade-in zoom-in duration-150">
+    <div class="bg-white rounded-2xl max-w-3xl w-full p-6 shadow-2xl border border-slate-200 animate-in fade-in zoom-in duration-150">
       <div class="flex items-center justify-between pb-3 border-b border-slate-200">
         <div>
           <span class="badge-teal text-[10px] font-bold px-2 py-0.5 rounded uppercase">Database Kurikulum OBE</span>
-          <h4 class="text-base font-bold text-slate-900 mt-1">Daftar Capaian Pembelajaran Lulusan (CPL) Terimpor</h4>
+          <h4 class="text-base font-bold text-slate-900 mt-1">Pemetaan CPL, CPMK & Mata Kuliah Terimpor</h4>
         </div>
         <button onclick="closeModal('modalCplList')" class="text-slate-400 hover:text-slate-600 p-1 rounded-lg">
           <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
         </button>
       </div>
 
-      <div class="mt-4 space-y-3 text-xs text-slate-700 max-h-[380px] overflow-y-auto pr-1">
-        <div class="bg-teal-50 p-3 rounded-lg border border-teal-100 flex items-center justify-between">
-          <span class="text-teal-900 font-semibold">Status Kurikulum: <strong class="text-teal-700">8 CPL Aktif Tersinkronisasi</strong></span>
-          <span class="badge-green text-[10px] font-bold px-2 py-0.5 rounded">KKNI Level 6 & 7</span>
+      <!-- Navigation Tabs inside CPL modal -->
+      <div class="flex gap-2 border-b border-slate-200 mt-3 pb-2 text-xs">
+        <button id="btnTabCplCourses" onclick="toggleCplModalView('COURSES')" class="font-bold text-teal-700 border-b-2 border-teal-600 pb-1 px-2">
+          1. Pemetaan Mata Kuliah & CPL (Siap Buat RPS)
+        </button>
+        <button id="btnTabCplMaster" onclick="toggleCplModalView('MASTER')" class="font-semibold text-slate-500 hover:text-slate-800 pb-1 px-2">
+          2. Master Rumusan 8 CPL Prodi
+        </button>
+      </div>
+
+      <div class="mt-3 space-y-3 text-xs text-slate-700 max-h-[400px] overflow-y-auto pr-1">
+        
+        <!-- VIEW 1: COURSES MAPPING TABLE -->
+        <div id="cplViewCourses" class="space-y-3">
+          <div class="bg-teal-50 p-3 rounded-lg border border-teal-100 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+            <span class="text-teal-900 font-semibold">Tersimpan: <strong class="text-teal-700">7 Mata Kuliah Terpetakan dengan CPL & CPMK</strong></span>
+            <span class="badge-green text-[10px] font-bold px-2 py-0.5 rounded">Database Kurikulum Aktif</span>
+          </div>
+
+          <div class="border border-slate-200 rounded-lg overflow-hidden">
+            <table class="w-full text-left text-xs">
+              <thead class="bg-slate-50 border-b border-slate-200 text-slate-600 font-bold uppercase tracking-wider text-[11px]">
+                <tr>
+                  <th class="p-2.5 w-32">Mata Kuliah / Kode</th>
+                  <th class="p-2.5 w-24">Jenjang & SKS</th>
+                  <th class="p-2.5">CPL yang Dibebankan</th>
+                  <th class="p-2.5">Rumusan CPMK</th>
+                  <th class="p-2.5 w-28 text-center">Aksi Langsung</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-slate-200 text-slate-700" id="curriculumCoursesTableBody">
+                <!-- Dynamically populated or default rows -->
+              </tbody>
+            </table>
+          </div>
         </div>
 
-        <div class="border border-slate-200 rounded-lg overflow-hidden">
-          <table class="w-full text-left text-xs">
-            <thead class="bg-slate-50 border-b border-slate-200 text-slate-600 font-bold uppercase tracking-wider text-[11px]">
-              <tr>
-                <th class="p-2.5 w-24">Kode CPL</th>
-                <th class="p-2.5 w-32">Kategori</th>
-                <th class="p-2.5">Deskripsi Rumusan CPL</th>
-              </tr>
-            </thead>
-            <tbody class="divide-y divide-slate-200 text-slate-700" id="cplMasterTableBody">
-              <tr>
-                <td class="p-2.5 font-mono font-bold text-sky-700">CPL-01</td>
-                <td class="p-2.5"><span class="badge-blue text-[10px] font-semibold px-1.5 py-0.5 rounded">Sikap</span></td>
-                <td class="p-2.5 leading-relaxed">Menunjukkan sikap bertanggung jawab atas pekerjaan di bidang keahlian fisioterapi secara mandiri.</td>
-              </tr>
-              <tr>
-                <td class="p-2.5 font-mono font-bold text-sky-700">CPL-02</td>
-                <td class="p-2.5"><span class="badge-teal text-[10px] font-semibold px-1.5 py-0.5 rounded">Keterampilan Khusus</span></td>
-                <td class="p-2.5 leading-relaxed">Mampu melakukan pemeriksaan spesifik dan pengukuran fisioterapi laboratorium pada sistem muskuloskeletal dan neuromuskular.</td>
-              </tr>
-              <tr>
-                <td class="p-2.5 font-mono font-bold text-sky-700">CPL-03</td>
-                <td class="p-2.5"><span class="badge-amber text-[10px] font-semibold px-1.5 py-0.5 rounded">Pengetahuan</span></td>
-                <td class="p-2.5 leading-relaxed">Menguasai konsep teoritis anatomi klinis, fisiologi gerak, dan patofisiologi pada kasus gerak dan fungsi tubuh.</td>
-              </tr>
-              <tr>
-                <td class="p-2.5 font-mono font-bold text-sky-700">CPL-04</td>
-                <td class="p-2.5"><span class="badge-teal text-[10px] font-semibold px-1.5 py-0.5 rounded">Keterampilan Khusus</span></td>
-                <td class="p-2.5 leading-relaxed">Mampu merumuskan serta mempraktikkan program intervensi fisioterapi modalitas fisik dan terapi latihan secara aman.</td>
-              </tr>
-              <tr>
-                <td class="p-2.5 font-mono font-bold text-teal-700">CPL-KLINIK-01</td>
-                <td class="p-2.5"><span class="badge-amber text-[10px] font-semibold px-1.5 py-0.5 rounded">Profesi ICF</span></td>
-                <td class="p-2.5 leading-relaxed">Mampu memformulasikan penalaran klinis komprehensif berbasis kerangka ICF pada rotasi stase klinik rumah sakit.</td>
-              </tr>
-            </tbody>
-          </table>
+        <!-- VIEW 2: MASTER 8 CPL TABLE -->
+        <div id="cplViewMaster" class="hidden space-y-3">
+          <div class="border border-slate-200 rounded-lg overflow-hidden">
+            <table class="w-full text-left text-xs">
+              <thead class="bg-slate-50 border-b border-slate-200 text-slate-600 font-bold uppercase tracking-wider text-[11px]">
+                <tr>
+                  <th class="p-2.5 w-24">Kode CPL</th>
+                  <th class="p-2.5 w-32">Kategori</th>
+                  <th class="p-2.5">Deskripsi Rumusan CPL</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-slate-200 text-slate-700" id="cplMasterTableBody">
+                <tr>
+                  <td class="p-2.5 font-mono font-bold text-sky-700">CPL-01</td>
+                  <td class="p-2.5"><span class="badge-blue text-[10px] font-semibold px-1.5 py-0.5 rounded">Sikap</span></td>
+                  <td class="p-2.5 leading-relaxed">Menunjukkan sikap bertanggung jawab atas pekerjaan di bidang keahlian fisioterapi secara mandiri.</td>
+                </tr>
+                <tr>
+                  <td class="p-2.5 font-mono font-bold text-sky-700">CPL-02</td>
+                  <td class="p-2.5"><span class="badge-teal text-[10px] font-semibold px-1.5 py-0.5 rounded">Keterampilan Khusus</span></td>
+                  <td class="p-2.5 leading-relaxed">Mampu melakukan pemeriksaan spesifik dan pengukuran fisioterapi laboratorium pada sistem muskuloskeletal dan neuromuskular.</td>
+                </tr>
+                <tr>
+                  <td class="p-2.5 font-mono font-bold text-sky-700">CPL-03</td>
+                  <td class="p-2.5"><span class="badge-amber text-[10px] font-semibold px-1.5 py-0.5 rounded">Pengetahuan</span></td>
+                  <td class="p-2.5 leading-relaxed">Menguasai konsep teoritis anatomi klinis, fisiologi gerak, dan patofisiologi pada kasus gerak dan fungsi tubuh.</td>
+                </tr>
+                <tr>
+                  <td class="p-2.5 font-mono font-bold text-sky-700">CPL-04</td>
+                  <td class="p-2.5"><span class="badge-teal text-[10px] font-semibold px-1.5 py-0.5 rounded">Keterampilan Khusus</span></td>
+                  <td class="p-2.5 leading-relaxed">Mampu merumuskan serta mempraktikkan program intervensi fisioterapi modalitas fisik dan terapi latihan secara aman.</td>
+                </tr>
+                <tr>
+                  <td class="p-2.5 font-mono font-bold text-teal-700">CPL-KLINIK-01</td>
+                  <td class="p-2.5"><span class="badge-amber text-[10px] font-semibold px-1.5 py-0.5 rounded">Profesi ICF</span></td>
+                  <td class="p-2.5 leading-relaxed">Mampu memformulasikan penalaran klinis komprehensif berbasis kerangka ICF pada rotasi stase klinik rumah sakit.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
         </div>
+
       </div>
 
       <div class="mt-5 pt-3 border-t border-slate-200 flex items-center justify-between">
-        <span class="text-[11px] text-slate-500 italic">*Setiap dosen yang menyusun RPS akan otomatis menggunakan CPL baku ini.</span>
+        <span class="text-[11px] text-slate-500 italic">*Pilih salah satu mata kuliah di atas untuk langsung men-generate RPS sesuai pemetaan CPL.</span>
         <button onclick="closeModal('modalCplList')" class="px-4 py-2 text-xs font-semibold text-slate-600 hover:bg-slate-100 rounded-xl transition">Tutup</button>
       </div>
     </div>
@@ -1497,6 +1598,7 @@
         document.getElementById('modalTemplateRefDisplay').textContent = activeTemplateName;
       }
       setupDragAndDrop();
+      renderCurriculumCoursesTable();
     });
 
     // Switch Course from dropdown
@@ -1643,6 +1745,10 @@
     function openGenerateRpsModal() {
       document.getElementById('modalTemplateRefDisplay').textContent = activeTemplateName;
       document.getElementById('modalGenerateRps').classList.remove('hidden');
+      const dropdown = document.getElementById('genRpsCoursePresetDropdown');
+      if (dropdown && dropdown.value) {
+        applyCoursePresetToModal(dropdown.value);
+      }
     }
 
     // Execute Generate RPS (Creates complete 16 meetings cascade + saves to library)
@@ -1778,8 +1884,10 @@
       `;
       docsTable.insertBefore(newRow, docsTable.firstChild);
 
+      renderCurriculumCoursesTable();
       closeModal('modalGenerateRps');
       switchSimTab('CASCADE');
+      document.getElementById('simPanelCascade').scrollIntoView({ behavior: 'smooth' });
       showToast(`RPS ${courseName} berhasil digenerate mengikuti template acuan ${activeTemplateName}!`);
     }
 
@@ -1791,14 +1899,19 @@
       activeTemplateName = file.name;
       localStorage.setItem('thalamus_active_template', file.name);
 
-      document.getElementById('activeTemplateFileName').textContent = file.name;
-      document.getElementById('modalTemplateRefDisplay').textContent = file.name;
+      const templateNameDisplays = ['activeTemplateFileName', 'modalTemplateRefDisplay'];
+      templateNameDisplays.forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.textContent = file.name;
+      });
 
       const badge = document.getElementById('templateRpsBadge');
-      badge.textContent = 'Template Acuan Kampus Aktif';
-      badge.className = 'badge-green text-[10px] font-bold px-2 py-0.5 rounded';
+      if (badge) {
+        badge.textContent = 'Template Acuan Kampus Aktif';
+        badge.className = 'badge-green text-[10px] font-bold px-2 py-0.5 rounded';
+      }
 
-      showToast(`Template RPS ${file.name} berhasil diunggah! Seluruh RPS baru akan seragam mengikuti format ini.`);
+      showToast(`Template RPS ${file.name} berhasil diunggah! Seluruh RPS baru akan seragam 100% mengikuti format ini.`);
     }
 
     function downloadSampleRpsTemplate() {
@@ -1812,14 +1925,134 @@
 
       document.getElementById('activeCplFileName').textContent = file.name;
       const badge = document.getElementById('cplImportBadge');
-      badge.textContent = 'Kurikulum CPL Tersimpan';
-      badge.className = 'badge-green text-[10px] font-bold px-2 py-0.5 rounded';
+      if (badge) {
+        badge.textContent = 'Kurikulum CPL Tersimpan';
+        badge.className = 'badge-green text-[10px] font-bold px-2 py-0.5 rounded';
+      }
 
-      showToast(`Berkas kurikulum ${file.name} berhasil diimpor! Data CPL, CPMK, dan Sub-CPMK seluruh mata kuliah tersimpan aman di database lokal.`);
+      localStorage.setItem('thalamus_active_cpl_file', file.name);
+
+      // Render the course-by-course curriculum matrix and display the modal immediately
+      renderCurriculumCoursesTable();
+      viewCplMatrixModal();
+
+      showToast(`Kurikulum ${file.name} berhasil diimpor! Data pemetaan CPL, CPMK, dan Sub-CPMK tiap mata kuliah telah tersimpan aman.`);
     }
 
     function viewCplMatrixModal() {
+      renderCurriculumCoursesTable();
       document.getElementById('modalCplList').classList.remove('hidden');
+    }
+
+    function toggleCplModalView(view) {
+      const vCourses = document.getElementById('cplViewCourses');
+      const vMaster = document.getElementById('cplViewMaster');
+      const btnCourses = document.getElementById('btnTabCplCourses');
+      const btnMaster = document.getElementById('btnTabCplMaster');
+
+      if (view === 'COURSES') {
+        vCourses.classList.remove('hidden');
+        vMaster.classList.add('hidden');
+        btnCourses.className = 'font-bold text-teal-700 border-b-2 border-teal-600 pb-1 px-2';
+        btnMaster.className = 'font-semibold text-slate-500 hover:text-slate-800 pb-1 px-2';
+      } else {
+        vCourses.classList.add('hidden');
+        vMaster.classList.remove('hidden');
+        btnMaster.className = 'font-bold text-teal-700 border-b-2 border-teal-600 pb-1 px-2';
+        btnCourses.className = 'font-semibold text-slate-500 hover:text-slate-800 pb-1 px-2';
+      }
+    }
+
+    function renderCurriculumCoursesTable() {
+      const tbody = document.getElementById('curriculumCoursesTableBody');
+      if (!tbody) return;
+      let html = '';
+      for (const code in curriculumDB) {
+        const c = curriculumDB[code];
+        const cplBadges = c.cpls.map(cp => `<span class="bg-sky-100 text-sky-800 px-1.5 py-0.5 rounded text-[10px] font-mono font-bold">${cp.code}</span>`).join(' ');
+        const cpmkSummary = c.cpmks.map(m => `<div><strong>${m.code}:</strong> ${m.desc.substring(0, 50)}...</div>`).join('');
+        html += `
+          <tr class="hover:bg-slate-50 transition">
+            <td class="p-2.5">
+              <strong class="text-slate-900 block">${c.name}</strong>
+              <span class="font-mono text-sky-700 text-[10px] font-semibold">${c.code}</span>
+            </td>
+            <td class="p-2.5">
+              <span class="badge-blue text-[10px] font-semibold px-1.5 py-0.5 rounded">${c.jenjang}</span>
+              <div class="text-[10px] text-slate-500 mt-0.5">${c.sks}</div>
+            </td>
+            <td class="p-2.5">
+              <div class="flex flex-wrap gap-1">${cplBadges}</div>
+            </td>
+            <td class="p-2.5 text-[11px] text-slate-600">
+              ${cpmkSummary}
+            </td>
+            <td class="p-2.5 text-center">
+              <button onclick="startRpsForCourse('${c.code}')" class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold px-2.5 py-1.5 rounded-lg text-[11px] shadow-sm flex items-center justify-center gap-1 w-full transition cursor-pointer">
+                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
+                <span>Buat RPS</span>
+              </button>
+            </td>
+          </tr>
+        `;
+      }
+      tbody.innerHTML = html;
+    }
+
+    function startRpsForCourse(code) {
+      closeModal('modalCplList');
+      openGenerateRpsModal();
+      const dropdown = document.getElementById('genRpsCoursePresetDropdown');
+      if (dropdown) {
+        dropdown.value = code;
+      }
+      applyCoursePresetToModal(code);
+    }
+
+    function applyCoursePresetToModal(code) {
+      if (code === 'CUSTOM') {
+        document.getElementById('genRpsCourseName').value = '';
+        document.getElementById('genRpsCourseCode').value = '';
+        return;
+      }
+      const course = curriculumDB[code];
+      if (!course) return;
+
+      document.getElementById('genRpsCourseName').value = course.name;
+      document.getElementById('genRpsCourseCode').value = course.code;
+      document.getElementById('genRpsSemester').value = course.semester;
+      document.getElementById('genRpsSks').value = course.sks;
+      document.getElementById('genRpsJenjang').value = course.jenjang;
+
+      // Check the CPLs assigned to this course
+      document.getElementById('chkCpl01').checked = false;
+      document.getElementById('chkCpl02').checked = false;
+      document.getElementById('chkCpl03').checked = false;
+      document.getElementById('chkCpl04').checked = false;
+      if (document.getElementById('chkCplKlinik01')) {
+        document.getElementById('chkCplKlinik01').checked = false;
+      }
+
+      course.cpls.forEach(cp => {
+        if (cp.code === 'CPL-01') document.getElementById('chkCpl01').checked = true;
+        if (cp.code === 'CPL-02') document.getElementById('chkCpl02').checked = true;
+        if (cp.code === 'CPL-03') document.getElementById('chkCpl03').checked = true;
+        if (cp.code === 'CPL-04') document.getElementById('chkCpl04').checked = true;
+        if (cp.code === 'CPL-KLINIK-01' && document.getElementById('chkCplKlinik01')) {
+          document.getElementById('chkCplKlinik01').checked = true;
+        }
+      });
+
+      // Update CPMK display
+      const cpmkPreview = document.getElementById('modalCpmkPreviewDisplay');
+      if (cpmkPreview) {
+        let html = '';
+        course.cpmks.forEach(m => {
+          html += `• <strong>${m.code}:</strong> ${m.desc}<br>`;
+        });
+        html += `• <strong>Distribusi Evaluasi:</strong> UTS (20%) + UAS (40%) + Praktikum Lab (25%) + Sikap & Partisipasi (15%) = 100%.`;
+        cpmkPreview.innerHTML = html;
+      }
     }
 
     // Setup Drag-and-Drop for Refiner
@@ -1865,6 +2098,13 @@
     }
 
     function processRefinerFile(file) {
+      // 1. Instantly switch to Refiner tab and scroll down so the user sees it immediately!
+      switchSimTab('DIFF');
+      const panel = document.getElementById('simPanelDiff');
+      if (panel) {
+        panel.scrollIntoView({ behavior: 'smooth' });
+      }
+
       document.getElementById('uploadedDocTitleDisplay').textContent = `Draf Asli yang Diunggah: ${file.name}`;
       showToast(`Membaca draf ${file.name}... Merapikan hierarki bab, EYD V, istilah medis & margin cetak`);
 
@@ -1895,6 +2135,12 @@
         showToast('Silakan masukkan teks draf terlebih dahulu.');
         return;
       }
+      switchSimTab('DIFF');
+      const panel = document.getElementById('simPanelDiff');
+      if (panel) {
+        panel.scrollIntoView({ behavior: 'smooth' });
+      }
+
       document.getElementById('uploadedDocTitleDisplay').textContent = 'Draf Asli (Teks Catatan Manual)';
       document.getElementById('originalDraftContent').innerHTML = `<p class="whitespace-pre-wrap">${text}</p>`;
       document.getElementById('pasteRefinerContainer').classList.add('hidden');
@@ -1904,12 +2150,24 @@
     function applyRefinerOutput(docName) {
       const cleanName = docName.replace(/\.[^/.]+$/, "").replace(/_/g, " ").toUpperCase();
       
-      // LANGSUNG memunculkan dokumen yang sudah diperbaiki
+      // LANGSUNG memunculkan dokumen yang sudah diperbaiki secara lengkap dan siap cetak
       document.getElementById('refinedDraftContent').innerHTML = `
-        <div class="border-b-2 border-slate-800 pb-2 mb-3 text-center">
-          <p class="font-bold text-slate-900 text-xs tracking-wider">STANDAR OPERASIONAL PROSEDUR (SOP) RESMI INSTITUSI</p>
-          <p class="font-bold text-sky-800 text-xs mt-0.5">${cleanName}</p>
-          <p class="text-[10px] text-slate-500 font-mono mt-0.5">Nomor Registrasi: SOP/FISIO/2026/XI-012 • Standar LAM-PTKes</p>
+        <div class="flex items-center justify-between border-b-2 border-slate-800 pb-2 mb-3">
+          <div>
+            <p class="font-bold text-slate-900 text-xs tracking-wider">STANDAR OPERASIONAL PROSEDUR (SOP) RESMI INSTITUSI</p>
+            <p class="font-bold text-sky-800 text-xs mt-0.5">${cleanName}</p>
+            <p class="text-[10px] text-slate-500 font-mono mt-0.5">Nomor Registrasi: SOP/FISIO/2026/XI-012 • Standar LAM-PTKes</p>
+          </div>
+          <div class="flex items-center gap-1.5 flex-shrink-0">
+            <button onclick="downloadFileDemo('${cleanName}_Siap_Cetak.docx')" class="text-sky-800 bg-sky-50 hover:bg-sky-100 px-2 py-1 rounded border border-sky-300 font-bold text-[10px] flex items-center gap-1 shadow-sm transition">
+              <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
+              <span>.DOCX</span>
+            </button>
+            <button onclick="downloadFileDemo('${cleanName}_Siap_Cetak.pdf')" class="text-rose-800 bg-rose-50 hover:bg-rose-100 px-2 py-1 rounded border border-rose-300 font-bold text-[10px] flex items-center gap-1 shadow-sm transition">
+              <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"/></svg>
+              <span>.PDF</span>
+            </button>
+          </div>
         </div>
 
         <div class="space-y-2.5">
@@ -1945,20 +2203,31 @@
 
       // Update Audit Badges & Notes
       const auditBadge = document.getElementById('auditSummaryBadge');
-      auditBadge.textContent = 'Audit: 16 Koreksi Format Disempurnakan';
-      auditBadge.className = 'badge-green text-xs font-semibold px-2.5 py-1 rounded-lg';
+      if (auditBadge) {
+        auditBadge.textContent = 'Audit: 16 Koreksi Format Disempurnakan';
+        auditBadge.className = 'badge-green text-xs font-semibold px-2.5 py-1 rounded-lg';
+      }
       
-      document.getElementById('auditNotesList').innerHTML = `
-        <div>&bull; <strong>Hierarki Penomoran:</strong> Pola penomoran melompat (1 &rarr; A &rarr; B) telah distandarisasi ke hierarki akademik (Bab I &rarr; 1.1 &rarr; 1.2 &rarr; 2.1).</div>
-        <div>&bull; <strong>Tata Bahasa & EYD V:</strong> 11 kata informal/slang telah diganti dengan terminologi fisioterapi baku.</div>
-        <div>&bull; <strong>Standar Margin Cetak:</strong> Diterapkan otomatis margin A4 Kiri 4 cm, Atas/Kanan/Bawah 3 cm, spasi 1.15.</div>
-        <div>&bull; <strong>Lembar Pengesahan:</strong> Tabel tanda tangan resmi Kaprodi & Ka. Lab disematkan dengan proteksi anti-terpotong.</div>
-      `;
+      const auditNotes = document.getElementById('auditNotesList');
+      if (auditNotes) {
+        auditNotes.innerHTML = `
+          <div>&bull; <strong>Hierarki Penomoran:</strong> Pola penomoran melompat (1 &rarr; A &rarr; B) telah distandarisasi ke hierarki akademik (Bab I &rarr; 1.1 &rarr; 1.2 &rarr; 2.1).</div>
+          <div>&bull; <strong>Tata Bahasa & EYD V:</strong> 11 kata informal/slang telah diganti dengan terminologi fisioterapi baku.</div>
+          <div>&bull; <strong>Standar Margin Cetak:</strong> Diterapkan otomatis margin A4 Kiri 4 cm, Atas/Kanan/Bawah 3 cm, spasi 1.15.</div>
+          <div>&bull; <strong>Lembar Pengesahan:</strong> Tabel tanda tangan resmi Kaprodi & Ka. Lab disematkan dengan proteksi anti-terpotong.</div>
+        `;
+      }
 
-      document.getElementById('refinedSuccessList').innerHTML = `
-        <div>&check; Struktur bab, sub-bab, dan nomor urut 100% memenuhi standar audit LAM-PTKes</div>
-        <div>&check; Siap diekspor langsung ke berkas Word (.docx) dan cetakan PDF siap tanda tangan</div>
-      `;
+      const refinedSuccess = document.getElementById('refinedSuccessList');
+      if (refinedSuccess) {
+        refinedSuccess.innerHTML = `
+          <div>&check; Struktur bab, sub-bab, dan nomor urut 100% memenuhi standar audit LAM-PTKes</div>
+          <div>&check; Siap diekspor langsung ke berkas Word (.docx) dan cetakan PDF siap tanda tangan</div>
+        `;
+      }
+
+      showToast(`Dokumen ${docName} berhasil dirapikan! Dokumen siap cetak langsung muncul di panel kanan.`);
+    }
 
       showToast(`Dokumen ${docName} berhasil dirapikan! Dokumen siap cetak langsung muncul di panel kanan.`);
     }
