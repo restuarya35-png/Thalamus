@@ -1,0 +1,1339 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Thalamus - Teaching, Academic & Administrative Document Automation System</title>
+  <!-- Tailwind CSS -->
+  <script src="https://www.gstatic.com/antigravity/web/dev/tailwindcss.min.js"></script>
+  <style>
+    :root {
+      --primary: #0284c7;
+      --primary-dark: #0369a1;
+      --secondary: #0d9488;
+      --dark-slate: #0f172a;
+      --surface: #ffffff;
+      --surface-subtle: #f8fafc;
+      --border-subtle: #e2e8f0;
+      --text-main: #1e293b;
+      --text-muted: #64748b;
+    }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      color: var(--text-main);
+      background-color: #f8fafc;
+    }
+    .badge-teal {
+      background-color: #ccfbf1;
+      color: #0f766e;
+      border: 1px solid #99f6e4;
+    }
+    .badge-blue {
+      background-color: #e0f2fe;
+      color: #0369a1;
+      border: 1px solid #bae6fd;
+    }
+    .badge-amber {
+      background-color: #fef3c7;
+      color: #92400e;
+      border: 1px solid #fde68a;
+    }
+    .badge-green {
+      background-color: #dcfce7;
+      color: #166534;
+      border: 1px solid #bbf7d0;
+    }
+    .card-shadow {
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -2px rgba(0, 0, 0, 0.05);
+    }
+    .card-hover:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.08), 0 4px 6px -4px rgba(0, 0, 0, 0.05);
+    }
+    .active-nav-tab {
+      background-color: #ffffff;
+      color: #0284c7;
+      font-weight: 600;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+    .modal-backdrop {
+      background-color: rgba(15, 23, 42, 0.65);
+      backdrop-filter: blur(4px);
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col antialiased">
+
+  <!-- TOP STATUS BAR: Local-First & Engine Status -->
+  <header class="bg-slate-900 text-slate-200 border-b border-slate-800 text-xs py-2 px-4 sticky top-0 z-50">
+    <div class="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-3">
+      <div class="flex items-center gap-2">
+        <span class="inline-flex items-center justify-center w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+        <span class="font-medium text-slate-300">Local-First Desktop Engine:</span>
+        <span class="bg-slate-800 text-emerald-400 px-2 py-0.5 rounded border border-slate-700 font-mono text-[11px]">localhost:8000</span>
+        <span class="text-slate-400 hidden sm:inline">•</span>
+        <span class="text-slate-300 hidden sm:inline">Database: <strong class="text-slate-100 font-mono">SQLite (thalamus_local.db)</strong></span>
+      </div>
+
+      <div class="flex items-center gap-3">
+        <div class="flex items-center gap-1.5 bg-slate-800 px-2.5 py-1 rounded-full border border-slate-700">
+          <svg class="w-3.5 h-3.5 text-cyan-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+          </svg>
+          <span class="text-slate-300">AI Mode:</span>
+          <span class="text-cyan-300 font-semibold" id="aiModeStatus">Hybrid (Gemini API & Ollama)</span>
+        </div>
+
+        <div class="flex items-center gap-1.5 bg-slate-800 px-2.5 py-1 rounded-full border border-slate-700">
+          <svg class="w-3.5 h-3.5 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+          </svg>
+          <span class="text-slate-300">Engine:</span>
+          <span class="text-emerald-300 font-mono font-medium">docxtpl v0.16</span>
+        </div>
+
+        <button onclick="openProfileModal()" class="text-slate-300 hover:text-white flex items-center gap-1 hover:bg-slate-800 px-2 py-1 rounded transition">
+          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+          </svg>
+          <span>Konfigurasi Template & Profil</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- MAIN NAVIGATION & BRAND HEADER -->
+  <nav class="bg-white border-b border-slate-200 shadow-sm">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <!-- Logo Thalamus Symbolizing Brain Thalamus & Relay Core -->
+        <div class="w-11 h-11 rounded-xl bg-gradient-to-tr from-sky-600 via-teal-600 to-indigo-700 flex items-center justify-center text-white shadow-md shadow-sky-500/20">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z" />
+          </svg>
+        </div>
+        <div>
+          <div class="flex items-center gap-2">
+            <h1 class="text-2xl font-bold tracking-tight text-slate-900">Thalamus</h1>
+            <span class="badge-blue text-[11px] font-semibold px-2 py-0.5 rounded-full uppercase tracking-wider">AI Agent v1.0</span>
+            <span class="badge-teal text-[11px] font-semibold px-2 py-0.5 rounded-full hidden sm:inline">Fisioterapi OBE</span>
+          </div>
+          <p class="text-xs text-slate-500 font-medium">Teaching, Academic & Administrative Document Automation System</p>
+        </div>
+      </div>
+
+      <!-- User Active Profile Badge -->
+      <div class="flex items-center gap-3">
+        <div class="hidden md:flex flex-col text-right">
+          <span class="text-sm font-semibold text-slate-800" id="headerLecturerName">Dr. Budi Santoso, S.Ft., M.Fis., Ftr.</span>
+          <span class="text-xs text-slate-500" id="headerLecturerProdi">Dosen Fisioterapi • NIDN: 0412088901</span>
+        </div>
+        <div class="w-10 h-10 rounded-full bg-sky-100 border-2 border-sky-300 flex items-center justify-center text-sky-700 font-bold text-sm shadow-inner cursor-pointer" onclick="openProfileModal()" title="Profil Dosen & Pengaturan">
+          BS
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- HERO SECTION: Value Proposition & Jenjang Focus -->
+  <section class="bg-gradient-to-b from-white via-sky-50/40 to-slate-50 border-b border-slate-200 pt-8 pb-10">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      
+      <!-- Top Announcement Pill -->
+      <div class="flex justify-center mb-5">
+        <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white border border-sky-200 text-sky-800 text-xs font-medium shadow-sm">
+          <span class="w-2 h-2 rounded-full bg-sky-500"></span>
+          <span>Dirancang Khusus untuk Dosen Fisioterapi (D4 & Profesi) Berbasis Kurikulum OBE & Kerangka ICF</span>
+        </div>
+      </div>
+
+      <!-- Main Headline -->
+      <div class="text-center max-w-4xl mx-auto mb-8">
+        <h2 class="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-slate-900 tracking-tight leading-tight">
+          Pusat Kendali Otomatisasi Dokumen Akademik & Administratif Dosen Fisioterapi
+        </h2>
+        <p class="mt-4 text-base sm:text-lg text-slate-600 leading-relaxed max-w-3xl mx-auto">
+          Layaknya struktur <span class="font-semibold text-sky-700">thalamus</span> yang mengintegrasikan dan menyalurkan sinyal ke korteks otak, <strong>Thalamus</strong> menurunkan CPL menjadi RPS, Modul Ajar, dan Materi secara berantai, menyusun dokumen tugas tambahan dari nol, serta merapikan sistematika siap cetak di laptop Anda secara <em>Local-First</em>.
+        </p>
+      </div>
+
+      <!-- JENJANG SELECTOR TABS (PRD Core Requirement: D4 vs Profesi) -->
+      <div class="max-w-3xl mx-auto bg-slate-200/80 p-1.5 rounded-2xl flex flex-col sm:flex-row gap-1 border border-slate-300/80 mb-8">
+        <button id="btnJenjangD4" onclick="switchJenjang('D4')" class="flex-1 py-3 px-4 rounded-xl flex items-center justify-center gap-2.5 transition active-nav-tab text-slate-800">
+          <svg class="w-5 h-5 text-sky-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+          </svg>
+          <div class="text-left">
+            <div class="text-xs font-bold leading-none">Sarjana Terapan (D4) Fisioterapi</div>
+            <div class="text-[11px] text-slate-500 font-normal mt-0.5">KKNI Level 6 • Keterampilan Terapan & Lab Prosedural</div>
+          </div>
+        </button>
+
+        <button id="btnJenjangProfesi" onclick="switchJenjang('PROFESI')" class="flex-1 py-3 px-4 rounded-xl flex items-center justify-center gap-2.5 transition text-slate-600 hover:text-slate-900">
+          <svg class="w-5 h-5 text-teal-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+          </svg>
+          <div class="text-left">
+            <div class="text-xs font-bold leading-none">Pendidikan Profesi Fisioterapi</div>
+            <div class="text-[11px] text-slate-500 font-normal mt-0.5">KKNI Level 7 • Clinical Reasoning, ICF & Stase Klinik</div>
+          </div>
+        </button>
+      </div>
+
+      <!-- KEY METRICS BANNER (Target terukur PRD) -->
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-3 max-w-5xl mx-auto">
+        <div class="bg-white rounded-xl p-4 border border-slate-200 card-shadow text-center">
+          <div class="text-2xl font-extrabold text-sky-600">&ge; 70%</div>
+          <div class="text-xs font-semibold text-slate-800 mt-1">Efisiensi Waktu</div>
+          <div class="text-[11px] text-slate-500">Penyusunan RPS, Modul & KAK</div>
+        </div>
+        <div class="bg-white rounded-xl p-4 border border-slate-200 card-shadow text-center">
+          <div class="text-2xl font-extrabold text-teal-600">100%</div>
+          <div class="text-xs font-semibold text-slate-800 mt-1">Keterlacakan OBE</div>
+          <div class="text-[11px] text-slate-500">CPL &rarr; CPMK &rarr; Sub-CPMK</div>
+        </div>
+        <div class="bg-white rounded-xl p-4 border border-slate-200 card-shadow text-center">
+          <div class="text-2xl font-extrabold text-indigo-600">&ge; 90%</div>
+          <div class="text-xs font-semibold text-slate-800 mt-1">Kesiapan Cetak</div>
+          <div class="text-[11px] text-slate-500">Margin, Bab & Pengesahan Rapi</div>
+        </div>
+        <div class="bg-white rounded-xl p-4 border border-slate-200 card-shadow text-center">
+          <div class="text-2xl font-extrabold text-emerald-600">&lt; 5 Detik</div>
+          <div class="text-xs font-semibold text-slate-800 mt-1">Local Startup</div>
+          <div class="text-[11px] text-slate-500">100% Data Aman di Perangkat</div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- THREE CORE ACTION CARDS (3 Key Journeys in PRD) -->
+  <section class="py-10 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto w-full">
+    <div class="flex flex-col md:flex-row md:items-end justify-between mb-8 gap-4">
+      <div>
+        <h3 class="text-2xl font-bold text-slate-900">Pintasan Cepat Alur Kerja Dosen</h3>
+        <p class="text-sm text-slate-500 mt-1">Pilih salah satu dari 3 modul utama yang telah disesuaikan dengan kebutuhan dosen fisioterapi.</p>
+      </div>
+      <div class="flex items-center gap-2 text-xs font-medium text-slate-600 bg-slate-100 px-3 py-1.5 rounded-lg border border-slate-200">
+        <svg class="w-4 h-4 text-sky-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+        </svg>
+        <span>Mode Terpilih: <strong id="activeJenjangBadge" class="text-sky-700">Sarjana Terapan (D4)</strong></span>
+      </div>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+
+      <!-- ACTION CARD 1: OBE CASCADE ENGINE -->
+      <div class="bg-white rounded-2xl border-2 border-sky-100 hover:border-sky-400 p-6 card-shadow card-hover transition duration-200 flex flex-col justify-between relative overflow-hidden group">
+        <div class="absolute top-0 right-0 w-24 h-24 bg-sky-100/50 rounded-bl-full -mr-4 -mt-4 transition group-hover:scale-110"></div>
+        <div>
+          <div class="flex items-center justify-between mb-4">
+            <div class="w-12 h-12 rounded-xl bg-sky-600 text-white flex items-center justify-center shadow-md shadow-sky-600/30">
+              <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 7v10c0 2 1.5 3 3.5 3h9c2 0 3.5-1 3.5-3V7c0-2-1.5-3-3.5-3h-9C5.5 4 4 5 4 7zm0 4h16m-6 4h4" />
+              </svg>
+            </div>
+            <span class="badge-blue text-[11px] font-bold px-2.5 py-1 rounded-full">Alur 1: OBE Cascade</span>
+          </div>
+
+          <h4 class="text-lg font-bold text-slate-900 group-hover:text-sky-600 transition">
+            Penyusunan Berantai Perangkat Ajar
+          </h4>
+          <p class="text-xs text-sky-700 font-semibold mt-1">CPL &rarr; CPMK &rarr; Sub-CPMK &rarr; RPS &rarr; Modul &rarr; Materi</p>
+
+          <p class="text-xs text-slate-600 mt-3 leading-relaxed">
+            Menurunkan CPL secara otomatis ke dalam matriks CPMK dan Sub-CPMK dengan taksonomi Bloom (C1–C6, P1–P5, A1–A5), indikator klinis, dan bobot evaluasi 100%. Sekali klik untuk menghasilkan RPS 16 minggu, Modul Ajar praktikum, dan naskah Materi Pembelajaran terintegrasi.
+          </p>
+
+          <div class="mt-4 pt-4 border-t border-slate-100 space-y-2">
+            <div class="flex items-center text-xs text-slate-600 gap-2">
+              <svg class="w-4 h-4 text-emerald-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+              <span>Template RPS Baku SN-Dikti / LAM-PTKes</span>
+            </div>
+            <div class="flex items-center text-xs text-slate-600 gap-2">
+              <svg class="w-4 h-4 text-emerald-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+              <span>Fitur "Turunkan Modul & Materi" per Sub-CPMK</span>
+            </div>
+            <div class="flex items-center text-xs text-slate-600 gap-2">
+              <svg class="w-4 h-4 text-emerald-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+              <span id="card1JenjangDetail">Khusus D4: Penguasaan Prosedur Terapan Lab</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="mt-6">
+          <button onclick="openObeCascadeModal()" class="w-full py-2.5 px-4 bg-sky-600 hover:bg-sky-700 text-white text-xs font-semibold rounded-xl shadow-sm hover:shadow transition flex items-center justify-center gap-2">
+            <span>Buka Cascade Builder</span>
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- ACTION CARD 2: ZERO-TO-DOCUMENT AD-HOC GENERATOR -->
+      <div class="bg-white rounded-2xl border-2 border-teal-100 hover:border-teal-400 p-6 card-shadow card-hover transition duration-200 flex flex-col justify-between relative overflow-hidden group">
+        <div class="absolute top-0 right-0 w-24 h-24 bg-teal-100/50 rounded-bl-full -mr-4 -mt-4 transition group-hover:scale-110"></div>
+        <div>
+          <div class="flex items-center justify-between mb-4">
+            <div class="w-12 h-12 rounded-xl bg-teal-600 text-white flex items-center justify-center shadow-md shadow-teal-600/30">
+              <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+              </svg>
+            </div>
+            <span class="badge-teal text-[11px] font-bold px-2.5 py-1 rounded-full">Alur 2: Zero-to-Doc</span>
+          </div>
+
+          <h4 class="text-lg font-bold text-slate-900 group-hover:text-teal-600 transition">
+            Dokumen Tugas Tambahan dari Nol
+          </h4>
+          <p class="text-xs text-teal-700 font-semibold mt-1">KAK/TOR &bull; Laporan &bull; Proposal &bull; SOP Lab/Klinik</p>
+
+          <p class="text-xs text-slate-600 mt-3 leading-relaxed">
+            Menyusun dokumen administratif dosen dari sekadar poin-poin ringkas. Menggunakan alur kerja 2-tahap: konfirmasi kerangka bab baku terlebih dahulu, lalu penulisan narasi komprehensif, lampiran rundown acara, dan tabel estimasi anggaran otomatis.
+          </p>
+
+          <div class="mt-4 pt-4 border-t border-slate-100 space-y-2">
+            <div class="flex items-center text-xs text-slate-600 gap-2">
+              <svg class="w-4 h-4 text-emerald-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+              <span>Preset KAK/TOR, Laporan Kegiatan & SOP Fisioterapi</span>
+            </div>
+            <div class="flex items-center text-xs text-slate-600 gap-2">
+              <svg class="w-4 h-4 text-emerald-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+              <span>Generator Tabel Rundown & Estimasi Anggaran</span>
+            </div>
+            <div class="flex items-center text-xs text-slate-600 gap-2">
+              <svg class="w-4 h-4 text-emerald-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+              <span>Format Bahasa Formal Akademik Sesuai EYD V</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="mt-6">
+          <button onclick="openZeroToDocModal()" class="w-full py-2.5 px-4 bg-teal-600 hover:bg-teal-700 text-white text-xs font-semibold rounded-xl shadow-sm hover:shadow transition flex items-center justify-center gap-2">
+            <span>Mulai Dokumen Baru</span>
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- ACTION CARD 3: SISTEMATIKA & PRINT-READY REFINER -->
+      <div class="bg-white rounded-2xl border-2 border-indigo-100 hover:border-indigo-400 p-6 card-shadow card-hover transition duration-200 flex flex-col justify-between relative overflow-hidden group">
+        <div class="absolute top-0 right-0 w-24 h-24 bg-indigo-100/50 rounded-bl-full -mr-4 -mt-4 transition group-hover:scale-110"></div>
+        <div>
+          <div class="flex items-center justify-between mb-4">
+            <div class="w-12 h-12 rounded-xl bg-indigo-600 text-white flex items-center justify-center shadow-md shadow-indigo-600/30">
+              <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+              </svg>
+            </div>
+            <span class="badge-amber text-[11px] font-bold px-2.5 py-1 rounded-full">Alur 3: Siap Cetak</span>
+          </div>
+
+          <h4 class="text-lg font-bold text-slate-900 group-hover:text-indigo-600 transition">
+            Perbaikan Sistematika & Mesin Siap Cetak
+          </h4>
+          <p class="text-xs text-indigo-700 font-semibold mt-1">Audit Hierarki Bab &bull; Margin 4-3-3-3 &bull; Pengesahan</p>
+
+          <p class="text-xs text-slate-600 mt-3 leading-relaxed">
+            Unggah atau tempel draf naskah yang berantakan. Thalamus secara otomatis merapikan hierarki penomoran (Bab I &rarr; 1.1 &rarr; 1.1.1 &rarr; a.), menyelaraskan istilah medis fisioterapi, menyisipkan lembar pengesahan anti-terpotong, dan mengekspor ke .docx & .pdf.
+          </p>
+
+          <div class="mt-4 pt-4 border-t border-slate-100 space-y-2">
+            <div class="flex items-center text-xs text-slate-600 gap-2">
+              <svg class="w-4 h-4 text-emerald-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+              <span>Side-by-Side Diff Preview (Draf Asli vs Refined)</span>
+            </div>
+            <div class="flex items-center text-xs text-slate-600 gap-2">
+              <svg class="w-4 h-4 text-emerald-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+              <span>Standar Margin A4/F4 (Kiri 4 cm, Atas/Kanan/Bawah 3 cm)</span>
+            </div>
+            <div class="flex items-center text-xs text-slate-600 gap-2">
+              <svg class="w-4 h-4 text-emerald-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+              <span>Halaman Sampul, Daftar Isi & Lembar TTD Kaprodi/Dekan</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="mt-6">
+          <button onclick="openRefinerModal()" class="w-full py-2.5 px-4 bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-semibold rounded-xl shadow-sm hover:shadow transition flex items-center justify-center gap-2">
+            <span>Audit & Format Draf</span>
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+          </button>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- LIVE WORKSPACE & INTERACTIVE SIMULATOR (Ruang Kerja Terpadu) -->
+  <section class="py-8 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto w-full">
+    <div class="bg-white rounded-2xl border border-slate-200 card-shadow overflow-hidden">
+      
+      <!-- Workspace Navigation Tabs -->
+      <div class="bg-slate-100/80 border-b border-slate-200 px-6 pt-4 flex flex-wrap items-center justify-between gap-3">
+        <div class="flex items-center gap-2">
+          <span class="w-3 h-3 rounded-full bg-red-400"></span>
+          <span class="w-3 h-3 rounded-full bg-amber-400"></span>
+          <span class="w-3 h-3 rounded-full bg-emerald-400"></span>
+          <span class="ml-2 text-xs font-bold uppercase tracking-wider text-slate-500">Thalamus Interactive Workspace Engine</span>
+        </div>
+
+        <div class="flex gap-2">
+          <button id="tabSimCascade" onclick="switchSimTab('CASCADE')" class="px-4 py-2 text-xs font-bold rounded-t-xl transition bg-white text-sky-700 border-t-2 border-sky-600 shadow-sm">
+            1. Matriks Cascade OBE
+          </button>
+          <button id="tabSimZero" onclick="switchSimTab('ZERO')" class="px-4 py-2 text-xs font-semibold rounded-t-xl transition text-slate-600 hover:text-slate-900">
+            2. Generator Zero-to-Doc
+          </button>
+          <button id="tabSimDiff" onclick="switchSimTab('DIFF')" class="px-4 py-2 text-xs font-semibold rounded-t-xl transition text-slate-600 hover:text-slate-900">
+            3. Side-by-Side Diff Refiner
+          </button>
+        </div>
+      </div>
+
+      <!-- WORKSPACE CONTENT AREA -->
+      <div class="p-6">
+        
+        <!-- 1. SIMULATOR: OBE CASCADE MATRIKS -->
+        <div id="simPanelCascade" class="space-y-6">
+          <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-sky-50/70 p-4 rounded-xl border border-sky-100">
+            <div>
+              <span class="badge-blue text-[10px] font-bold px-2 py-0.5 rounded">Mata Kuliah Aktif</span>
+              <h4 class="text-base font-bold text-slate-900 mt-1" id="simCourseName">Fisioterapi Muskuloskeletal Terapan (FST-402)</h4>
+              <p class="text-xs text-slate-600" id="simCourseDesc">Semester 4 • 3 SKS (1 Teori, 2 Praktikum Lab) • Program Studi Sarjana Terapan (D4) Fisioterapi</p>
+            </div>
+            <div class="flex items-center gap-2">
+              <span class="badge-green text-xs font-bold px-3 py-1.5 rounded-lg flex items-center gap-1.5">
+                <svg class="w-4 h-4 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                <span>OBE Alignment: 100% Valid</span>
+              </span>
+              <button onclick="exportDocxSim('RPS-Cascade')" class="bg-white hover:bg-slate-50 border border-slate-300 text-slate-700 text-xs font-semibold px-3 py-1.5 rounded-lg flex items-center gap-1.5 transition">
+                <svg class="w-3.5 h-3.5 text-sky-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
+                <span>Ekspor RPS (.docx)</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Matriks Cascade Table -->
+          <div class="border border-slate-200 rounded-xl overflow-x-auto">
+            <table class="w-full text-left text-xs">
+              <thead class="bg-slate-50 border-b border-slate-200 text-slate-600 font-bold uppercase tracking-wider">
+                <tr>
+                  <th class="py-3 px-4 w-28">CPL Prodi</th>
+                  <th class="py-3 px-4 w-40">CPMK Mata Kuliah</th>
+                  <th class="py-3 px-4">Sub-CPMK & Indikator Penilaian</th>
+                  <th class="py-3 px-4 w-28">Taksonomi</th>
+                  <th class="py-3 px-4 w-20 text-center">Bobot</th>
+                  <th class="py-3 px-4 w-44 text-center">Aksi Dokumen Berantai</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-slate-200 text-slate-700" id="cascadeTableBody">
+                <!-- Row 1 -->
+                <tr class="hover:bg-slate-50/80 transition">
+                  <td class="py-3 px-4 font-mono font-semibold text-sky-700 align-top">
+                    <span class="bg-sky-100 text-sky-800 px-2 py-0.5 rounded text-[11px]">CPL-02</span>
+                    <div class="text-[10px] text-slate-500 font-normal mt-1">Keterampilan Khusus Prosedur Fisioterapi</div>
+                  </td>
+                  <td class="py-3 px-4 font-medium align-top">
+                    <strong class="text-slate-900">CPMK-1:</strong>
+                    <p class="text-[11px] text-slate-600 mt-0.5">Mampu merancang dan melakukan pemeriksaan fisioterapi spesifik pada gangguan sendi lutut (ACL/OA Genu).</p>
+                  </td>
+                  <td class="py-3 px-4 align-top">
+                    <div class="font-semibold text-slate-900">Sub-CPMK 03 (Minggu ke-3):</div>
+                    <p class="text-[11px] text-slate-600 mt-0.5">Mahasiswa mampu mendemonstrasikan tes provokasi ligamen lutut (Lachman, Anterior Drawer, Pivot Shift) dan pengukuran ROM goniometri dengan presisi.</p>
+                    <div class="mt-1 text-[11px] text-teal-700 font-medium bg-teal-50 px-2 py-0.5 rounded inline-block">
+                      Indikator: Keakuratan posisi tangan, penentuan end-feel, interpretasi derajat laxity.
+                    </div>
+                  </td>
+                  <td class="py-3 px-4 align-top">
+                    <span class="badge-teal text-[11px] font-bold px-2 py-0.5 rounded">Psikomotorik P4</span>
+                    <div class="text-[10px] text-slate-500 mt-1">Kognitif C4</div>
+                  </td>
+                  <td class="py-3 px-4 text-center font-bold text-slate-800 align-top">15%</td>
+                  <td class="py-3 px-4 align-top space-y-1.5">
+                    <button onclick="previewChainedDoc('Modul Ajar', 'Sub-CPMK 03')" class="w-full bg-teal-50 hover:bg-teal-100 text-teal-800 border border-teal-200 font-semibold py-1 px-2 rounded text-[11px] flex items-center justify-center gap-1 transition">
+                      <svg class="w-3.5 h-3.5 text-teal-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+                      <span>Turunkan Modul</span>
+                    </button>
+                    <button onclick="previewChainedDoc('Materi Ajar', 'Sub-CPMK 03')" class="w-full bg-sky-50 hover:bg-sky-100 text-sky-800 border border-sky-200 font-semibold py-1 px-2 rounded text-[11px] flex items-center justify-center gap-1 transition">
+                      <svg class="w-3.5 h-3.5 text-sky-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
+                      <span>Turunkan Materi</span>
+                    </button>
+                  </td>
+                </tr>
+
+                <!-- Row 2 -->
+                <tr class="hover:bg-slate-50/80 transition">
+                  <td class="py-3 px-4 font-mono font-semibold text-sky-700 align-top">
+                    <span class="bg-sky-100 text-sky-800 px-2 py-0.5 rounded text-[11px]">CPL-04</span>
+                    <div class="text-[10px] text-slate-500 font-normal mt-1">Intervensi & Rehabilitasi Terapan</div>
+                  </td>
+                  <td class="py-3 px-4 font-medium align-top">
+                    <strong class="text-slate-900">CPMK-2:</strong>
+                    <p class="text-[11px] text-slate-600 mt-0.5">Mampu merumuskan program terapi latihan dan intervensi modalitas elektro-terapeutik pada fase pasca rekonstruksi ligamen.</p>
+                  </td>
+                  <td class="py-3 px-4 align-top">
+                    <div class="font-semibold text-slate-900">Sub-CPMK 04 (Minggu ke-4):</div>
+                    <p class="text-[11px] text-slate-600 mt-0.5">Mahasiswa mampu memformulasikan protokol *closed kinetic chain exercise* dan aplikasi NMES untuk mencegah atrofi quadriceps.</p>
+                    <div class="mt-1 text-[11px] text-teal-700 font-medium bg-teal-50 px-2 py-0.5 rounded inline-block">
+                      Indikator: Ketepatan dosis latihan (FITT), penempatan elektroda, keamanan beban lutut.
+                    </div>
+                  </td>
+                  <td class="py-3 px-4 align-top">
+                    <span class="badge-teal text-[11px] font-bold px-2 py-0.5 rounded">Psikomotorik P4</span>
+                    <div class="text-[10px] text-slate-500 mt-1">Kognitif C5</div>
+                  </td>
+                  <td class="py-3 px-4 text-center font-bold text-slate-800 align-top">15%</td>
+                  <td class="py-3 px-4 align-top space-y-1.5">
+                    <button onclick="previewChainedDoc('Modul Ajar', 'Sub-CPMK 04')" class="w-full bg-teal-50 hover:bg-teal-100 text-teal-800 border border-teal-200 font-semibold py-1 px-2 rounded text-[11px] flex items-center justify-center gap-1 transition">
+                      <svg class="w-3.5 h-3.5 text-teal-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+                      <span>Turunkan Modul</span>
+                    </button>
+                    <button onclick="previewChainedDoc('Materi Ajar', 'Sub-CPMK 04')" class="w-full bg-sky-50 hover:bg-sky-100 text-sky-800 border border-sky-200 font-semibold py-1 px-2 rounded text-[11px] flex items-center justify-center gap-1 transition">
+                      <svg class="w-3.5 h-3.5 text-sky-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
+                      <span>Turunkan Materi</span>
+                    </button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="text-[11px] text-slate-500 italic">*Setiap modul dan materi yang diturunkan otomatis tersinkronisasi 100% dengan taksonomi dan indikator Sub-CPMK di RPS.</p>
+        </div>
+
+        <!-- 2. SIMULATOR: ZERO-TO-DOCUMENT GENERATOR -->
+        <div id="simPanelZero" class="hidden space-y-6">
+          <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            
+            <!-- Left: Quick Input Form -->
+            <div class="bg-slate-50 p-5 rounded-xl border border-slate-200 space-y-4">
+              <div>
+                <h5 class="text-sm font-bold text-slate-900">Formulir Input Ringkas Dosen</h5>
+                <p class="text-xs text-slate-500">Cukup masukkan poin-poin utama kegiatan.</p>
+              </div>
+
+              <div>
+                <label class="block text-xs font-semibold text-slate-700 mb-1">Jenis Dokumen Tugas Tambahan</label>
+                <select id="docTypeSelect" onchange="updateZeroPreset()" class="w-full text-xs p-2 rounded-lg border border-slate-300 bg-white focus:ring-2 focus:ring-teal-500 focus:outline-none">
+                  <option value="KAK">Kerangka Acuan Kerja (KAK / TOR) Kegiatan</option>
+                  <option value="LAPORAN">Laporan Pertanggungjawaban Kepanitiaan</option>
+                  <option value="PROPOSAL">Proposal Pengabdian Masyarakat Fisioterapi</option>
+                  <option value="SOP">SOP Laboratorium / Klinik Fisioterapi</option>
+                </select>
+              </div>
+
+              <div>
+                <label class="block text-xs font-semibold text-slate-700 mb-1">Judul / Nama Dokumen</label>
+                <input type="text" id="zeroDocTitle" value="Workshop Clinical Reasoning Fisioterapi Berbasis ICF 2026" class="w-full text-xs p-2 rounded-lg border border-slate-300 bg-white font-medium focus:ring-2 focus:ring-teal-500 focus:outline-none" />
+              </div>
+
+              <div>
+                <label class="block text-xs font-semibold text-slate-700 mb-1">Poin Konteks & Sasaran</label>
+                <textarea id="zeroDocPoints" rows="4" class="w-full text-xs p-2 rounded-lg border border-slate-300 bg-white font-mono leading-relaxed focus:ring-2 focus:ring-teal-500 focus:outline-none">- Tujuan: Penyeragaman asesmen klinik dosen & CI rumah sakit
+- Sasaran: 45 Dosen & Preseptor Klinik Fisioterapi
+- Waktu: 14-15 November 2026 di Auditorium Kampus
+- Anggaran: Rp 28.500.000 (Konsumsi, Honor Narasumber, Modul)
+- Output: Modul Panduan Pengisian Form ICF Kasus Muskuloskeletal</textarea>
+              </div>
+
+              <button onclick="generateZeroDocPreview()" class="w-full py-2.5 px-4 bg-teal-600 hover:bg-teal-700 text-white text-xs font-bold rounded-xl shadow transition flex items-center justify-center gap-2">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"/></svg>
+                <span>Generasikan Dokumen Lengkap</span>
+              </button>
+            </div>
+
+            <!-- Right: Auto-Generated Document Preview -->
+            <div class="lg:col-span-2 bg-white p-5 rounded-xl border border-slate-200 shadow-inner flex flex-col justify-between">
+              <div>
+                <div class="flex items-center justify-between pb-3 border-b border-slate-200 mb-4">
+                  <div class="flex items-center gap-2">
+                    <span class="badge-teal text-[11px] font-bold px-2 py-0.5 rounded">Naskah Hasil Generasi Otomatis</span>
+                    <span class="text-xs text-slate-500 font-mono">Format Baku KAK/TOR Resmi</span>
+                  </div>
+                  <div class="flex items-center gap-2">
+                    <button onclick="exportDocxSim('KAK-Workshop')" class="text-xs bg-slate-100 hover:bg-slate-200 text-slate-700 px-3 py-1 rounded-lg font-semibold flex items-center gap-1 border border-slate-300 transition">
+                      <svg class="w-3.5 h-3.5 text-teal-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
+                      <span>Unduh .docx</span>
+                    </button>
+                    <button onclick="exportPdfSim('KAK-Workshop')" class="text-xs bg-teal-600 hover:bg-teal-700 text-white px-3 py-1 rounded-lg font-semibold flex items-center gap-1 transition">
+                      <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"/></svg>
+                      <span>Cetak .pdf</span>
+                    </button>
+                  </div>
+                </div>
+
+                <!-- Structured Outline & Document Body -->
+                <div class="prose prose-sm max-w-none text-xs text-slate-700 space-y-3 font-serif bg-slate-50/50 p-4 rounded-lg border border-slate-200 max-h-[350px] overflow-y-auto">
+                  <div class="text-center pb-2 border-b border-slate-300">
+                    <p class="font-bold text-slate-900 text-sm uppercase tracking-wide">KERANGKA ACUAN KERJA (TOR/KAK)</p>
+                    <p class="font-bold text-slate-800 text-xs mt-1" id="previewTitleDisplay">WORKSHOP CLINICAL REASONING FISIOTERAPI BERBASIS ICF</p>
+                    <p class="text-[11px] text-slate-600 font-sans">Nomor Dokumen: KAK-FISIO/2026/XI-004</p>
+                  </div>
+
+                  <div>
+                    <strong class="text-slate-900 font-sans">A. LATAR BELAKANG</strong>
+                    <p class="mt-1 leading-relaxed">
+                      Pendidikan Profesi Fisioterapi menuntut integrasi penalaran klinis yang tajam dalam membedah kasus neuromuskular, muskuloskeletal, kardiorespirasi, dan pediatrik. Kerangka <em>International Classification of Functioning, Disability and Health (ICF)</em> telah ditetapkan sebagai standar internasional untuk memetakan kondisi kesehatan dari tingkat struktur tubuh, fungsi, keterbatasan aktivitas, hingga partisipasi sosial. Untuk memastikan keselarasan evaluasi antara dosen akademik dan preseptor klinik rumah sakit, kegiatan workshop ini diselenggarakan.
+                    </p>
+                  </div>
+
+                  <div>
+                    <strong class="text-slate-900 font-sans">B. TUJUAN KEGIATAN</strong>
+                    <ol class="list-decimal pl-4 mt-1 space-y-0.5 leading-relaxed">
+                      <li>Menstandarisasi format asesmen dan evaluasi klinis mahasiswa profesi berbasis instrumen ICF.</li>
+                      <li>Meningkatkan kompetensi 45 dosen dan preseptor klinik dalam merumuskan <em>clinical reasoning hypothesis</em>.</li>
+                      <li>Menghasilkan buku panduan asesmen fisioterapi klinik resmi yang siap diimplementasikan pada rotasi stase.</li>
+                    </ol>
+                  </div>
+
+                  <div>
+                    <strong class="text-slate-900 font-sans">C. LAMPIRAN I: RUNDOWN ACARA (GENERASI OTOMATIS)</strong>
+                    <table class="w-full text-[11px] border border-slate-300 mt-1 font-sans">
+                      <thead class="bg-slate-200 text-slate-800 font-semibold">
+                        <tr><th class="p-1 border border-slate-300">Waktu</th><th class="p-1 border border-slate-300">Sesi & Topik</th><th class="p-1 border border-slate-300">Penanggung Jawab</th></tr>
+                      </thead>
+                      <tbody>
+                        <tr><td class="p-1 border border-slate-300">08.00 - 08.30</td><td class="p-1 border border-slate-300">Registrasi & Pembukaan oleh Ketua Jurusan</td><td class="p-1 border border-slate-300">Sie Acara</td></tr>
+                        <tr><td class="p-1 border border-slate-300">08.30 - 11.45</td><td class="p-1 border border-slate-300">Pleno: Aplikasi ICF pada Kasus Kompleks Fisioterapi</td><td class="p-1 border border-slate-300">Narasumber Pakar IFI</td></tr>
+                        <tr><td class="p-1 border border-slate-300">13.00 - 16.00</td><td class="p-1 border border-slate-300">Simulasi Kasus & Penyusunan Rubrik Penilaian OSCE</td><td class="p-1 border border-slate-300">Fasilitator Prodi</td></tr>
+                      </tbody>
+                    </table>
+                  </div>
+
+                  <div>
+                    <strong class="text-slate-900 font-sans">D. LAMPIRAN II: REKAPITULASI ANGGARAN (GENERASI OTOMATIS)</strong>
+                    <table class="w-full text-[11px] border border-slate-300 mt-1 font-sans">
+                      <thead class="bg-slate-200 text-slate-800 font-semibold">
+                        <tr><th class="p-1 border border-slate-300">Komponen</th><th class="p-1 border border-slate-300">Rincian Volume</th><th class="p-1 border border-slate-300">Total (Rp)</th></tr>
+                      </thead>
+                      <tbody>
+                        <tr><td class="p-1 border border-slate-300">Honorarium Narasumber Pakar</td><td class="p-1 border border-slate-300">2 Orang x 4 Jam</td><td class="p-1 border border-slate-300 font-mono">8.000.000</td></tr>
+                        <tr><td class="p-1 border border-slate-300">Paket Konsumsi & Coffee Break</td><td class="p-1 border border-slate-300">50 Pax x 2 Hari</td><td class="p-1 border border-slate-300 font-mono">12.500.000</td></tr>
+                        <tr><td class="p-1 border border-slate-300">Pencetakan Modul & Sertifikat SKP</td><td class="p-1 border border-slate-300">50 Eksemplar</td><td class="p-1 border border-slate-300 font-mono">8.000.000</td></tr>
+                        <tr class="font-bold bg-slate-100"><td colspan="2" class="p-1 border border-slate-300 text-right">TOTAL ANGGARAN:</td><td class="p-1 border border-slate-300 font-mono text-teal-800">Rp 28.500.000</td></tr>
+                      </tbody>
+                    </table>
+                  </div>
+
+                </div>
+              </div>
+
+              <div class="mt-4 pt-3 border-t border-slate-200 flex items-center justify-between text-xs text-slate-500">
+                <span class="flex items-center gap-1.5 text-emerald-600 font-medium">
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                  <span>Format sesuai Standar KAK Kemendikbudristek & Kemenkes</span>
+                </span>
+                <span class="font-mono text-[11px]">docxtpl-rendered • 4 Halaman Siap Cetak</span>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- 3. SIMULATOR: SIDE-BY-SIDE DIFF REFINER -->
+        <div id="simPanelDiff" class="hidden space-y-6">
+          <div class="flex items-center justify-between pb-3 border-b border-slate-200">
+            <div>
+              <h5 class="text-sm font-bold text-slate-900">Peninjau Perbandingan Sistematika (Side-by-Side Diff)</h5>
+              <p class="text-xs text-slate-500">Merapikan penomoran bertingkat, EYD V, istilah anatomi/fisioterapi baku, dan standar margin.</p>
+            </div>
+            <div class="flex items-center gap-2">
+              <span class="badge-amber text-xs font-semibold px-2.5 py-1 rounded-lg">Audit: 14 Koreksi Format Diperbaiki</span>
+              <button onclick="exportDocxSim('Refined-SOP')" class="bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-semibold px-3 py-1.5 rounded-lg flex items-center gap-1.5 transition">
+                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"/></svg>
+                <span>Terapkan & Cetak Dokumen</span>
+              </button>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            
+            <!-- Original Draft (Messy) -->
+            <div class="border border-red-200 rounded-xl p-4 bg-red-50/30">
+              <div class="flex items-center justify-between mb-2 pb-2 border-b border-red-200">
+                <span class="text-xs font-bold text-red-700 flex items-center gap-1">
+                  <span class="w-2 h-2 rounded-full bg-red-500"></span> Draf Asli (Catatan Kasar / Belum Rapi)
+                </span>
+                <span class="text-[10px] text-red-600 font-mono">Format Bebas</span>
+              </div>
+              <div class="font-mono text-[11px] text-slate-600 space-y-2 bg-white p-3 rounded border border-red-100 min-h-[220px]">
+                <p class="text-red-900 font-bold strike">SOP penggunaan alat elektroterapi di lab</p>
+                <p>1. tujuan: biar mahasiswa tau cara nyalain mesin us dan tens secara bener.</p>
+                <p>A. persiapan alat: colok kabel ke stopkontak. cek kabel jgn smp lecet.</p>
+                <p>B. cara pake: olesin gel tebel2 di kulit pasien yg sakit. trs pasang intensitas jgn kegedean nti gosong.</p>
+                <p>2. keselamatan: matikan tombol power klo sdh slesai. bersihkan sisa gel pke tisu.</p>
+              </div>
+              <div class="mt-2 text-[11px] text-red-700 space-y-1">
+                <div>&bull; Penomoran melompat (1 &rarr; A &rarr; B &rarr; 2)</div>
+                <div>&bull; Menggunakan ragam bahasa tidak formal ("biar tau", "nyalain", "smpe lecet")</div>
+                <div>&bull; Tidak ada lembar pengesahan dan nomor SOP resmi</div>
+              </div>
+            </div>
+
+            <!-- Refined & Print-Ready (Clean) -->
+            <div class="border border-emerald-200 rounded-xl p-4 bg-emerald-50/30">
+              <div class="flex items-center justify-between mb-2 pb-2 border-b border-emerald-200">
+                <span class="text-xs font-bold text-emerald-800 flex items-center gap-1">
+                  <span class="w-2 h-2 rounded-full bg-emerald-500"></span> Hasil Refiner Thalamus (Siap Cetak)
+                </span>
+                <span class="badge-green text-[10px] font-bold px-2 py-0.5 rounded">Margin 4-3-3-3 &bull; EYD V</span>
+              </div>
+              <div class="font-serif text-[11px] text-slate-800 space-y-2 bg-white p-3 rounded border border-emerald-100 min-h-[220px]">
+                <p class="text-center font-bold text-slate-900 text-xs">STANDAR OPERASIONAL PROSEDUR (SOP)<br>PENGOPERASIAN MODALITAS ELEKTROTERAPI DAN ULTRASOUND</p>
+                <p class="font-sans font-bold text-[11px] text-slate-900 mt-2">1.1. TUJUAN INSTRUKSIONAL</p>
+                <p class="leading-relaxed">Memberikan pedoman baku bagi mahasiswa dalam mengoperasikan modalitas <em>Therapeutic Ultrasound</em> dan TENS sesuai parameter dosis fisioterapi yang aman.</p>
+                <p class="font-sans font-bold text-[11px] text-slate-900">1.2. PROSEDUR OPERASIONAL</p>
+                <p class="leading-relaxed"><strong>1.2.1. Tahap Pra-Intervensi:</strong> Verifikasi keutuhan kabel transmisi, pastikan kalibrasi tranduser, serta lakukan tes sensibilitas panas-dingin pada area target.</p>
+                <p class="leading-relaxed"><strong>1.2.2. Tahap Intervensi:</strong> Aplikasikan medium perantara (<em>coupling gel</em>) secukupnya, gerakkan tranduser secara sirkuler dinamis dengan kecepatan 2–3 cm/detik guna mencegah <em>hot-spot</em> periosteal.</p>
+              </div>
+              <div class="mt-2 text-[11px] text-emerald-800 space-y-1">
+                <div>&check; Hierarki penomoran baku terstandarisasi (1.1 &rarr; 1.2 &rarr; 1.2.1)</div>
+                <div>&check; Terminologi ilmiah terkalibrasi (*coupling gel*, *hot-spot periosteal*)</div>
+                <div>&check; Dilengkapi Lembar Pengesahan Tanda Tangan Ka. Lab & Kaprodi</div>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- Print Configuration Preview (Margin & Font) -->
+          <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 flex flex-wrap items-center justify-between text-xs text-slate-600 gap-3">
+            <div class="flex items-center gap-4">
+              <span>Ukuran Kertas: <strong class="text-slate-800 font-mono">A4 (210 x 297 mm)</strong></span>
+              <span>Margin Penjilidan: <strong class="text-slate-800 font-mono">Kiri 4 cm, Atas/Kanan/Bawah 3 cm</strong></span>
+              <span>Tipografi: <strong class="text-slate-800 font-mono">Times New Roman 12pt (Spasi 1.15)</strong></span>
+            </div>
+            <div class="flex items-center gap-1.5 text-teal-700 font-semibold">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+              <span>Fitur Lembar Pengesahan Anti-Terpotong Aktif</span>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- PUSTAKA DOKUMEN TERAKHIR (Semester Berjalan) -->
+  <section class="py-10 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto w-full">
+    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
+      <div>
+        <h3 class="text-2xl font-bold text-slate-900">Pustaka Dokumen Semester Berjalan</h3>
+        <p class="text-sm text-slate-500 mt-1">Daftar perangkat ajar dan dokumen administratif yang tersimpan di direktori lokal.</p>
+      </div>
+
+      <!-- Quick Filter & Search -->
+      <div class="flex items-center gap-2">
+        <div class="relative">
+          <input type="text" id="docSearchInput" onkeyup="filterDocs()" placeholder="Cari nama dokumen / mata kuliah..." class="text-xs py-2 pl-8 pr-3 rounded-xl border border-slate-300 bg-white focus:outline-none focus:ring-2 focus:ring-sky-500 w-64" />
+          <svg class="w-4 h-4 text-slate-400 absolute left-2.5 top-2.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+        </div>
+        <select id="docFilterSelect" onchange="filterDocs()" class="text-xs py-2 px-3 rounded-xl border border-slate-300 bg-white font-medium focus:outline-none focus:ring-2 focus:ring-sky-500">
+          <option value="ALL">Semua Jenis Dokumen</option>
+          <option value="RPS">RPS & Modul (OBE)</option>
+          <option value="TUGAS">Dokumen Tugas Tambahan</option>
+          <option value="PRINT">Siap Cetak (Print-Ready)</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- Document Cards Table -->
+    <div class="bg-white rounded-2xl border border-slate-200 card-shadow overflow-hidden">
+      <div class="overflow-x-auto">
+        <table class="w-full text-left text-xs">
+          <thead class="bg-slate-50 border-b border-slate-200 text-slate-600 font-bold uppercase tracking-wider">
+            <tr>
+              <th class="py-3 px-4">Nama Dokumen</th>
+              <th class="py-3 px-4 w-36">Kategori</th>
+              <th class="py-3 px-4 w-40">Jenjang Studi</th>
+              <th class="py-3 px-4 w-32">Status Verifikasi</th>
+              <th class="py-3 px-4 w-36">Terakhir Diperbarui</th>
+              <th class="py-3 px-4 w-36 text-center">Berkas Ekspor</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-slate-200 text-slate-700" id="docsTableBody">
+            <!-- Doc 1 -->
+            <tr class="hover:bg-slate-50/80 transition doc-row" data-cat="RPS" data-title="RPS Fisioterapi Muskuloskeletal Terapan">
+              <td class="py-3 px-4">
+                <div class="flex items-center gap-3">
+                  <div class="w-8 h-8 rounded-lg bg-sky-100 text-sky-700 flex items-center justify-center font-bold text-xs flex-shrink-0">
+                    DOC
+                  </div>
+                  <div>
+                    <div class="font-bold text-slate-900 hover:text-sky-600 cursor-pointer">RPS Fisioterapi Muskuloskeletal Terapan (16 Minggu)</div>
+                    <div class="text-[11px] text-slate-500 font-mono">Kode MK: FST-402 • Template Baku SN-Dikti</div>
+                  </div>
+                </div>
+              </td>
+              <td class="py-3 px-4"><span class="badge-blue text-[11px] font-semibold px-2 py-0.5 rounded">Perangkat RPS</span></td>
+              <td class="py-3 px-4 font-medium text-slate-800">Sarjana Terapan (D4)</td>
+              <td class="py-3 px-4"><span class="badge-green text-[11px] font-bold px-2 py-0.5 rounded flex items-center gap-1 w-max"><span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>OBE 100% Selaras</span></td>
+              <td class="py-3 px-4 text-slate-500 font-mono text-[11px]">31 Okt 2026, 17:40</td>
+              <td class="py-3 px-4 text-center">
+                <div class="flex items-center justify-center gap-1.5">
+                  <button onclick="downloadFileDemo('RPS_Muskuloskeletal.docx')" class="text-sky-700 hover:bg-sky-50 px-2 py-1 rounded border border-sky-300 font-mono text-[10px] font-bold">.DOCX</button>
+                  <button onclick="downloadFileDemo('RPS_Muskuloskeletal.pdf')" class="text-rose-700 hover:bg-rose-50 px-2 py-1 rounded border border-rose-300 font-mono text-[10px] font-bold">.PDF</button>
+                </div>
+              </td>
+            </tr>
+
+            <!-- Doc 2 -->
+            <tr class="hover:bg-slate-50/80 transition doc-row" data-cat="RPS" data-title="Modul Praktikum Pemeriksaan dan Palpasi Sendi Lutut">
+              <td class="py-3 px-4">
+                <div class="flex items-center gap-3">
+                  <div class="w-8 h-8 rounded-lg bg-teal-100 text-teal-700 flex items-center justify-center font-bold text-xs flex-shrink-0">
+                    MOD
+                  </div>
+                  <div>
+                    <div class="font-bold text-slate-900 hover:text-teal-600 cursor-pointer">Modul Praktikum: Pemeriksaan & Palpasi Sendi Lutut</div>
+                    <div class="text-[11px] text-slate-500 font-mono">Turunan Sub-CPMK 03 • Panduan Keterampilan Lab</div>
+                  </div>
+                </div>
+              </td>
+              <td class="py-3 px-4"><span class="badge-teal text-[11px] font-semibold px-2 py-0.5 rounded">Modul Ajar</span></td>
+              <td class="py-3 px-4 font-medium text-slate-800">Sarjana Terapan (D4)</td>
+              <td class="py-3 px-4"><span class="badge-green text-[11px] font-bold px-2 py-0.5 rounded flex items-center gap-1 w-max"><span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>Terverifikasi</span></td>
+              <td class="py-3 px-4 text-slate-500 font-mono text-[11px]">31 Okt 2026, 16:15</td>
+              <td class="py-3 px-4 text-center">
+                <div class="flex items-center justify-center gap-1.5">
+                  <button onclick="downloadFileDemo('Modul_Lutut.docx')" class="text-sky-700 hover:bg-sky-50 px-2 py-1 rounded border border-sky-300 font-mono text-[10px] font-bold">.DOCX</button>
+                  <button onclick="downloadFileDemo('Modul_Lutut.pdf')" class="text-rose-700 hover:bg-rose-50 px-2 py-1 rounded border border-rose-300 font-mono text-[10px] font-bold">.PDF</button>
+                </div>
+              </td>
+            </tr>
+
+            <!-- Doc 3 -->
+            <tr class="hover:bg-slate-50/80 transition doc-row" data-cat="TUGAS" data-title="KAK Workshop Clinical Reasoning Fisioterapi Berbasis ICF">
+              <td class="py-3 px-4">
+                <div class="flex items-center gap-3">
+                  <div class="w-8 h-8 rounded-lg bg-indigo-100 text-indigo-700 flex items-center justify-center font-bold text-xs flex-shrink-0">
+                    KAK
+                  </div>
+                  <div>
+                    <div class="font-bold text-slate-900 hover:text-indigo-600 cursor-pointer">KAK Workshop Clinical Reasoning Fisioterapi Berbasis ICF</div>
+                    <div class="text-[11px] text-slate-500 font-mono">Zero-to-Doc • Termasuk Rundown & Anggaran Rp 28.5 Jt</div>
+                  </div>
+                </div>
+              </td>
+              <td class="py-3 px-4"><span class="badge-amber text-[11px] font-semibold px-2 py-0.5 rounded">Tugas Tambahan</span></td>
+              <td class="py-3 px-4 font-medium text-slate-800">Profesi Fisioterapi</td>
+              <td class="py-3 px-4"><span class="badge-green text-[11px] font-bold px-2 py-0.5 rounded flex items-center gap-1 w-max"><span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>Siap Tanda Tangan</span></td>
+              <td class="py-3 px-4 text-slate-500 font-mono text-[11px]">30 Okt 2026, 14:22</td>
+              <td class="py-3 px-4 text-center">
+                <div class="flex items-center justify-center gap-1.5">
+                  <button onclick="downloadFileDemo('KAK_Workshop_ICF.docx')" class="text-sky-700 hover:bg-sky-50 px-2 py-1 rounded border border-sky-300 font-mono text-[10px] font-bold">.DOCX</button>
+                  <button onclick="downloadFileDemo('KAK_Workshop_ICF.pdf')" class="text-rose-700 hover:bg-rose-50 px-2 py-1 rounded border border-rose-300 font-mono text-[10px] font-bold">.PDF</button>
+                </div>
+              </td>
+            </tr>
+
+            <!-- Doc 4 -->
+            <tr class="hover:bg-slate-50/80 transition doc-row" data-cat="PRINT" data-title="SOP Pengoperasian Modalitas Ultrasound dan Elektroterapi Lab">
+              <td class="py-3 px-4">
+                <div class="flex items-center gap-3">
+                  <div class="w-8 h-8 rounded-lg bg-emerald-100 text-emerald-700 flex items-center justify-center font-bold text-xs flex-shrink-0">
+                    SOP
+                  </div>
+                  <div>
+                    <div class="font-bold text-slate-900 hover:text-emerald-600 cursor-pointer">SOP Pengoperasian Modalitas Ultrasound & Elektroterapi</div>
+                    <div class="text-[11px] text-slate-500 font-mono">Refined Print-Ready • Standar Akreditasi LAM-PTKes</div>
+                  </div>
+                </div>
+              </td>
+              <td class="py-3 px-4"><span class="badge-amber text-[11px] font-semibold px-2 py-0.5 rounded">SOP Laboratorium</span></td>
+              <td class="py-3 px-4 font-medium text-slate-800">Umum / Kedua Prodi</td>
+              <td class="py-3 px-4"><span class="badge-blue text-[11px] font-bold px-2 py-0.5 rounded flex items-center gap-1 w-max"><span class="w-1.5 h-1.5 rounded-full bg-sky-500"></span>Print-Ready 90%+</span></td>
+              <td class="py-3 px-4 text-slate-500 font-mono text-[11px]">29 Okt 2026, 11:05</td>
+              <td class="py-3 px-4 text-center">
+                <div class="flex items-center justify-center gap-1.5">
+                  <button onclick="downloadFileDemo('SOP_Elektroterapi.docx')" class="text-sky-700 hover:bg-sky-50 px-2 py-1 rounded border border-sky-300 font-mono text-[10px] font-bold">.DOCX</button>
+                  <button onclick="downloadFileDemo('SOP_Elektroterapi.pdf')" class="text-rose-700 hover:bg-rose-50 px-2 py-1 rounded border border-rose-300 font-mono text-[10px] font-bold">.PDF</button>
+                </div>
+              </td>
+            </tr>
+
+            <!-- Doc 5 -->
+            <tr class="hover:bg-slate-50/80 transition doc-row" data-cat="TUGAS" data-title="Laporan Pengabdian Masyarakat Skrining Postur dan Ergonomi Lansia">
+              <td class="py-3 px-4">
+                <div class="flex items-center gap-3">
+                  <div class="w-8 h-8 rounded-lg bg-purple-100 text-purple-700 flex items-center justify-center font-bold text-xs flex-shrink-0">
+                    PKM
+                  </div>
+                  <div>
+                    <div class="font-bold text-slate-900 hover:text-purple-600 cursor-pointer">Laporan PKM: Skrining Postur & Ergonomi Lansia</div>
+                    <div class="text-[11px] text-slate-500 font-mono">Laporan Akhir • Lengkap Lembar Pengesahan LPPM</div>
+                  </div>
+                </div>
+              </td>
+              <td class="py-3 px-4"><span class="badge-amber text-[11px] font-semibold px-2 py-0.5 rounded">Pengmas / PKM</span></td>
+              <td class="py-3 px-4 font-medium text-slate-800">Dosen Terpadu</td>
+              <td class="py-3 px-4"><span class="badge-green text-[11px] font-bold px-2 py-0.5 rounded flex items-center gap-1 w-max"><span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>Arsip Resmi</span></td>
+              <td class="py-3 px-4 text-slate-500 font-mono text-[11px]">27 Okt 2026, 09:30</td>
+              <td class="py-3 px-4 text-center">
+                <div class="flex items-center justify-center gap-1.5">
+                  <button onclick="downloadFileDemo('Laporan_PKM_Lansia.docx')" class="text-sky-700 hover:bg-sky-50 px-2 py-1 rounded border border-sky-300 font-mono text-[10px] font-bold">.DOCX</button>
+                  <button onclick="downloadFileDemo('Laporan_PKM_Lansia.pdf')" class="text-rose-700 hover:bg-rose-50 px-2 py-1 rounded border border-rose-300 font-mono text-[10px] font-bold">.PDF</button>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Footer Info Bar -->
+      <div class="bg-slate-50 px-6 py-3 border-t border-slate-200 flex flex-wrap items-center justify-between text-xs text-slate-500">
+        <div>Menampilkan <strong class="text-slate-700" id="docCountDisplay">5</strong> dari 5 dokumen aktif semester ini</div>
+        <div class="flex items-center gap-4">
+          <span class="flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-emerald-500"></span> Penyimpanan Lokal: <code>./data/documents/</code></span>
+          <button onclick="alert('Fitur sinkronisasi cadangan ZIP lokal: seluruh file dan database SQLite thalamus_local.db tersimpan aman di direktori lokal Anda.')" class="text-sky-600 hover:underline font-medium">Cadangkan Semua (.zip)</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- MODAL 1: CASCADE DETAIL & DOWNGRADE PREVIEW -->
+  <div id="modalChainedDoc" class="fixed inset-0 z-50 hidden flex items-center justify-center modal-backdrop p-4">
+    <div class="bg-white rounded-2xl max-w-2xl w-full p-6 shadow-2xl border border-slate-200 animate-in fade-in zoom-in duration-150">
+      <div class="flex items-center justify-between pb-3 border-b border-slate-200">
+        <div>
+          <span class="badge-teal text-[10px] font-bold px-2 py-0.5 rounded uppercase" id="modalDocBadge">Modul Ajar Praktikum</span>
+          <h4 class="text-base font-bold text-slate-900 mt-1" id="modalDocTitle">Penurunan Dokumen Berantai</h4>
+        </div>
+        <button onclick="closeModal('modalChainedDoc')" class="text-slate-400 hover:text-slate-600 p-1 rounded-lg">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+        </button>
+      </div>
+
+      <div class="mt-4 space-y-3 text-xs text-slate-700 max-h-[380px] overflow-y-auto pr-1">
+        <div class="bg-sky-50 p-3 rounded-lg border border-sky-100">
+          <span class="font-bold text-sky-900">Tautan Sub-CPMK Induk:</span>
+          <p class="text-sky-800 mt-0.5 font-medium" id="modalSubCpmkText">Sub-CPMK 03: Mahasiswa mampu mendemonstrasikan tes provokasi ligamen lutut dan pengukuran goniometri.</p>
+        </div>
+
+        <div class="border border-slate-200 p-3 rounded-lg space-y-2">
+          <span class="font-bold text-slate-900">Rincian Komponen Terstruktur:</span>
+          <ul class="list-disc pl-4 space-y-1 text-slate-600">
+            <li><strong>Tujuan Praktikum:</strong> Ketepatan manuver pemeriksaan Lachman test, Anterior Drawer test, dan Pivot Shift test.</li>
+            <li><strong>Alat & Bahan:</strong> Meja periksa fisioterapi, Goniometer universal 360°, lembar rekaman data objektif.</li>
+            <li><strong>Skenario Kasus Klinis:</strong> Pasien atlet futsal usia 22 tahun mengeluh lutut kanan bengkak dan sensasi "giving way" setelah manuver berputar mendadak.</li>
+            <li><strong>Lembar Evaluasi OSCE (Psikomotorik P4):</strong> 7 butir ceklis tindakan klinis dengan skala 0 - 2 (Total Skor 100).</li>
+          </ul>
+        </div>
+
+        <div class="bg-slate-50 p-3 rounded-lg border border-slate-200 flex items-center justify-between">
+          <span class="text-slate-600">Template Injeksi: <strong class="text-slate-800 font-mono">template_modul_fisioterapi_d4.docx</strong></span>
+          <span class="badge-green text-[10px] font-bold px-2 py-0.5 rounded">Tag {{variabel}} Cocok 100%</span>
+        </div>
+      </div>
+
+      <div class="mt-5 pt-3 border-t border-slate-200 flex items-center justify-end gap-2">
+        <button onclick="closeModal('modalChainedDoc')" class="px-4 py-2 text-xs font-semibold text-slate-600 hover:bg-slate-100 rounded-xl transition">Tutup</button>
+        <button onclick="downloadFileDemo('Modul_SubCPMK03_Generated.docx')" class="px-4 py-2 text-xs font-bold bg-teal-600 hover:bg-teal-700 text-white rounded-xl shadow transition flex items-center gap-1.5">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
+          <span>Unduh Dokumen Lengkap (.docx)</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL 2: PROFILE & INSTITUTIONAL TEMPLATE MANAGER -->
+  <div id="modalProfile" class="fixed inset-0 z-50 hidden flex items-center justify-center modal-backdrop p-4">
+    <div class="bg-white rounded-2xl max-w-2xl w-full p-6 shadow-2xl border border-slate-200 animate-in fade-in zoom-in duration-150">
+      <div class="flex items-center justify-between pb-3 border-b border-slate-200">
+        <div>
+          <span class="badge-blue text-[10px] font-bold px-2 py-0.5 rounded uppercase">Pengaturan Dosen & Institusi</span>
+          <h4 class="text-base font-bold text-slate-900 mt-1">Manajemen Template & Profil Resmi Kampus</h4>
+        </div>
+        <button onclick="closeModal('modalProfile')" class="text-slate-400 hover:text-slate-600 p-1 rounded-lg">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+        </button>
+      </div>
+
+      <div class="mt-4 space-y-4 text-xs text-slate-700 max-h-[420px] overflow-y-auto pr-1">
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <div>
+            <label class="block font-semibold text-slate-700 mb-1">Nama Lengkap & Gelar Dosen</label>
+            <input type="text" id="inputLecturerName" value="Dr. Budi Santoso, S.Ft., M.Fis., Ftr." class="w-full p-2 border border-slate-300 rounded-lg text-xs" />
+          </div>
+          <div>
+            <label class="block font-semibold text-slate-700 mb-1">NIDN / NIP</label>
+            <input type="text" id="inputLecturerNidn" value="0412088901" class="w-full p-2 border border-slate-300 rounded-lg text-xs font-mono" />
+          </div>
+          <div>
+            <label class="block font-semibold text-slate-700 mb-1">Nama Perguruan Tinggi / Institusi</label>
+            <input type="text" id="inputLecturerCampus" value="Politeknik Kesehatan Kemenkes / Universitas Fisioterapi" class="w-full p-2 border border-slate-300 rounded-lg text-xs" />
+          </div>
+          <div>
+            <label class="block font-semibold text-slate-700 mb-1">Fakultas / Jurusan</label>
+            <input type="text" id="inputLecturerFaculty" value="Fakultas Ilmu Kesehatan / Jurusan Fisioterapi" class="w-full p-2 border border-slate-300 rounded-lg text-xs" />
+          </div>
+          <div>
+            <label class="block font-semibold text-slate-700 mb-1">Nama Ketua Program Studi (Kaprodi)</label>
+            <input type="text" id="inputKaprodiName" value="Hj. Siti Rahmawati, S.Ft., M.Kes." class="w-full p-2 border border-slate-300 rounded-lg text-xs" />
+          </div>
+          <div>
+            <label class="block font-semibold text-slate-700 mb-1">NIDN Kaprodi (Untuk Lembar TTD)</label>
+            <input type="text" id="inputKaprodiNidn" value="0418047502" class="w-full p-2 border border-slate-300 rounded-lg text-xs font-mono" />
+          </div>
+        </div>
+
+        <div class="border-t border-slate-200 pt-3">
+          <span class="font-bold text-slate-900 block mb-2">Standar Format Cetak Institusi (Print Engine):</span>
+          <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 bg-slate-50 p-3 rounded-xl border border-slate-200 text-[11px]">
+            <div>
+              <span class="text-slate-500 block">Ukuran Kertas:</span>
+              <strong class="text-slate-800">A4 (Standar)</strong>
+            </div>
+            <div>
+              <span class="text-slate-500 block">Margin (K-A-Kn-B):</span>
+              <strong class="text-slate-800 font-mono">4 - 3 - 3 - 3 cm</strong>
+            </div>
+            <div>
+              <span class="text-slate-500 block">Font Naskah:</span>
+              <strong class="text-slate-800">Times New Roman 12pt</strong>
+            </div>
+            <div>
+              <span class="text-slate-500 block">Spasi Kalimat:</span>
+              <strong class="text-slate-800">1.15 (Justified)</strong>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-amber-50 p-3 rounded-lg border border-amber-200 text-amber-900 text-[11px]">
+          <strong>Tag Placeholder Resmi:</strong> Data di atas otomatis diinjeksikan oleh mesin <code>docxtpl</code> ke tag <code>{{nama_dosen}}</code>, <code>{{nidn}}</code>, <code>{{nama_kaprodi}}</code>, dan <code>{{lembar_pengesahan}}</code> pada seluruh template kampus.
+        </div>
+      </div>
+
+      <div class="mt-5 pt-3 border-t border-slate-200 flex items-center justify-end gap-2">
+        <button onclick="closeModal('modalProfile')" class="px-4 py-2 text-xs font-semibold text-slate-600 hover:bg-slate-100 rounded-xl transition">Batal</button>
+        <button onclick="saveProfileSettings()" class="px-4 py-2 text-xs font-bold bg-sky-600 hover:bg-sky-700 text-white rounded-xl shadow transition">Simpan Pengaturan</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- TOAST NOTIFICATION CONTAINER -->
+  <div id="toastNotification" class="fixed bottom-5 right-5 z-50 transform translate-y-20 opacity-0 transition duration-300 pointer-events-none">
+    <div class="bg-slate-900 text-white px-4 py-3 rounded-xl shadow-xl flex items-center gap-3 border border-slate-700 text-xs">
+      <div id="toastIcon" class="w-5 h-5 rounded-full bg-emerald-500 flex items-center justify-center text-white">
+        <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/></svg>
+      </div>
+      <div>
+        <div class="font-bold text-slate-100" id="toastTitle">Berhasil</div>
+        <div class="text-[11px] text-slate-300" id="toastMessage">Dokumen telah diproses.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer class="mt-auto bg-slate-900 text-slate-400 border-t border-slate-800 py-8 px-4 sm:px-6 lg:px-8 text-xs">
+    <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
+      <div>
+        <div class="flex items-center gap-2">
+          <span class="font-bold text-slate-200 text-sm">Thalamus AI Agent</span>
+          <span class="bg-slate-800 text-sky-400 px-2 py-0.5 rounded text-[10px] font-mono border border-slate-700">Local-First Web App</span>
+        </div>
+        <p class="mt-1 text-slate-500">
+          Sistem Otomatisasi Dokumen Akademik & Administratif Dosen Fisioterapi (Sarjana Terapan D4 & Profesi Fisioterapi).
+        </p>
+      </div>
+      <div class="text-right text-slate-500 text-[11px] space-y-1">
+        <div>Sesuai Standar: <strong>SN-Dikti &bull; Kurikulum OBE &bull; Kerangka ICF &bull; LAM-PTKes</strong></div>
+        <div>Stack: <strong>Next.js + Tailwind &bull; Python FastAPI &bull; SQLite &bull; docxtpl &bull; Hybrid LLM</strong></div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- JAVASCRIPT LOGIC (Interactive State & Functionalities) -->
+  <script>
+    // State
+    let currentJenjang = 'D4'; // 'D4' or 'PROFESI'
+    let currentSimTab = 'CASCADE';
+
+    // Jenjang Switcher
+    function switchJenjang(jenjang) {
+      currentJenjang = jenjang;
+      const btnD4 = document.getElementById('btnJenjangD4');
+      const btnProfesi = document.getElementById('btnJenjangProfesi');
+      const badge = document.getElementById('activeJenjangBadge');
+      const card1Detail = document.getElementById('card1JenjangDetail');
+      const simCourseName = document.getElementById('simCourseName');
+      const simCourseDesc = document.getElementById('simCourseDesc');
+      const cascadeTableBody = document.getElementById('cascadeTableBody');
+
+      if (jenjang === 'D4') {
+        btnD4.className = 'flex-1 py-3 px-4 rounded-xl flex items-center justify-center gap-2.5 transition active-nav-tab text-slate-800';
+        btnProfesi.className = 'flex-1 py-3 px-4 rounded-xl flex items-center justify-center gap-2.5 transition text-slate-600 hover:text-slate-900';
+        badge.textContent = 'Sarjana Terapan (D4)';
+        badge.className = 'text-sky-700 font-bold';
+        card1Detail.textContent = 'Khusus D4: Penguasaan Prosedur Terapan Lab';
+        
+        simCourseName.textContent = 'Fisioterapi Muskuloskeletal Terapan (FST-402)';
+        simCourseDesc.textContent = 'Semester 4 • 3 SKS (1 Teori, 2 Praktikum Lab) • Program Studi Sarjana Terapan (D4) Fisioterapi';
+
+        cascadeTableBody.innerHTML = `
+          <tr class="hover:bg-slate-50/80 transition">
+            <td class="py-3 px-4 font-mono font-semibold text-sky-700 align-top">
+              <span class="bg-sky-100 text-sky-800 px-2 py-0.5 rounded text-[11px]">CPL-02</span>
+              <div class="text-[10px] text-slate-500 font-normal mt-1">Keterampilan Khusus Prosedur Fisioterapi</div>
+            </td>
+            <td class="py-3 px-4 font-medium align-top">
+              <strong class="text-slate-900">CPMK-1:</strong>
+              <p class="text-[11px] text-slate-600 mt-0.5">Mampu merancang dan melakukan pemeriksaan fisioterapi spesifik pada gangguan sendi lutut (ACL/OA Genu).</p>
+            </td>
+            <td class="py-3 px-4 align-top">
+              <div class="font-semibold text-slate-900">Sub-CPMK 03 (Minggu ke-3):</div>
+              <p class="text-[11px] text-slate-600 mt-0.5">Mahasiswa mampu mendemonstrasikan tes provokasi ligamen lutut (Lachman, Anterior Drawer, Pivot Shift) dan pengukuran ROM goniometri dengan presisi.</p>
+              <div class="mt-1 text-[11px] text-teal-700 font-medium bg-teal-50 px-2 py-0.5 rounded inline-block">
+                Indikator: Keakuratan posisi tangan, penentuan end-feel, interpretasi derajat laxity.
+              </div>
+            </td>
+            <td class="py-3 px-4 align-top">
+              <span class="badge-teal text-[11px] font-bold px-2 py-0.5 rounded">Psikomotorik P4</span>
+              <div class="text-[10px] text-slate-500 mt-1">Kognitif C4</div>
+            </td>
+            <td class="py-3 px-4 text-center font-bold text-slate-800 align-top">15%</td>
+            <td class="py-3 px-4 align-top space-y-1.5">
+              <button onclick="previewChainedDoc('Modul Ajar', 'Sub-CPMK 03')" class="w-full bg-teal-50 hover:bg-teal-100 text-teal-800 border border-teal-200 font-semibold py-1 px-2 rounded text-[11px] flex items-center justify-center gap-1 transition">
+                <svg class="w-3.5 h-3.5 text-teal-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+                <span>Turunkan Modul</span>
+              </button>
+              <button onclick="previewChainedDoc('Materi Ajar', 'Sub-CPMK 03')" class="w-full bg-sky-50 hover:bg-sky-100 text-sky-800 border border-sky-200 font-semibold py-1 px-2 rounded text-[11px] flex items-center justify-center gap-1 transition">
+                <svg class="w-3.5 h-3.5 text-sky-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
+                <span>Turunkan Materi</span>
+              </button>
+            </td>
+          </tr>
+          <tr class="hover:bg-slate-50/80 transition">
+            <td class="py-3 px-4 font-mono font-semibold text-sky-700 align-top">
+              <span class="bg-sky-100 text-sky-800 px-2 py-0.5 rounded text-[11px]">CPL-04</span>
+              <div class="text-[10px] text-slate-500 font-normal mt-1">Intervensi & Rehabilitasi Terapan</div>
+            </td>
+            <td class="py-3 px-4 font-medium align-top">
+              <strong class="text-slate-900">CPMK-2:</strong>
+              <p class="text-[11px] text-slate-600 mt-0.5">Mampu merumuskan program terapi latihan dan intervensi elektro-terapeutik pada fase pasca rekonstruksi ligamen.</p>
+            </td>
+            <td class="py-3 px-4 align-top">
+              <div class="font-semibold text-slate-900">Sub-CPMK 04 (Minggu ke-4):</div>
+              <p class="text-[11px] text-slate-600 mt-0.5">Mahasiswa mampu memformulasikan protokol *closed kinetic chain exercise* dan aplikasi NMES untuk mencegah atrofi quadriceps.</p>
+              <div class="mt-1 text-[11px] text-teal-700 font-medium bg-teal-50 px-2 py-0.5 rounded inline-block">
+                Indikator: Ketepatan dosis latihan (FITT), penempatan elektroda, keamanan beban lutut.
+              </div>
+            </td>
+            <td class="py-3 px-4 align-top">
+              <span class="badge-teal text-[11px] font-bold px-2 py-0.5 rounded">Psikomotorik P4</span>
+              <div class="text-[10px] text-slate-500 mt-1">Kognitif C5</div>
+            </td>
+            <td class="py-3 px-4 text-center font-bold text-slate-800 align-top">15%</td>
+            <td class="py-3 px-4 align-top space-y-1.5">
+              <button onclick="previewChainedDoc('Modul Ajar', 'Sub-CPMK 04')" class="w-full bg-teal-50 hover:bg-teal-100 text-teal-800 border border-teal-200 font-semibold py-1 px-2 rounded text-[11px] flex items-center justify-center gap-1 transition">
+                <svg class="w-3.5 h-3.5 text-teal-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+                <span>Turunkan Modul</span>
+              </button>
+              <button onclick="previewChainedDoc('Materi Ajar', 'Sub-CPMK 04')" class="w-full bg-sky-50 hover:bg-sky-100 text-sky-800 border border-sky-200 font-semibold py-1 px-2 rounded text-[11px] flex items-center justify-center gap-1 transition">
+                <svg class="w-3.5 h-3.5 text-sky-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
+                <span>Turunkan Materi</span>
+              </button>
+            </td>
+          </tr>
+        `;
+      } else {
+        btnProfesi.className = 'flex-1 py-3 px-4 rounded-xl flex items-center justify-center gap-2.5 transition active-nav-tab text-slate-800';
+        btnD4.className = 'flex-1 py-3 px-4 rounded-xl flex items-center justify-center gap-2.5 transition text-slate-600 hover:text-slate-900';
+        badge.textContent = 'Pendidikan Profesi Fisioterapi';
+        badge.className = 'text-teal-700 font-bold';
+        card1Detail.textContent = 'Khusus Profesi: Clinical Reasoning, ICF & Stase Klinik';
+
+        simCourseName.textContent = 'Stase Fisioterapi Neuromuskular Komprehensif (PRF-701)';
+        simCourseDesc.textContent = 'Semester 1 Profesi • 4 SKS Rotasi Klinik RS • Program Studi Pendidikan Profesi Fisioterapi (KKNI 7)';
+
+        cascadeTableBody.innerHTML = `
+          <tr class="hover:bg-slate-50/80 transition">
+            <td class="py-3 px-4 font-mono font-semibold text-teal-700 align-top">
+              <span class="bg-teal-100 text-teal-800 px-2 py-0.5 rounded text-[11px]">CPL-KLINIK-01</span>
+              <div class="text-[10px] text-slate-500 font-normal mt-1">Penalaran Klinis & Diagnosis ICF</div>
+            </td>
+            <td class="py-3 px-4 font-medium align-top">
+              <strong class="text-slate-900">CPMK-1 (Profesi):</strong>
+              <p class="text-[11px] text-slate-600 mt-0.5">Mampu memformulasikan diagnosis fisioterapi komprehensif berbasis kerangka ICF pada pasien Stroke fase sub-akut dan kronis.</p>
+            </td>
+            <td class="py-3 px-4 align-top">
+              <div class="font-semibold text-slate-900">Sub-CPMK 02 (Minggu ke-2 Stase):</div>
+              <p class="text-[11px] text-slate-600 mt-0.5">Mahasiswa mampu mengintegrasikan instrumen FMA (Fugl-Meyer Assessment), BBS (Berg Balance Scale), dan analisis pola jalan hemiparese.</p>
+              <div class="mt-1 text-[11px] text-teal-700 font-medium bg-teal-50 px-2 py-0.5 rounded inline-block">
+                Indikator ICF: Pemetaan impairment fungsi neuromuskular (b730) & limitasi aktivitas transfer (d410).
+              </div>
+            </td>
+            <td class="py-3 px-4 align-top">
+              <span class="badge-amber text-[11px] font-bold px-2 py-0.5 rounded">Kognitif C5/C6</span>
+              <div class="text-[10px] text-slate-500 mt-1">Psikomotorik P5</div>
+            </td>
+            <td class="py-3 px-4 text-center font-bold text-slate-800 align-top">20%</td>
+            <td class="py-3 px-4 align-top space-y-1.5">
+              <button onclick="previewChainedDoc('Modul Kasus Klinik (ICF)', 'Sub-CPMK 02 (Stase Neuro)')" class="w-full bg-teal-50 hover:bg-teal-100 text-teal-800 border border-teal-200 font-semibold py-1 px-2 rounded text-[11px] flex items-center justify-center gap-1 transition">
+                <svg class="w-3.5 h-3.5 text-teal-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+                <span>Turunkan Kasus ICF</span>
+              </button>
+              <button onclick="previewChainedDoc('Materi Clinical Reasoning', 'Sub-CPMK 02 (Stase Neuro)')" class="w-full bg-sky-50 hover:bg-sky-100 text-sky-800 border border-sky-200 font-semibold py-1 px-2 rounded text-[11px] flex items-center justify-center gap-1 transition">
+                <svg class="w-3.5 h-3.5 text-sky-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
+                <span>Materi Neuroplastisitas</span>
+              </button>
+            </td>
+          </tr>
+        `;
+      }
+
+      showToast('Jenjang dialihkan ke: ' + (jenjang === 'D4' ? 'Sarjana Terapan (D4) Fisioterapi' : 'Pendidikan Profesi Fisioterapi'));
+    }
+
+    // Switch Simulator Tabs
+    function switchSimTab(tab) {
+      currentSimTab = tab;
+      const tabCascade = document.getElementById('tabSimCascade');
+      const tabZero = document.getElementById('tabSimZero');
+      const tabDiff = document.getElementById('tabSimDiff');
+
+      const panelCascade = document.getElementById('simPanelCascade');
+      const panelZero = document.getElementById('simPanelZero');
+      const panelDiff = document.getElementById('simPanelDiff');
+
+      tabCascade.className = 'px-4 py-2 text-xs font-semibold rounded-t-xl transition text-slate-600 hover:text-slate-900';
+      tabZero.className = 'px-4 py-2 text-xs font-semibold rounded-t-xl transition text-slate-600 hover:text-slate-900';
+      tabDiff.className = 'px-4 py-2 text-xs font-semibold rounded-t-xl transition text-slate-600 hover:text-slate-900';
+
+      panelCascade.classList.add('hidden');
+      panelZero.classList.add('hidden');
+      panelDiff.classList.add('hidden');
+
+      if (tab === 'CASCADE') {
+        tabCascade.className = 'px-4 py-2 text-xs font-bold rounded-t-xl transition bg-white text-sky-700 border-t-2 border-sky-600 shadow-sm';
+        panelCascade.classList.remove('hidden');
+      } else if (tab === 'ZERO') {
+        tabZero.className = 'px-4 py-2 text-xs font-bold rounded-t-xl transition bg-white text-teal-700 border-t-2 border-teal-600 shadow-sm';
+        panelZero.classList.remove('hidden');
+      } else if (tab === 'DIFF') {
+        tabDiff.className = 'px-4 py-2 text-xs font-bold rounded-t-xl transition bg-white text-indigo-700 border-t-2 border-indigo-600 shadow-sm';
+        panelDiff.classList.remove('hidden');
+      }
+    }
+
+    function openObeCascadeModal() {
+      switchSimTab('CASCADE');
+      document.getElementById('simPanelCascade').scrollIntoView({ behavior: 'smooth' });
+    }
+
+    function openZeroToDocModal() {
+      switchSimTab('ZERO');
+      document.getElementById('simPanelZero').scrollIntoView({ behavior: 'smooth' });
+    }
+
+    function openRefinerModal() {
+      switchSimTab('DIFF');
+      document.getElementById('simPanelDiff').scrollIntoView({ behavior: 'smooth' });
+    }
+
+    // Zero-to-Doc Preset Updater
+    function updateZeroPreset() {
+      const type = document.getElementById('docTypeSelect').value;
+      const titleInput = document.getElementById('zeroDocTitle');
+      const pointsInput = document.getElementById('zeroDocPoints');
+
+      if (type === 'KAK') {
+        titleInput.value = 'Workshop Clinical Reasoning Fisioterapi Berbasis ICF 2026';
+        pointsInput.value = `- Tujuan: Penyeragaman asesmen klinik dosen & CI rumah sakit\n- Sasaran: 45 Dosen & Preseptor Klinik Fisioterapi\n- Waktu: 14-15 November 2026 di Auditorium Kampus\n- Anggaran: Rp 28.500.000 (Konsumsi, Honor Narasumber, Modul)\n- Output: Modul Panduan Form ICF Kasus Muskuloskeletal`;
+      } else if (type === 'LAPORAN') {
+        titleInput.value = 'Laporan Pertanggungjawaban Uji Kompetensi Mahasiswa Fisioterapi 2026';
+        pointsInput.value = `- Kegiatan: Try Out & Pelaksanaan UKOM Profesi Fisioterapi\n- Peserta: 68 Mahasiswa Tingkat Akhir\n- Hasil: Tingkat Kelulusan 97% First-Taker\n- Realisasi Anggaran: Rp 42.100.000 dari Pagu Rp 45.000.000 (Sisa Efisiensi Rp 2.900.000)\n- Kendala & Saran: Peningkatan stabilitas server CBT`;
+      } else if (type === 'PROPOSAL') {
+        titleInput.value = 'Proposal PKM: Pelatihan Ergonomi & Senam Postur Pencegahan LBP pada Pekerja Garmen';
+        pointsInput.value = `- Lokasi: Sentra Industri Konveksi & UMKM Tekstil Binaan\n- Tim: 3 Dosen Fisioterapi & 6 Mahasiswa\n- Metode: Edukasi body mechanics, skrining Oswestry LBP, senam core stability\n- Biaya Diajukan: Rp 15.000.000 ke LPPM`;
+      } else if (type === 'SOP') {
+        titleInput.value = 'SOP Pengoperasian & Pemeliharaan Alat Ultrasound Therapy Laboratorium';
+        pointsInput.value = `- Unit: Laboratorium Fisioterapi Terpadu\n- Tujuan: Mencegah kerusakan kristal piezoelektrik & luka bakar pasien\n- Prosedur: Pemanasan 2 menit, continuous vs pulsed mode, coupling agent gel\n- Periode Kalibrasi: Setiap 6 bulan oleh BPFK`;
+      }
+    }
+
+    function generateZeroDocPreview() {
+      const title = document.getElementById('zeroDocTitle').value;
+      document.getElementById('previewTitleDisplay').textContent = title.toUpperCase();
+      showToast('Naskah berhasil disusun dari poin-poin ringkas!');
+    }
+
+    // Modal Handlers
+    function previewChainedDoc(docType, subCpmkName) {
+      document.getElementById('modalDocBadge').textContent = docType;
+      document.getElementById('modalDocTitle').textContent = 'Turunan Dokumen: ' + docType;
+      document.getElementById('modalSubCpmkText').textContent = 'Terkait: ' + subCpmkName + ' • Terhubung langsung ke CPL & CPMK.';
+      document.getElementById('modalChainedDoc').classList.remove('hidden');
+    }
+
+    function openProfileModal() {
+      document.getElementById('modalProfile').classList.remove('hidden');
+    }
+
+    function closeModal(modalId) {
+      document.getElementById(modalId).classList.add('hidden');
+    }
+
+    function saveProfileSettings() {
+      const name = document.getElementById('inputLecturerName').value;
+      const nidn = document.getElementById('inputLecturerNidn').value;
+      document.getElementById('headerLecturerName').textContent = name;
+      document.getElementById('headerLecturerProdi').textContent = 'Dosen Fisioterapi • NIDN: ' + nidn;
+      closeModal('modalProfile');
+      showToast('Profil dosen & konfigurasi template berhasil diperbarui!');
+    }
+
+    // Filter Table Documents
+    function filterDocs() {
+      const searchVal = document.getElementById('docSearchInput').value.toLowerCase();
+      const filterVal = document.getElementById('docFilterSelect').value;
+      const rows = document.querySelectorAll('.doc-row');
+      let visibleCount = 0;
+
+      rows.forEach(row => {
+        const cat = row.getAttribute('data-cat');
+        const title = row.getAttribute('data-title').toLowerCase();
+        
+        const matchSearch = title.includes(searchVal);
+        const matchCat = (filterVal === 'ALL') || (cat === filterVal);
+
+        if (matchSearch && matchCat) {
+          row.style.display = '';
+          visibleCount++;
+        } else {
+          row.style.display = 'none';
+        }
+      });
+
+      document.getElementById('docCountDisplay').textContent = visibleCount;
+    }
+
+    // Export & Download Simulators
+    function exportDocxSim(docName) {
+      showToast('Menginjeksi tag {{variabel}} ke template Word... Mengunduh ' + docName + '.docx');
+    }
+
+    function exportPdfSim(docName) {
+      showToast('Memproses tata letak siap cetak via Headless Engine... Mengunduh ' + docName + '.pdf');
+    }
+
+    function downloadFileDemo(fileName) {
+      showToast('Mengunduh berkas lokal: ' + fileName);
+    }
+
+    // Toast Function
+    function showToast(msg) {
+      const toast = document.getElementById('toastNotification');
+      document.getElementById('toastMessage').textContent = msg;
+      toast.classList.remove('translate-y-20', 'opacity-0');
+      toast.classList.add('translate-y-0', 'opacity-100');
+
+      setTimeout(() => {
+        toast.classList.remove('translate-y-0', 'opacity-100');
+        toast.classList.add('translate-y-20', 'opacity-0');
+      }, 3500);
+    }
+  </script>
+</body>
+</html>
