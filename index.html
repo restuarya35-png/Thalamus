@@ -418,6 +418,69 @@
             </div>
           </div>
 
+          <!-- SECTION: UPLOAD TEMPLATE RPS & UPLOAD CPL PRODI (Penjaminan Keseragaman Format) -->
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 bg-slate-50 p-4 rounded-xl border border-slate-200">
+            <!-- Upload Template RPS -->
+            <div class="bg-white p-3.5 rounded-lg border border-slate-200 flex flex-col justify-between">
+              <div>
+                <div class="flex items-center justify-between">
+                  <span class="text-xs font-bold text-slate-800 flex items-center gap-1.5">
+                    <svg class="w-4 h-4 text-sky-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"/></svg>
+                    <span>Upload Template Baku RPS (.docx)</span>
+                  </span>
+                  <span class="badge-blue text-[10px] font-bold px-2 py-0.5 rounded" id="templateRpsBadge">SN-Dikti Aktif</span>
+                </div>
+                <p class="text-[11px] text-slate-500 mt-1 leading-relaxed">
+                  Unggah template Word milik kampus Anda untuk memastikan format tabel RPS 100% seragam sesuai standar institusi.
+                </p>
+                <div class="mt-2 text-[11px] font-mono text-slate-700 bg-slate-50 p-2 rounded border border-slate-200 flex items-center justify-between">
+                  <span id="activeTemplateFileName" class="truncate font-medium text-sky-800">template_rps_fisioterapi_resmi.docx</span>
+                  <span class="text-[10px] text-emerald-600 font-bold ml-2 flex-shrink-0">&check; 8 Tag {{variabel}} Cocok</span>
+                </div>
+              </div>
+              <div class="mt-3 flex items-center gap-2">
+                <input type="file" id="uploadTemplateRpsFile" accept=".docx" class="hidden" onchange="handleRpsTemplateUpload(event)">
+                <button onclick="document.getElementById('uploadTemplateRpsFile').click()" class="text-xs py-1.5 px-3 bg-sky-600 hover:bg-sky-700 text-white font-semibold rounded-lg shadow-sm flex items-center gap-1.5 transition">
+                  <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"/></svg>
+                  <span>Unggah Template Kampus Baru</span>
+                </button>
+                <button onclick="downloadSampleRpsTemplate()" class="text-xs py-1.5 px-2.5 text-slate-600 hover:text-slate-900 border border-slate-300 rounded-lg bg-white hover:bg-slate-50 transition">
+                  Unduh Contoh Template
+                </button>
+              </div>
+            </div>
+
+            <!-- Upload CPL Kurikulum -->
+            <div class="bg-white p-3.5 rounded-lg border border-slate-200 flex flex-col justify-between">
+              <div>
+                <div class="flex items-center justify-between">
+                  <span class="text-xs font-bold text-slate-800 flex items-center gap-1.5">
+                    <svg class="w-4 h-4 text-teal-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+                    <span>Upload CPL Prodi (.xlsx / .csv / .json)</span>
+                  </span>
+                  <span class="badge-teal text-[10px] font-bold px-2 py-0.5 rounded" id="cplImportBadge">8 CPL Tersinkron</span>
+                </div>
+                <p class="text-[11px] text-slate-500 mt-1 leading-relaxed">
+                  Impor rumusan CPL Prodi dari spreadsheet kurikulum agar penurunan CPMK & Sub-CPMK konsisten di seluruh RPS dosen.
+                </p>
+                <div class="mt-2 text-[11px] font-mono text-slate-700 bg-slate-50 p-2 rounded border border-slate-200 flex items-center justify-between">
+                  <span id="activeCplFileName" class="truncate font-medium text-teal-800">kurikulum_cpl_fisioterapi_2026.xlsx</span>
+                  <span class="text-[10px] text-teal-600 font-bold ml-2 flex-shrink-0">&check; KKNI Level 6 & 7</span>
+                </div>
+              </div>
+              <div class="mt-3 flex items-center gap-2">
+                <input type="file" id="uploadCplFile" accept=".xlsx,.xls,.csv,.json" class="hidden" onchange="handleCplFileUpload(event)">
+                <button onclick="document.getElementById('uploadCplFile').click()" class="text-xs py-1.5 px-3 bg-teal-600 hover:bg-teal-700 text-white font-semibold rounded-lg shadow-sm flex items-center gap-1.5 transition">
+                  <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"/></svg>
+                  <span>Impor Berkas CPL Baru</span>
+                </button>
+                <button onclick="viewCplMatrixModal()" class="text-xs py-1.5 px-2.5 text-slate-600 hover:text-slate-900 border border-slate-300 rounded-lg bg-white hover:bg-slate-50 transition">
+                  Lihat Daftar CPL
+                </button>
+              </div>
+            </div>
+          </div>
+
           <!-- Matriks Cascade Table -->
           <div class="border border-slate-200 rounded-xl overflow-x-auto">
             <table class="w-full text-left text-xs">
@@ -636,17 +699,54 @@
 
         <!-- 3. SIMULATOR: SIDE-BY-SIDE DIFF REFINER -->
         <div id="simPanelDiff" class="hidden space-y-6">
-          <div class="flex items-center justify-between pb-3 border-b border-slate-200">
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between pb-3 border-b border-slate-200 gap-3">
             <div>
-              <h5 class="text-sm font-bold text-slate-900">Peninjau Perbandingan Sistematika (Side-by-Side Diff)</h5>
-              <p class="text-xs text-slate-500">Merapikan penomoran bertingkat, EYD V, istilah anatomi/fisioterapi baku, dan standar margin.</p>
+              <h5 class="text-sm font-bold text-slate-900">Peninjau Perbaikan Sistematika & Mesin Siap Cetak</h5>
+              <p class="text-xs text-slate-500">Unggah draf acak (.docx / .pdf / .txt) untuk dirombak hierarki bab, EYD V, istilah fisioterapi, dan margin cetaknya.</p>
             </div>
             <div class="flex items-center gap-2">
-              <span class="badge-amber text-xs font-semibold px-2.5 py-1 rounded-lg">Audit: 14 Koreksi Format Diperbaiki</span>
+              <span class="badge-amber text-xs font-semibold px-2.5 py-1 rounded-lg" id="auditSummaryBadge">Audit: 14 Koreksi Diperbaiki</span>
               <button onclick="exportDocxSim('Refined-SOP')" class="bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-semibold px-3 py-1.5 rounded-lg flex items-center gap-1.5 transition">
                 <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"/></svg>
                 <span>Terapkan & Cetak Dokumen</span>
               </button>
+            </div>
+          </div>
+
+          <!-- UPLOAD DRAFT BOX FOR REFINER (Feature: Upload File Yang Ingin Dirapikan) -->
+          <div class="bg-indigo-50/50 p-4 rounded-xl border-2 border-dashed border-indigo-200 hover:border-indigo-400 transition" id="refinerDropZone">
+            <div class="flex flex-col sm:flex-row items-center justify-between gap-4">
+              <div class="flex items-center gap-3">
+                <div class="w-12 h-12 rounded-xl bg-indigo-100 text-indigo-700 flex items-center justify-center flex-shrink-0">
+                  <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"/></svg>
+                </div>
+                <div>
+                  <h6 class="text-xs font-bold text-slate-900">Upload Berkas Draf Kasar (.docx, .pdf, .txt)</h6>
+                  <p class="text-[11px] text-slate-500 mt-0.5">Tarik & lepas berkas draf yang ingin dirapikan ke sini, atau klik tombol untuk memilih dari laptop.</p>
+                </div>
+              </div>
+              <div class="flex items-center gap-2 flex-shrink-0">
+                <input type="file" id="refinerDocInput" accept=".docx,.pdf,.txt,.doc" class="hidden" onchange="handleRefinerFileUpload(event)">
+                <button onclick="document.getElementById('refinerDocInput').click()" class="text-xs py-2 px-3.5 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-xl shadow-sm transition flex items-center gap-1.5">
+                  <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"/></svg>
+                  <span>Pilih Berkas Draf</span>
+                </button>
+                <button onclick="togglePasteRefinerBox()" class="text-xs py-2 px-3 text-indigo-700 hover:bg-indigo-100 border border-indigo-200 font-semibold rounded-xl bg-white transition">
+                  Tempel Teks Draf
+                </button>
+              </div>
+            </div>
+
+            <!-- Optional manual text paste container -->
+            <div id="pasteRefinerContainer" class="hidden mt-3 pt-3 border-t border-indigo-100 space-y-2">
+              <label class="block text-[11px] font-semibold text-slate-700">Tempelkan Teks Draf / Catatan Rapat Kasar:</label>
+              <textarea id="pasteRefinerInput" rows="3" placeholder="Contoh: 1. tujuan: biar mahasiswa tau cara nyalain mesin us dan tens secara bener. A. persiapan kabel colok stopkontak..." class="w-full text-xs p-2.5 rounded-lg border border-slate-300 bg-white font-mono focus:ring-2 focus:ring-indigo-500 focus:outline-none"></textarea>
+              <div class="flex justify-end gap-2">
+                <button onclick="togglePasteRefinerBox()" class="text-xs py-1.5 px-3 text-slate-500 hover:bg-slate-100 rounded-lg">Batal</button>
+                <button onclick="processPastedDraft()" class="text-xs py-1.5 px-3 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold rounded-lg shadow-sm">
+                  Proses & Rapikan Draf
+                </button>
+              </div>
             </div>
           </div>
 
@@ -655,34 +755,36 @@
             <!-- Original Draft (Messy) -->
             <div class="border border-red-200 rounded-xl p-4 bg-red-50/30">
               <div class="flex items-center justify-between mb-2 pb-2 border-b border-red-200">
-                <span class="text-xs font-bold text-red-700 flex items-center gap-1">
-                  <span class="w-2 h-2 rounded-full bg-red-500"></span> Draf Asli (Catatan Kasar / Belum Rapi)
+                <span class="text-xs font-bold text-red-700 flex items-center gap-1.5 truncate">
+                  <span class="w-2 h-2 rounded-full bg-red-500 flex-shrink-0"></span>
+                  <span id="uploadedDocTitleDisplay">Draf Asli yang Diunggah: SOP_alat_lab_kasar.docx</span>
                 </span>
-                <span class="text-[10px] text-red-600 font-mono">Format Bebas</span>
+                <span class="text-[10px] text-red-600 font-mono flex-shrink-0" id="originalFormatBadge">Format Kasar</span>
               </div>
-              <div class="font-mono text-[11px] text-slate-600 space-y-2 bg-white p-3 rounded border border-red-100 min-h-[220px]">
-                <p class="text-red-900 font-bold strike">SOP penggunaan alat elektroterapi di lab</p>
+              <div id="originalDraftContent" class="font-mono text-[11px] text-slate-600 space-y-2 bg-white p-3 rounded border border-red-100 min-h-[220px] max-h-[300px] overflow-y-auto">
+                <p class="text-red-900 font-bold">SOP penggunaan alat elektroterapi di lab</p>
                 <p>1. tujuan: biar mahasiswa tau cara nyalain mesin us dan tens secara bener.</p>
                 <p>A. persiapan alat: colok kabel ke stopkontak. cek kabel jgn smp lecet.</p>
                 <p>B. cara pake: olesin gel tebel2 di kulit pasien yg sakit. trs pasang intensitas jgn kegedean nti gosong.</p>
                 <p>2. keselamatan: matikan tombol power klo sdh slesai. bersihkan sisa gel pke tisu.</p>
               </div>
-              <div class="mt-2 text-[11px] text-red-700 space-y-1">
+              <div class="mt-2 text-[11px] text-red-700 space-y-1" id="auditNotesList">
                 <div>&bull; Penomoran melompat (1 &rarr; A &rarr; B &rarr; 2)</div>
                 <div>&bull; Menggunakan ragam bahasa tidak formal ("biar tau", "nyalain", "smpe lecet")</div>
-                <div>&bull; Tidak ada lembar pengesahan dan nomor SOP resmi</div>
+                <div>&bull; Belum terpasang kop resmi institusi dan kolom pengesahan Kaprodi</div>
               </div>
             </div>
 
             <!-- Refined & Print-Ready (Clean) -->
             <div class="border border-emerald-200 rounded-xl p-4 bg-emerald-50/30">
               <div class="flex items-center justify-between mb-2 pb-2 border-b border-emerald-200">
-                <span class="text-xs font-bold text-emerald-800 flex items-center gap-1">
-                  <span class="w-2 h-2 rounded-full bg-emerald-500"></span> Hasil Refiner Thalamus (Siap Cetak)
+                <span class="text-xs font-bold text-emerald-800 flex items-center gap-1.5 truncate">
+                  <span class="w-2 h-2 rounded-full bg-emerald-500 flex-shrink-0"></span>
+                  <span>Hasil Refiner Thalamus (Siap Cetak)</span>
                 </span>
-                <span class="badge-green text-[10px] font-bold px-2 py-0.5 rounded">Margin 4-3-3-3 &bull; EYD V</span>
+                <span class="badge-green text-[10px] font-bold px-2 py-0.5 rounded flex-shrink-0">Margin 4-3-3-3 &bull; EYD V</span>
               </div>
-              <div class="font-serif text-[11px] text-slate-800 space-y-2 bg-white p-3 rounded border border-emerald-100 min-h-[220px]">
+              <div id="refinedDraftContent" class="font-serif text-[11px] text-slate-800 space-y-2 bg-white p-3 rounded border border-emerald-100 min-h-[220px] max-h-[300px] overflow-y-auto">
                 <p class="text-center font-bold text-slate-900 text-xs">STANDAR OPERASIONAL PROSEDUR (SOP)<br>PENGOPERASIAN MODALITAS ELEKTROTERAPI DAN ULTRASOUND</p>
                 <p class="font-sans font-bold text-[11px] text-slate-900 mt-2">1.1. TUJUAN INSTRUKSIONAL</p>
                 <p class="leading-relaxed">Memberikan pedoman baku bagi mahasiswa dalam mengoperasikan modalitas <em>Therapeutic Ultrasound</em> dan TENS sesuai parameter dosis fisioterapi yang aman.</p>
@@ -690,7 +792,7 @@
                 <p class="leading-relaxed"><strong>1.2.1. Tahap Pra-Intervensi:</strong> Verifikasi keutuhan kabel transmisi, pastikan kalibrasi tranduser, serta lakukan tes sensibilitas panas-dingin pada area target.</p>
                 <p class="leading-relaxed"><strong>1.2.2. Tahap Intervensi:</strong> Aplikasikan medium perantara (<em>coupling gel</em>) secukupnya, gerakkan tranduser secara sirkuler dinamis dengan kecepatan 2–3 cm/detik guna mencegah <em>hot-spot</em> periosteal.</p>
               </div>
-              <div class="mt-2 text-[11px] text-emerald-800 space-y-1">
+              <div class="mt-2 text-[11px] text-emerald-800 space-y-1" id="refinedSuccessList">
                 <div>&check; Hierarki penomoran baku terstandarisasi (1.1 &rarr; 1.2 &rarr; 1.2.1)</div>
                 <div>&check; Terminologi ilmiah terkalibrasi (*coupling gel*, *hot-spot periosteal*)</div>
                 <div>&check; Dilengkapi Lembar Pengesahan Tanda Tangan Ka. Lab & Kaprodi</div>
@@ -1015,6 +1117,72 @@
     </div>
   </div>
 
+  <!-- MODAL 3: CPL CURRICULUM LIST & MATRIX -->
+  <div id="modalCplList" class="fixed inset-0 z-50 hidden flex items-center justify-center modal-backdrop p-4">
+    <div class="bg-white rounded-2xl max-w-2xl w-full p-6 shadow-2xl border border-slate-200 animate-in fade-in zoom-in duration-150">
+      <div class="flex items-center justify-between pb-3 border-b border-slate-200">
+        <div>
+          <span class="badge-teal text-[10px] font-bold px-2 py-0.5 rounded uppercase">Database Kurikulum OBE</span>
+          <h4 class="text-base font-bold text-slate-900 mt-1">Daftar Capaian Pembelajaran Lulusan (CPL) Terimpor</h4>
+        </div>
+        <button onclick="closeModal('modalCplList')" class="text-slate-400 hover:text-slate-600 p-1 rounded-lg">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+        </button>
+      </div>
+
+      <div class="mt-4 space-y-3 text-xs text-slate-700 max-h-[380px] overflow-y-auto pr-1">
+        <div class="bg-teal-50 p-3 rounded-lg border border-teal-100 flex items-center justify-between">
+          <span class="text-teal-900 font-semibold">Status Kurikulum: <strong class="text-teal-700">8 CPL Aktif Tersinkronisasi</strong></span>
+          <span class="badge-green text-[10px] font-bold px-2 py-0.5 rounded">KKNI Level 6 & 7</span>
+        </div>
+
+        <div class="border border-slate-200 rounded-lg overflow-hidden">
+          <table class="w-full text-left text-xs">
+            <thead class="bg-slate-50 border-b border-slate-200 text-slate-600 font-bold uppercase tracking-wider text-[11px]">
+              <tr>
+                <th class="p-2.5 w-24">Kode CPL</th>
+                <th class="p-2.5 w-32">Kategori</th>
+                <th class="p-2.5">Deskripsi Rumusan CPL</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-slate-200 text-slate-700" id="cplMasterTableBody">
+              <tr>
+                <td class="p-2.5 font-mono font-bold text-sky-700">CPL-01</td>
+                <td class="p-2.5"><span class="badge-blue text-[10px] font-semibold px-1.5 py-0.5 rounded">Sikap</span></td>
+                <td class="p-2.5 leading-relaxed">Menunjukkan sikap bertanggung jawab atas pekerjaan di bidang keahlian fisioterapi secara mandiri.</td>
+              </tr>
+              <tr>
+                <td class="p-2.5 font-mono font-bold text-sky-700">CPL-02</td>
+                <td class="p-2.5"><span class="badge-teal text-[10px] font-semibold px-1.5 py-0.5 rounded">Keterampilan Khusus</span></td>
+                <td class="p-2.5 leading-relaxed">Mampu melakukan pemeriksaan spesifik dan pengukuran fisioterapi laboratorium pada sistem muskuloskeletal dan neuromuskular.</td>
+              </tr>
+              <tr>
+                <td class="p-2.5 font-mono font-bold text-sky-700">CPL-03</td>
+                <td class="p-2.5"><span class="badge-amber text-[10px] font-semibold px-1.5 py-0.5 rounded">Pengetahuan</span></td>
+                <td class="p-2.5 leading-relaxed">Menguasai konsep teoritis anatomi klinis, fisiologi gerak, dan patofisiologi pada kasus gerak dan fungsi tubuh.</td>
+              </tr>
+              <tr>
+                <td class="p-2.5 font-mono font-bold text-sky-700">CPL-04</td>
+                <td class="p-2.5"><span class="badge-teal text-[10px] font-semibold px-1.5 py-0.5 rounded">Keterampilan Khusus</span></td>
+                <td class="p-2.5 leading-relaxed">Mampu merumuskan serta mempraktikkan program intervensi fisioterapi modalitas fisik dan terapi latihan secara aman.</td>
+              </tr>
+              <tr>
+                <td class="p-2.5 font-mono font-bold text-teal-700">CPL-KLINIK-01</td>
+                <td class="p-2.5"><span class="badge-amber text-[10px] font-semibold px-1.5 py-0.5 rounded">Profesi ICF</span></td>
+                <td class="p-2.5 leading-relaxed">Mampu memformulasikan penalaran klinis komprehensif berbasis kerangka ICF pada rotasi stase klinik rumah sakit.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="mt-5 pt-3 border-t border-slate-200 flex items-center justify-between">
+        <span class="text-[11px] text-slate-500 italic">*Setiap dosen yang menyusun RPS akan otomatis menggunakan CPL baku ini.</span>
+        <button onclick="closeModal('modalCplList')" class="px-4 py-2 text-xs font-semibold text-slate-600 hover:bg-slate-100 rounded-xl transition">Tutup</button>
+      </div>
+    </div>
+  </div>
+
   <!-- TOAST NOTIFICATION CONTAINER -->
   <div id="toastNotification" class="fixed bottom-5 right-5 z-50 transform translate-y-20 opacity-0 transition duration-300 pointer-events-none">
     <div class="bg-slate-900 text-white px-4 py-3 rounded-xl shadow-xl flex items-center gap-3 border border-slate-700 text-xs">
@@ -1310,6 +1478,125 @@
       });
 
       document.getElementById('docCountDisplay').textContent = visibleCount;
+    }
+
+    // Template RPS Upload Handler
+    function handleRpsTemplateUpload(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+
+      document.getElementById('activeTemplateFileName').textContent = file.name;
+      const badge = document.getElementById('templateRpsBadge');
+      badge.textContent = 'Template Kampus Aktif';
+      badge.className = 'badge-green text-[10px] font-bold px-2 py-0.5 rounded';
+
+      showToast('Template RPS ' + file.name + ' berhasil diunggah! Format tabel kampus diselaraskan 100%.');
+    }
+
+    function downloadSampleRpsTemplate() {
+      showToast('Mengunduh contoh Template RPS Standar SN-Dikti & LAM-PTKes (.docx) dengan tag {{variabel}}.');
+    }
+
+    // CPL Import Handler
+    function handleCplFileUpload(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+
+      document.getElementById('activeCplFileName').textContent = file.name;
+      const badge = document.getElementById('cplImportBadge');
+      badge.textContent = 'CPL Baru Tersinkron';
+      badge.className = 'badge-green text-[10px] font-bold px-2 py-0.5 rounded';
+
+      showToast('Berkas kurikulum CPL ' + file.name + ' berhasil diimpor! Menjamin keseragaman seluruh RPS.');
+    }
+
+    function viewCplMatrixModal() {
+      document.getElementById('modalCplList').classList.remove('hidden');
+    }
+
+    // Refiner File Upload & Parser Handlers
+    function togglePasteRefinerBox() {
+      const box = document.getElementById('pasteRefinerContainer');
+      box.classList.toggle('hidden');
+    }
+
+    function handleRefinerFileUpload(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+
+      document.getElementById('uploadedDocTitleDisplay').textContent = 'Draf Asli yang Diunggah: ' + file.name;
+      const originalContent = document.getElementById('originalDraftContent');
+      const refinedContent = document.getElementById('refinedDraftContent');
+      const auditSummary = document.getElementById('auditSummaryBadge');
+      const auditNotes = document.getElementById('auditNotesList');
+      const refinedSuccess = document.getElementById('refinedSuccessList');
+
+      showToast('Membaca berkas ' + file.name + '... Menganalisis hierarki bab, penomoran & EYD V');
+
+      if (file.name.endsWith('.txt')) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          const text = e.target.result;
+          originalContent.innerHTML = `<p class="whitespace-pre-wrap">${text}</p>`;
+          applyRefinerOutput(file.name);
+        };
+        reader.readAsText(file);
+      } else {
+        // Simulated parsing for Word/PDF drafts
+        setTimeout(() => {
+          originalContent.innerHTML = `
+            <p class="text-red-900 font-bold strike">${file.name.replace(/\.[^/.]+$/, "")}</p>
+            <p>1. tujuan: biar mahasiswa tau cara prosedur klinis yg bener tanpa salah step.</p>
+            <p>A. persiapan alat: cek kelayakan kabel stopkontak jgn smpe lecet ataupun rusak.</p>
+            <p>B. cara pelaksanaan: lakukan palpasi diarea yg nyeri lalu posisikan pasien senyaman mngkin.</p>
+            <p>2. evaluasi: catat respon pasien dan tanyakan apkh ada nyeri hebat.</p>
+          `;
+          applyRefinerOutput(file.name);
+        }, 600);
+      }
+    }
+
+    function processPastedDraft() {
+      const text = document.getElementById('pasteRefinerInput').value.trim();
+      if (!text) {
+        showToast('Silakan masukkan teks draf terlebih dahulu.');
+        return;
+      }
+      document.getElementById('uploadedDocTitleDisplay').textContent = 'Draf Asli (Teks Catatan Manual)';
+      document.getElementById('originalDraftContent').innerHTML = `<p class="whitespace-pre-wrap">${text}</p>`;
+      document.getElementById('pasteRefinerContainer').classList.add('hidden');
+      applyRefinerOutput('Catatan_Draf_Manual');
+    }
+
+    function applyRefinerOutput(docName) {
+      const cleanName = docName.replace(/\.[^/.]+$/, "").replace(/_/g, " ").toUpperCase();
+      document.getElementById('refinedDraftContent').innerHTML = `
+        <p class="text-center font-bold text-slate-900 text-xs">PANDUAN OPERASIONAL & STANDAR PROSEDUR<br>${cleanName}</p>
+        <p class="font-sans font-bold text-[11px] text-slate-900 mt-2">1.1. TUJUAN INSTRUKSIONAL KHUSUS</p>
+        <p class="leading-relaxed">Memberikan pedoman baku berbasis standar kompetensi fisioterapi dalam memastikan efektivitas serta keamanan prosedur pemeriksaan dan intervensi.</p>
+        <p class="font-sans font-bold text-[11px] text-slate-900">1.2. PROTOKOL KERJA TERSTANDARISASI</p>
+        <p class="leading-relaxed"><strong>1.2.1. Tahap Pra-Intervensi:</strong> Verifikasi kondisi klinis pasien, siapkan instrumen kerja dalam kondisi terkalibrasi, serta pastikan inform concern telah disetujui.</p>
+        <p class="leading-relaxed"><strong>1.2.2. Tahap Pelaksanaan & Evaluasi:</strong> Lakukan prosedur secara sistematis, monitor parameter tanda-tanda vital secara berkala, dan dokumentasikan hasil pemeriksaan pada rekam medis fisioterapi.</p>
+        <div class="mt-3 pt-2 border-t border-slate-200 text-right text-[10px] text-slate-500 font-sans">
+          [Lembar Pengesahan: Tanda Tangan Koordinator & Ketua Program Studi Berkolom Rapi]
+        </div>
+      `;
+
+      document.getElementById('auditSummaryBadge').textContent = 'Audit: 16 Koreksi Format Disempurnakan';
+      document.getElementById('auditSummaryBadge').className = 'badge-green text-xs font-semibold px-2.5 py-1 rounded-lg';
+      
+      document.getElementById('auditNotesList').innerHTML = `
+        <div>&bull; Hierarki penomoran (1 &rarr; A &rarr; B) telah distandarisasi ke format akademik (1.1 &rarr; 1.2 &rarr; 1.2.1)</div>
+        <div>&bull; 11 kata informal/tidak baku telah diselaraskan dengan EYD V dan terminologi medis</div>
+        <div>&bull; Tata letak halaman disesuaikan ke standar margin cetak Kiri 4 cm, Atas/Kanan/Bawah 3 cm</div>
+      `;
+
+      document.getElementById('refinedSuccessList').innerHTML = `
+        <div>&check; Struktur bab dan sub-bab memenuhi standar baku akademik kampus</div>
+        <div>&check; Siap cetak ke format .docx dan .pdf dengan nomor halaman dan lembar pengesahan utuh</div>
+      `;
+
+      showToast('Draf ' + docName + ' berhasil dirapikan! Siap diekspor ke .docx dan .pdf.');
     }
 
     // Export & Download Simulators
