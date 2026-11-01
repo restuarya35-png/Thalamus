@@ -49,5 +49,6 @@ pnpm-debug.log*
 .idea/
 .DS_Store
 Thumbs.db
+scratch/
 desktop.ini
 *.tmp
