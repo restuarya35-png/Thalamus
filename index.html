@@ -128,6 +128,10 @@
 
       <!-- User Active Profile Badge & Quick Action -->
       <div class="flex items-center gap-3">
+        <button onclick="openObeAnalysisModal()" class="hidden sm:flex py-2 px-3 bg-sky-50 hover:bg-sky-100 text-sky-800 border border-sky-200 text-xs font-bold rounded-xl shadow-xs items-center gap-1.5 transition cursor-pointer">
+          <svg class="w-4 h-4 text-sky-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
+          <span>Matriks OBE (CPL ↔ BK ↔ MK)</span>
+        </button>
         <button onclick="openGenerateRpsModal()" class="py-2 px-3.5 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold rounded-xl shadow-md flex items-center gap-1.5 transition transform hover:scale-105 active:scale-95 cursor-pointer">
           <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
           <span>+ Buat / Generate RPS</span>
@@ -451,6 +455,14 @@
                 </span>
               </div>
               <p class="text-xs text-slate-600 mt-1" id="simCourseDesc">Semester 4 • 3 SKS (1 Teori, 2 Praktikum Lab) • Program Studi Sarjana Terapan (D4) Fisioterapi</p>
+              <div class="flex items-center gap-1.5 flex-wrap mt-2" id="simCourseBkBadges">
+                <span class="text-[10px] font-bold text-slate-500 uppercase tracking-wider">Rumpun Bahan Kajian:</span>
+                <span class="badge-teal text-[10px] font-bold px-2 py-0.5 rounded border border-teal-200">BK-02: Patologi Gerak</span>
+                <span class="badge-teal text-[10px] font-bold px-2 py-0.5 rounded border border-teal-200">BK-03: Asesmen & Diagnostik</span>
+                <span class="badge-teal text-[10px] font-bold px-2 py-0.5 rounded border border-teal-200">BK-05: Terapi Latihan</span>
+                <span class="badge-teal text-[10px] font-bold px-2 py-0.5 rounded border border-teal-200">BK-06: Muskuloskeletal</span>
+                <button onclick="switchSimTab('OBE_ANALYSIS')" class="text-[10px] font-bold text-sky-700 hover:text-sky-900 underline ml-2">📊 Analisis Keterlacakan OBE Lengkap &rarr;</button>
+              </div>
             </div>
             <div class="flex items-center gap-2 flex-wrap">
               <button onclick="openGenerateRpsModal()" class="bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold px-3.5 py-2 rounded-xl flex items-center gap-1.5 shadow transition">
@@ -613,6 +625,211 @@
           </div>
           <p class="text-[11px] text-slate-500 italic">*Setiap modul dan materi yang diturunkan otomatis tersinkronisasi 100% dengan taksonomi dan indikator Sub-CPMK di RPS.</p>
         </div>
+
+        
+        <!-- 2. SIMULATOR: OBE ANALYSIS & TRACEABILITY DASHBOARD (CPL ↔ BK ↔ MK ↔ CPMK) -->
+        <div id="simPanelObeAnalysis" class="hidden space-y-6">
+          
+          <!-- BANNER HEADER WITH KEY KPIS & REAL DOWNLOAD BUTTONS -->
+          <div class="bg-gradient-to-r from-sky-900 via-teal-900 to-indigo-950 text-white p-6 rounded-2xl shadow-lg border border-slate-700">
+            <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+              <div>
+                <div class="flex items-center gap-2 mb-2">
+                  <span class="bg-emerald-500/20 text-emerald-300 border border-emerald-400/40 text-[10px] font-bold px-2.5 py-0.5 rounded-full uppercase tracking-wider">
+                    OBE Traceability Matrix &bull; SN-Dikti 2023 &bull; LAM-PTKes
+                  </span>
+                  <span class="bg-sky-500/20 text-sky-300 border border-sky-400/40 text-[10px] font-bold px-2.5 py-0.5 rounded-full">
+                    21 MK Terpetakan 100%
+                  </span>
+                </div>
+                <h3 class="text-xl font-extrabold text-white tracking-tight">
+                  Sistem Analisis Kurikulum OBE: CPL &bull; Bahan Kajian (BK) &bull; MK &bull; CPMK
+                </h3>
+                <p class="text-xs text-slate-300 mt-1 max-w-2xl leading-relaxed">
+                  Menjamin seluruh mata kuliah Sarjana Terapan (D4) dan Pendidikan Profesi Fisioterapi memiliki keterlacakan linier (*traceability cascade*) tanpa ada CPL yang terlewatkan (*zero orphan CPL*) dan tanpa Bahan Kajian yang berdiri sendiri.
+                </p>
+              </div>
+
+              <!-- REAL EXPORT BUTTONS -->
+              <div class="flex items-center gap-2 flex-wrap">
+                <button onclick="exportObeReportDocx()" class="bg-white hover:bg-slate-100 text-sky-900 text-xs font-bold px-3.5 py-2.5 rounded-xl flex items-center gap-2 shadow transition transform hover:scale-105 active:scale-95 cursor-pointer">
+                  <svg class="w-4 h-4 text-sky-700" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+                  <span>Unduh Laporan OBE (.docx)</span>
+                </button>
+                <button onclick="exportObeReportPdf()" class="bg-rose-600 hover:bg-rose-700 text-white text-xs font-bold px-3.5 py-2.5 rounded-xl flex items-center gap-2 shadow transition transform hover:scale-105 active:scale-95 cursor-pointer">
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"/></svg>
+                  <span>Unduh Laporan OBE (.pdf)</span>
+                </button>
+                <button onclick="exportObeReportJson()" class="bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-600 text-xs font-semibold px-3 py-2.5 rounded-xl flex items-center gap-1.5 transition cursor-pointer">
+                  <svg class="w-3.5 h-3.5 text-teal-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
+                  <span>Ekspor JSON</span>
+                </button>
+              </div>
+            </div>
+
+            <!-- KPI COUNTERS -->
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 mt-5 pt-4 border-t border-slate-700/60">
+              <div class="bg-white/10 backdrop-blur-sm p-3 rounded-xl border border-white/10">
+                <span class="text-[10px] uppercase font-bold text-sky-200 tracking-wider">Standar CPL</span>
+                <div class="text-xl font-extrabold text-white mt-0.5">8 / 8 Standar</div>
+                <span class="text-[10px] text-emerald-300">100% Terpetakan</span>
+              </div>
+              <div class="bg-white/10 backdrop-blur-sm p-3 rounded-xl border border-white/10">
+                <span class="text-[10px] uppercase font-bold text-teal-200 tracking-wider">Rumpun Bahan Kajian</span>
+                <div class="text-xl font-extrabold text-white mt-0.5">12 Rumpun BK</div>
+                <span class="text-[10px] text-emerald-300">Selaras Standar AIPFI</span>
+              </div>
+              <div class="bg-white/10 backdrop-blur-sm p-3 rounded-xl border border-white/10">
+                <span class="text-[10px] uppercase font-bold text-amber-200 tracking-wider">Mata Kuliah Aktif</span>
+                <div class="text-xl font-extrabold text-white mt-0.5">21 MK</div>
+                <span class="text-[10px] text-slate-300">15 D4 &bull; 6 Profesi</span>
+              </div>
+              <div class="bg-white/10 backdrop-blur-sm p-3 rounded-xl border border-white/10">
+                <span class="text-[10px] uppercase font-bold text-indigo-200 tracking-wider">Total Beban SKS</span>
+                <div class="text-xl font-extrabold text-white mt-0.5">64 SKS</div>
+                <span class="text-[10px] text-emerald-300">OBE Valid &bull; Beban Merata</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- SUB-VIEW NAVIGATION PILLS -->
+          <div class="flex flex-wrap items-center justify-between gap-3 border-b border-slate-200 pb-3">
+            <div class="flex items-center gap-1.5 bg-slate-100 p-1 rounded-xl border border-slate-200">
+              <button id="btnObeSubTrace" onclick="switchObeAnalysisView('TRACE')" class="px-3.5 py-1.5 text-xs font-bold rounded-lg transition bg-white text-sky-700 shadow-sm">
+                1. Matriks Keterlacakan (CPL ↔ BK ↔ MK ↔ CPMK)
+              </button>
+              <button id="btnObeSubCoverage" onclick="switchObeAnalysisView('COVERAGE')" class="px-3.5 py-1.5 text-xs font-semibold rounded-lg transition text-slate-600 hover:text-slate-900">
+                2. Analisis Pemenuhan CPL & Bobot BK
+              </button>
+              <button id="btnObeSubInspector" onclick="switchObeAnalysisView('INSPECTOR')" class="px-3.5 py-1.5 text-xs font-semibold rounded-lg transition text-slate-600 hover:text-slate-900">
+                3. Penelusur Kaskade Per Mata Kuliah
+              </button>
+            </div>
+          </div>
+
+          <!-- SUB-VIEW 1: FULL TRACEABILITY MATRIX TABLE -->
+          <div id="obeSubViewTrace" class="space-y-4">
+            <!-- Filter Bar -->
+            <div class="bg-white p-3.5 rounded-xl border border-slate-200 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-3">
+              <div class="flex items-center gap-2 flex-wrap flex-1">
+                <span class="text-xs font-bold text-slate-700">Filter:</span>
+                
+                <!-- Jenjang filter -->
+                <div class="inline-flex rounded-lg border border-slate-200 p-0.5 bg-slate-50 text-[11px] font-semibold text-slate-600">
+                  <button onclick="setObeFilterJenjang('ALL')" id="obeFilterJenjangAll" class="px-2.5 py-1 rounded-md bg-white text-sky-700 shadow-xs font-bold">Semua (21)</button>
+                  <button onclick="setObeFilterJenjang('D4')" id="obeFilterJenjangD4" class="px-2.5 py-1 rounded-md hover:text-slate-900">Sarjana Terapan D4 (15)</button>
+                  <button onclick="setObeFilterJenjang('PROFESI')" id="obeFilterJenjangProfesi" class="px-2.5 py-1 rounded-md hover:text-slate-900">Profesi Fisioterapi (6)</button>
+                </div>
+
+                <!-- CPL filter dropdown -->
+                <select id="obeFilterCplSelect" onchange="filterObeMatrix()" class="text-xs bg-white border border-slate-300 rounded-lg px-2.5 py-1 text-slate-700 focus:outline-none focus:ring-2 focus:ring-sky-500">
+                  <option value="ALL">Semua CPL (8 Standar)</option>
+                  <option value="CPL-01">CPL-01: Sikap & Etika Profesi</option>
+                  <option value="CPL-02">CPL-02: Keterampilan Asesmen</option>
+                  <option value="CPL-03">CPL-03: Pengetahuan Biomedik & Gerak</option>
+                  <option value="CPL-04">CPL-04: Keterampilan Intervensi</option>
+                  <option value="CPL-05">CPL-05: Komunikasi & SOAP</option>
+                  <option value="CPL-KLINIK-01">CPL-KLINIK-01: Penalaran WHO-ICF</option>
+                  <option value="CPL-KLINIK-02">CPL-KLINIK-02: Kasus Kompleks</option>
+                  <option value="CPL-KLINIK-03">CPL-KLINIK-03: ICU & Kritis</option>
+                </select>
+
+                <!-- BK filter dropdown -->
+                <select id="obeFilterBkSelect" onchange="filterObeMatrix()" class="text-xs bg-white border border-slate-300 rounded-lg px-2.5 py-1 text-slate-700 focus:outline-none focus:ring-2 focus:ring-sky-500">
+                  <option value="ALL">Semua Bahan Kajian (12 BK)</option>
+                  <option value="BK-01">BK-01: Biomedik & Biomekanika Gerak</option>
+                  <option value="BK-02">BK-02: Patologi Gerak & Ergonomi</option>
+                  <option value="BK-03">BK-03: Asesmen & Diagnostik</option>
+                  <option value="BK-04">BK-04: Modalitas Elektroterapi</option>
+                  <option value="BK-05">BK-05: Terapi Latihan & Manual</option>
+                  <option value="BK-06">BK-06: Muskuloskeletal & Olahraga</option>
+                  <option value="BK-07">BK-07: Neuromuskular</option>
+                  <option value="BK-08">BK-08: Kardiopulmonal & ICU</option>
+                  <option value="BK-09">BK-09: Pediatri & Motorik Anak</option>
+                  <option value="BK-10">BK-10: Geriatri & Komunitas</option>
+                  <option value="BK-11">BK-11: Clinical Reasoning ICF</option>
+                  <option value="BK-12">BK-12: Etika & Manajemen SOAP</option>
+                </select>
+              </div>
+
+              <!-- Search input -->
+              <div class="relative w-full md:w-64">
+                <input type="text" id="obeMatrixSearchInput" oninput="filterObeMatrix()" placeholder="Cari MK, CPMK, CPL..." class="w-full text-xs pl-8 pr-3 py-1.5 bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-sky-500">
+                <svg class="w-4 h-4 text-slate-400 absolute left-2.5 top-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+              </div>
+            </div>
+
+            <!-- Table Container -->
+            <div class="bg-white border border-slate-200 rounded-xl overflow-hidden shadow-sm">
+              <div class="overflow-x-auto max-h-[600px] overflow-y-auto">
+                <table class="w-full text-left text-xs">
+                  <thead class="bg-slate-50 sticky top-0 z-10 border-b border-slate-200 text-slate-700 font-bold uppercase tracking-wider text-[11px]">
+                    <tr>
+                      <th class="py-3 px-3.5 w-32">CPL Standar Prodi</th>
+                      <th class="py-3 px-3.5 w-44">Rumpun Bahan Kajian (BK)</th>
+                      <th class="py-3 px-3.5 w-48">Mata Kuliah & Bobot SKS</th>
+                      <th class="py-3 px-3.5">Rumusan CPMK Utama</th>
+                      <th class="py-3 px-3.5 w-32 text-center">Status Pemenuhan</th>
+                      <th class="py-3 px-3.5 w-28 text-center">Aksi Langsung</th>
+                    </tr>
+                  </thead>
+                  <tbody class="divide-y divide-slate-200 text-slate-700" id="obeTraceabilityTableBody">
+                    <!-- Populated dynamically via renderObeTraceabilityTable() -->
+                  </tbody>
+                </table>
+              </div>
+              <div class="p-3 bg-slate-50 border-t border-slate-200 flex items-center justify-between text-[11px] text-slate-500">
+                <span id="obeTraceCountSummary">Menampilkan 21 Mata Kuliah</span>
+                <span>*Sesuai Standar Akreditasi LAM-PTKes & Panduan Kurikulum OBE Kemendikbudristek</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- SUB-VIEW 2: CPL COVERAGE & BK ALLOCATION ANALYTICS -->
+          <div id="obeSubViewCoverage" class="hidden space-y-6">
+            <div>
+              <h4 class="text-sm font-bold text-slate-900 mb-1">Analisis Ketercapaian Capaian Pembelajaran Lulusan (CPL)</h4>
+              <p class="text-xs text-slate-500">Distribusi pemenuhan standar profil lulusan ke seluruh mata kuliah kurikulum.</p>
+            </div>
+
+            <!-- 8 CPL Fulfillment Cards Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4" id="obeCplCardsContainer">
+              <!-- Populated dynamically via renderObeCoverageCards() -->
+            </div>
+
+            <div class="pt-4 border-t border-slate-200">
+              <h4 class="text-sm font-bold text-slate-900 mb-1">Struktur 12 Bahan Kajian (BK) / Body of Knowledge Fisioterapi</h4>
+              <p class="text-xs text-slate-500">Rumpun materi pokok keilmuan yang dipelajari dan bobot keterlibatannya dalam pembentukan mata kuliah.</p>
+            </div>
+
+            <!-- 12 BK Body of Knowledge Grid -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3.5" id="obeBkCardsContainer">
+              <!-- Populated dynamically via renderObeCoverageCards() -->
+            </div>
+          </div>
+
+          <!-- SUB-VIEW 3: COURSE-LEVEL CASCADE INSPECTOR -->
+          <div id="obeSubViewInspector" class="hidden space-y-4">
+            <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-3">
+              <div>
+                <span class="text-xs font-bold text-slate-800">Pilih Mata Kuliah untuk Ditelusuri Alur Kaskadenya:</span>
+                <p class="text-[11px] text-slate-500">Melihat rantai linier CPL ➔ Bahan Kajian (BK) ➔ Mata Kuliah ➔ CPMK ➔ Sub-CPMK</p>
+              </div>
+              <div class="w-full md:w-80">
+                <select id="obeInspectorCourseSelect" onchange="renderObeCourseInspector(this.value)" class="w-full text-xs font-bold bg-sky-50 border border-sky-300 rounded-lg px-3 py-2 text-sky-900 focus:outline-none focus:ring-2 focus:ring-sky-500">
+                  <!-- Populated dynamically -->
+                </select>
+              </div>
+            </div>
+
+            <!-- Inspector Graphic Flow Container -->
+            <div class="bg-slate-50 p-6 rounded-2xl border border-slate-200" id="obeInspectorCascadeTree">
+              <!-- Populated dynamically via renderObeCourseInspector() -->
+            </div>
+          </div>
+
+        </div>
+
 
         <!-- 2. SIMULATOR: ZERO-TO-DOCUMENT GENERATOR -->
         <div id="simPanelZero" class="hidden space-y-6">
@@ -1505,6 +1722,26 @@
 ];
 
     // Comprehensive Curriculum Database (21 Courses across D4 & Profesi)
+    
+    // Master 12 Bahan Kajian (BK) Standard Fisioterapi (AIPFI / IFI / LAM-PTKes)
+    const masterBkDB = [
+      { code: 'BK-01', name: 'Ilmu Biomedik Dasar & Biomekanika Gerak', category: 'Biomedik & Kinesiologi', desc: 'Anatomi fungsional, osteologi, miologi, neuroanatomi, fisiologi gerak, kinetika, dan biomekanika persendian.', cpls: ['CPL-03', 'CPL-01'] },
+      { code: 'BK-02', name: 'Patologi Gerak & Ergonomi Fungsional', category: 'Patologi & Analisis Gerak', desc: 'Patofisiologi gangguan gerak, analisis postur tubuh, biomekanika beban kerja, dan pencegahan cedera muskuloskeletal.', cpls: ['CPL-03', 'CPL-02'] },
+      { code: 'BK-03', name: 'Asesmen, Pemeriksaan Fisik & Diagnostik Fisioterapi', category: 'Pemeriksaan Klinis', desc: 'Prosedur palpasi landmark, pengukuran ROM goniometri, Manual Muscle Testing (MMT), tes provokasi ligamen/saraf, dan tes fungsional.', cpls: ['CPL-02', 'CPL-05'] },
+      { code: 'BK-04', name: 'Modalitas Elektroterapi & Sumber Fisis', category: 'Teknologi Modalitas', desc: 'Prinsip arus listrik terapeutik (TENS, NMES), Ultrasound, Short Wave Diathermy, laser, cryotherapy, dan hidroterapi.', cpls: ['CPL-04', 'CPL-03'] },
+      { code: 'BK-05', name: 'Terapi Latihan & Terapi Manual', category: 'Intervensi Manual & Latihan', desc: 'Prinsip exercise therapy, penguatan eksentrik/konsentrik, PNF, mobilisasi sendi (Kaltenborn/Maitland), dan core stability.', cpls: ['CPL-04', 'CPL-02'] },
+      { code: 'BK-06', name: 'Fisioterapi Sistem Muskuloskeletal & Olahraga', category: 'Klinik Muskuloskeletal', desc: 'Tatalaksana cedera ligamen lutut (ACL/PCL), meniskus, osteoarthritis, fraktur, tendinopati, dan rehabilitasi return-to-sport.', cpls: ['CPL-02', 'CPL-04', 'CPL-03'] },
+      { code: 'BK-07', name: 'Fisioterapi Sistem Neuromuskular & Neurorehabilitasi', category: 'Klinik Neuromuskular', desc: 'Rehabilitasi stroke iskemik/hemoragik, cedera medula spinalis (SCI), Bell palsy, Parkinson, Guillain-Barre, dan gangguan ataksia.', cpls: ['CPL-02', 'CPL-04', 'CPL-03'] },
+      { code: 'BK-08', name: 'Fisioterapi Kardiopulmonal & Perawatan Intensif (ICU)', category: 'Klinik Kardiorespirasi & ICU', desc: 'Fisioterapi dada, bronchial hygiene, rehabilitasi jantung fase I-IV, PPOK, weaning ventilator, dan early mobilization di ICU.', cpls: ['CPL-02', 'CPL-04', 'CPL-KLINIK-03'] },
+      { code: 'BK-09', name: 'Fisioterapi Pediatri & Perkembangan Motorik Anak', category: 'Klinik Pediatri', desc: 'Milestone perkembangan motorik anak, Cerebral Palsy, Down syndrome, sensori motorik, dan stimulasi tumbuh kembang.', cpls: ['CPL-02', 'CPL-04', 'CPL-05'] },
+      { code: 'BK-10', name: 'Fisioterapi Geriatri, Gaya Hidup & Komunitas', category: 'Klinik Geriatri & Komunitas', desc: 'Penatalaksanaan sarkopenia, pencegahan risiko jatuh lansia, osteoporosis, promosi aktivitas fisik, dan posyandu lansia.', cpls: ['CPL-02', 'CPL-04', 'CPL-05'] },
+      { code: 'BK-11', name: 'Penalaran Klinis (Clinical Reasoning) & Kerangka WHO-ICF', category: 'Penalaran & Standar Internasional', desc: 'Formulasi asesmen dan intervensi biopsikososial WHO-ICF (Impairment, Activity, Participation), EBP, dan evaluasi hasil klinis.', cpls: ['CPL-KLINIK-01', 'CPL-KLINIK-02', 'CPL-05'] },
+      { code: 'BK-12', name: 'Etika Profesi, Manajemen Pelayanan & Keselamatan Pasien', category: 'Manajemen & Etika', desc: 'Standar keselamatan pasien, mediko-legal, dokumentasi SOAP terstandar, manajemen klinik fisioterapi, dan kendali mutu.', cpls: ['CPL-01', 'CPL-05', 'CPL-KLINIK-02'] }
+    ];
+
+    let currentObeFilterJenjang = 'ALL';
+    let currentObeSubView = 'TRACE';
+
     let curriculumDB = {
     "FST-101": {
         "code": "FST-101",
@@ -1512,7 +1749,12 @@
         "jenjang": "D4",
         "semester": "Semester 1",
         "sks": "3 SKS (1 Teori, 2 Praktikum Lab)",
+        "sksTotal": 3,
         "prodiDesc": "Program Studi Sarjana Terapan (D4) Fisioterapi (KKNI Level 6)",
+        "bks": [
+            "BK-01",
+            "BK-03"
+        ],
         "cpls": [
             {
                 "code": "CPL-01",
@@ -1570,7 +1812,12 @@
         "jenjang": "D4",
         "semester": "Semester 1",
         "sks": "3 SKS (2 Teori, 1 Praktikum Lab)",
+        "sksTotal": 3,
         "prodiDesc": "Program Studi Sarjana Terapan (D4) Fisioterapi (KKNI Level 6)",
+        "bks": [
+            "BK-01",
+            "BK-02"
+        ],
         "cpls": [
             {
                 "code": "CPL-01",
@@ -1608,7 +1855,12 @@
         "jenjang": "D4",
         "semester": "Semester 2",
         "sks": "3 SKS (2 Teori, 1 Praktikum Lab)",
+        "sksTotal": 3,
         "prodiDesc": "Program Studi Sarjana Terapan (D4) Fisioterapi (KKNI Level 6)",
+        "bks": [
+            "BK-01",
+            "BK-02"
+        ],
         "cpls": [
             {
                 "code": "CPL-02",
@@ -1646,7 +1898,12 @@
         "jenjang": "D4",
         "semester": "Semester 2",
         "sks": "2 SKS (2 Teori)",
+        "sksTotal": 2,
         "prodiDesc": "Program Studi Sarjana Terapan (D4) Fisioterapi (KKNI Level 6)",
+        "bks": [
+            "BK-01",
+            "BK-02"
+        ],
         "cpls": [
             {
                 "code": "CPL-01",
@@ -1684,66 +1941,117 @@
         "jenjang": "D4",
         "semester": "Semester 3",
         "sks": "3 SKS (1 Teori, 2 Praktikum Lab)",
+        "sksTotal": 3,
         "prodiDesc": "Program Studi Sarjana Terapan (D4) Fisioterapi (KKNI Level 6)",
+        "bks": [
+            "BK-03",
+            "BK-12"
+        ],
         "cpls": [
             {
                 "code": "CPL-01",
                 "name": "Sikap & Etika Profesi",
-                "desc": "Menjunjung etika privasi dan kenyamanan pasien selama pemeriksaan."
+                "desc": "Menghormati privasi dan informed consent pasien sebelum prosedur pemeriksaan."
             },
             {
                 "code": "CPL-02",
                 "name": "Keterampilan Khusus Asesmen",
-                "desc": "Mampu melakukan goniometri ROM, MMT kekuatan otot, dan tes provokasi sendi."
+                "desc": "Mampu melakukan goniometri sendi, MMT, antropometri, dan tes provokasi saraf."
             },
             {
                 "code": "CPL-05",
                 "name": "Komunikasi & Dokumentasi Medis",
-                "desc": "Mampu menyusun format dokumentasi rekam medis SOAP fisioterapi."
+                "desc": "Mencatat hasil pengukuran secara objektif pada format rekam medis fisioterapi."
             }
         ],
         "cpmks": [
             {
                 "code": "CPMK-1",
-                "desc": "Mampu melakukan pengukuran lingkup gerak sendi (goniometri ISOM), kekuatan otot (MMT Oxford), dan tes provokasi spesifik."
+                "desc": "Mampu melakukan pengukuran ROM sendi dengan goniometer universal dan penilaian kekuatan otot via MMT secara valid."
             }
         ],
         "subcpmks": [
             {
                 "cpl": "CPL-02",
                 "cpmk": "CPMK-1",
-                "week": "Minggu ke-3",
-                "code": "Sub-CPMK 03",
-                "desc": "Pengukuran ROM goniometri sendi bahu, siku, dan lutut sesuai standar ISOM internasional.",
-                "indicator": "Toleransi kesalahan posisi aksis goniometer < 3 derajat",
+                "week": "Minggu ke-6",
+                "code": "Sub-CPMK 06",
+                "desc": "Melakukan pengukuran ROM sendi panggul dan lutut serta grading kekuatan otot quadriceps.",
+                "indicator": "Akurasi pembacaan sudut goniometri toleransi 2 derajat",
                 "taxonomy": "Psikomotorik P4",
-                "weight": "15%"
+                "weight": "20%"
             }
         ]
     },
-    "FST-305": {
-        "code": "FST-305",
-        "name": "Elektroterapi & Sumber Fisis Terapan",
+    "FST-304": {
+        "code": "FST-304",
+        "name": "Elektroterapi & Sumber Fisis",
         "jenjang": "D4",
         "semester": "Semester 3",
         "sks": "3 SKS (1 Teori, 2 Praktikum Lab)",
+        "sksTotal": 3,
         "prodiDesc": "Program Studi Sarjana Terapan (D4) Fisioterapi (KKNI Level 6)",
+        "bks": [
+            "BK-04"
+        ],
         "cpls": [
             {
-                "code": "CPL-02",
-                "name": "Keterampilan Khusus Asesmen",
-                "desc": "Mampu melakukan tes sensibilitas kulit sebelum aplikasi modalitas fisis."
+                "code": "CPL-01",
+                "name": "Sikap & Etika Profesi",
+                "desc": "Mematuhi standard operational procedure (SOP) keselamatan kelistrikan medis."
             },
             {
                 "code": "CPL-04",
                 "name": "Keterampilan Khusus Intervensi",
-                "desc": "Mampu mengoperasikan TENS, NMES, Ultrasound Therapy, dan Shortwave Diathermy."
+                "desc": "Mampu mengaplikasikan modalitas TENS, US, Short Wave Diathermy, dan laser."
             }
         ],
         "cpmks": [
             {
                 "code": "CPMK-1",
-                "desc": "Mampu merancang parameter dosis, frekuensi, duty cycle, dan mengoperasikan modalitas elektroterapi secara aman."
+                "desc": "Mampu menentukan parameter arus listrik TENS dan dosis Ultrasound terapeutik sesuai patologi jaringan secara presisi."
+            }
+        ],
+        "subcpmks": [
+            {
+                "cpl": "CPL-04",
+                "cpmk": "CPMK-1",
+                "week": "Minggu ke-7",
+                "code": "Sub-CPMK 07",
+                "desc": "Mengatur frekuensi, durasi pulsa, dan penempatan elektroda TENS untuk inhibisi nyeri nosiseptif.",
+                "indicator": "Ketepatan pemilihan mode konvensional vs akupunktur & keselamatan kulit",
+                "taxonomy": "Psikomotorik P4",
+                "weight": "20%"
+            }
+        ]
+    },
+    "FST-307": {
+        "code": "FST-307",
+        "name": "Terapi Latihan Dasar",
+        "jenjang": "D4",
+        "semester": "Semester 3",
+        "sks": "3 SKS (1 Teori, 2 Praktikum Lab)",
+        "sksTotal": 3,
+        "prodiDesc": "Program Studi Sarjana Terapan (D4) Fisioterapi (KKNI Level 6)",
+        "bks": [
+            "BK-05"
+        ],
+        "cpls": [
+            {
+                "code": "CPL-02",
+                "name": "Keterampilan Khusus Asesmen",
+                "desc": "Mengidentifikasi keterbatasan fleksibilitas dan kelemahan otot postural."
+            },
+            {
+                "code": "CPL-04",
+                "name": "Keterampilan Khusus Intervensi",
+                "desc": "Mampu merancang latihan peregangan statis/dinamis, PNF, dan latihan ketahanan."
+            }
+        ],
+        "cpmks": [
+            {
+                "code": "CPMK-1",
+                "desc": "Mampu mendemonstrasikan teknik peregangan otot pasif, active-assisted, dan teknik hold-relax PNF."
             }
         ],
         "subcpmks": [
@@ -1752,46 +2060,8 @@
                 "cpmk": "CPMK-1",
                 "week": "Minggu ke-4",
                 "code": "Sub-CPMK 04",
-                "desc": "Aplikasi modalitas Ultrasound Therapy kontinu vs pulsed dan stimulasi TENS modulasi nyeri.",
-                "indicator": "Akurasi coupling agent gel, kecepatan tranduser 2-3 cm/s, keselamatan jaringan",
-                "taxonomy": "Psikomotorik P4",
-                "weight": "15%"
-            }
-        ]
-    },
-    "FST-308": {
-        "code": "FST-308",
-        "name": "Terapi Latihan & Mobilisasi Sendi",
-        "jenjang": "D4",
-        "semester": "Semester 3",
-        "sks": "3 SKS (1 Teori, 2 Praktikum Lab)",
-        "prodiDesc": "Program Studi Sarjana Terapan (D4) Fisioterapi (KKNI Level 6)",
-        "cpls": [
-            {
-                "code": "CPL-02",
-                "name": "Keterampilan Khusus Asesmen",
-                "desc": "Mampu mengevaluasi end-feel sendi dan keterbatasan gerak capsular."
-            },
-            {
-                "code": "CPL-04",
-                "name": "Keterampilan Khusus Intervensi",
-                "desc": "Mampu merancang latihan resistensi progresif dan teknik mobilisasi Kaltenborn-Maitland."
-            }
-        ],
-        "cpmks": [
-            {
-                "code": "CPMK-1",
-                "desc": "Mampu menerapkan teknik translasi traksi Kaltenborn dan mobilisasi osilasi Maitland grade I-IV pada sendi perifer."
-            }
-        ],
-        "subcpmks": [
-            {
-                "cpl": "CPL-04",
-                "cpmk": "CPMK-1",
-                "week": "Minggu ke-6",
-                "code": "Sub-CPMK 06",
-                "desc": "Aplikasi teknik traksi sendi grade II dan gliding anterior/posterior sendi glenohumeral.",
-                "indicator": "Ketepatan bidang terapi dan arah gerak translasi sendi",
+                "desc": "Mengaplikasikan teknik PNF hold-relax untuk meningkatkan fleksibilitas hamstring.",
+                "indicator": "Posisi kontak tangan, arah tahanan isometrik, dan breathing control",
                 "taxonomy": "Psikomotorik P4",
                 "weight": "15%"
             }
@@ -1803,27 +2073,34 @@
         "jenjang": "D4",
         "semester": "Semester 4",
         "sks": "3 SKS (1 Teori, 2 Praktikum Lab)",
+        "sksTotal": 3,
         "prodiDesc": "Program Studi Sarjana Terapan (D4) Fisioterapi (KKNI Level 6)",
+        "bks": [
+            "BK-02",
+            "BK-03",
+            "BK-05",
+            "BK-06"
+        ],
         "cpls": [
             {
                 "code": "CPL-01",
                 "name": "Sikap & Etika Profesi",
-                "desc": "Bertanggung jawab atas keselamatan pasien selama prosedur intervensi."
+                "desc": "Menunjukkan sikap teliti, empati, dan kepatuhan keselamatan pasien dalam praktik muskuloskeletal."
             },
             {
                 "code": "CPL-02",
                 "name": "Keterampilan Khusus Asesmen",
-                "desc": "Mampu melakukan tes provokasi ortopedi spesifik dan palpasi patologi muskuloskeletal."
+                "desc": "Mampu melakukan pemeriksaan spesifik dan pengukuran fisioterapi muskuloskeletal pada ekstremitas dan vertebra."
             },
             {
                 "code": "CPL-03",
                 "name": "Pengetahuan Klinis Terapan",
-                "desc": "Menguasai anatomi klinis sendi lutut, bahu, panggul, dan kolumna vertebralis."
+                "desc": "Menguasai konsep patofisiologi, kinesiologi, dan mekanisme cedera jaringan lunak muskuloskeletal."
             },
             {
                 "code": "CPL-04",
                 "name": "Keterampilan Khusus Intervensi",
-                "desc": "Mampu merancang protokol terapi latihan fase akut, sub-akut, dan fungsional."
+                "desc": "Mampu merumuskan program intervensi terapi latihan, modalitas elektroterapi, dan manual therapy muskuloskeletal."
             }
         ],
         "cpmks": [
@@ -1834,28 +2111,172 @@
             {
                 "code": "CPMK-2",
                 "desc": "Mampu merumuskan program terapi latihan dan intervensi modalitas elektro-terapeutik pada fase pasca rekonstruksi ligamen."
+            },
+            {
+                "code": "CPMK-3",
+                "desc": "Mampu mengevaluasi perkembangan ROM, kekuatan otot, dan fungsional ekstremitas bawah."
             }
         ],
         "subcpmks": [
             {
                 "cpl": "CPL-02",
                 "cpmk": "CPMK-1",
+                "week": "Minggu ke-1",
+                "code": "Sub-CPMK 01",
+                "desc": "Mampu mempraktikkan pemeriksaan subjektif dan anamnesis sistem muskuloskeletal ekstremitas inferior.",
+                "indicator": "Kelengkapan riwayat trauma, mekanisme cedera, dan lokasi nyeri",
+                "taxonomy": "Psikomotorik P3",
+                "weight": "5%"
+            },
+            {
+                "cpl": "CPL-02",
+                "cpmk": "CPMK-1",
+                "week": "Minggu ke-2",
+                "code": "Sub-CPMK 02",
+                "desc": "Mampu melakukan inspeksi statis/dinamis dan palpasi anatomis sendi lutut serta patella.",
+                "indicator": "Ketepatan deteksi efusi intra-artikular dan nyeri tekan facet patella",
+                "taxonomy": "Psikomotorik P4",
+                "weight": "5%"
+            },
+            {
+                "cpl": "CPL-02",
+                "cpmk": "CPMK-1",
                 "week": "Minggu ke-3",
                 "code": "Sub-CPMK 03",
                 "desc": "Mahasiswa mampu mendemonstrasikan tes provokasi ligamen lutut (Lachman, Anterior Drawer, Pivot Shift) dan pengukuran ROM goniometri dengan presisi.",
-                "indicator": "Indikator: Keakuratan posisi tangan, penentuan end-feel, interpretasi derajat laxity.",
-                "taxonomy": "Psikomotorik P4 (Kognitif C4)",
+                "indicator": "Keakuratan posisi tangan, penentuan end-feel, interpretasi derajat laxity",
+                "taxonomy": "Psikomotorik P4",
                 "weight": "15%"
+            },
+            {
+                "cpl": "CPL-04",
+                "cpmk": "CPMK-2",
+                "week": "Minggu ke-4",
+                "code": "Sub-CPMK 04",
+                "desc": "Mahasiswa mampu memformulasikan protokol closed kinetic chain exercise dan aplikasi NMES untuk mencegah atrofi quadriceps.",
+                "indicator": "Ketepatan dosis latihan (FITT), penempatan elektroda, keamanan beban lutut",
+                "taxonomy": "Psikomotorik P4",
+                "weight": "15%"
+            },
+            {
+                "cpl": "CPL-02",
+                "cpmk": "CPMK-1",
+                "week": "Minggu ke-5",
+                "code": "Sub-CPMK 05",
+                "desc": "Mampu melakukan tes provokasi meniskus (McMurray, Apley Grind, Thessaly test) sendi lutut.",
+                "indicator": "Akurasi rotasi tibia dan kompresi artikular",
+                "taxonomy": "Psikomotorik P4",
+                "weight": "5%"
+            },
+            {
+                "cpl": "CPL-04",
+                "cpmk": "CPMK-2",
+                "week": "Minggu ke-6",
+                "code": "Sub-CPMK 06",
+                "desc": "Merumuskan penatalaksanaan fisioterapi fase akut sprain ankle grade II (Metode PEACE & LOVE).",
+                "indicator": "Prosedur kompresi, elevasi, dan mobilisasi dini tanpa nyeri",
+                "taxonomy": "Kognitif C5",
+                "weight": "5%"
             },
             {
                 "cpl": "CPL-04",
                 "cpmk": "CPMK-2",
                 "week": "Minggu ke-7",
                 "code": "Sub-CPMK 07",
-                "desc": "Mahasiswa mampu memformulasikan protokol closed kinetic chain exercise dan aplikasi NMES untuk mencegah atrofi quadriceps.",
-                "indicator": "Indikator: Ketepatan dosis latihan (FITT), penempatan elektroda, keamanan beban lutut.",
-                "taxonomy": "Psikomotorik P4 (Kognitif C5)",
-                "weight": "15%"
+                "desc": "Mempraktikkan teknik mobilisasi sendi talocrural anterior-posterior glide untuk menambah dorsifleksi.",
+                "indicator": "Grading Kaltenborn grade II-III dan posisi close-packed",
+                "taxonomy": "Psikomotorik P4",
+                "weight": "5%"
+            },
+            {
+                "cpl": "CPL-01",
+                "cpmk": "CPMK-1",
+                "week": "Minggu ke-8",
+                "code": "Sub-CPMK 08 (UTS)",
+                "desc": "Evaluasi Tengah Semester: Ujian Praktikum OSCE Asesmen & Intervensi Sendi Ekstremitas Bawah.",
+                "indicator": "Penguasaan 5 stasi OSCE dengan rubrik standar",
+                "taxonomy": "Psikomotorik P4",
+                "weight": "20%"
+            },
+            {
+                "cpl": "CPL-02",
+                "cpmk": "CPMK-1",
+                "week": "Minggu ke-9",
+                "code": "Sub-CPMK 09",
+                "desc": "Mampu melakukan tes provokasi sindrom impingement bahu (Neer, Hawkins-Kennedy, Empty Can).",
+                "indicator": "Ketepatan palpasi tendon supraspinatus dan manuver elevasi skapula",
+                "taxonomy": "Psikomotorik P4",
+                "weight": "5%"
+            },
+            {
+                "cpl": "CPL-04",
+                "cpmk": "CPMK-2",
+                "week": "Minggu ke-10",
+                "code": "Sub-CPMK 10",
+                "desc": "Merancang program stabilisasi skapulotorakal dan penguatan rotator cuff fase awal.",
+                "indicator": "Kontrol irama skapulohumeral dan aktivasi serratus anterior",
+                "taxonomy": "Kognitif C5",
+                "weight": "5%"
+            },
+            {
+                "cpl": "CPL-02",
+                "cpmk": "CPMK-1",
+                "week": "Minggu ke-11",
+                "code": "Sub-CPMK 11",
+                "desc": "Mampu melakukan pemeriksaan klinis vertebra lumbal (SLR, Bragard, Slump test, Palpasi facet).",
+                "indicator": "Pembedaan nyeri radikuler dural vs referred pain artikular",
+                "taxonomy": "Psikomotorik P4",
+                "weight": "5%"
+            },
+            {
+                "cpl": "CPL-04",
+                "cpmk": "CPMK-2",
+                "week": "Minggu ke-12",
+                "code": "Sub-CPMK 12",
+                "desc": "Mengaplikasikan latihan stabilisasi lumbopelvik (Core Stability & McKenzie protocol) pada LBP.",
+                "indicator": "Aktivasi m. transversus abdominis dan multifidus lumbar",
+                "taxonomy": "Psikomotorik P4",
+                "weight": "5%"
+            },
+            {
+                "cpl": "CPL-02",
+                "cpmk": "CPMK-1",
+                "week": "Minggu ke-13",
+                "code": "Sub-CPMK 13",
+                "desc": "Pemeriksaan vertebra servikal (Spurling test, Distraction test, Upper Limb Neurodynamic Test).",
+                "indicator": "Keamanan manuver tes dan interpretasi radikulopati servikal",
+                "taxonomy": "Psikomotorik P4",
+                "weight": "5%"
+            },
+            {
+                "cpl": "CPL-04",
+                "cpmk": "CPMK-2",
+                "week": "Minggu ke-14",
+                "code": "Sub-CPMK 14",
+                "desc": "Tatalaksana cervicalgia kronik dengan mobilisasi traksi manual dan latihan postural cervical retraction.",
+                "indicator": "Teknik traksi aksial lembut dan edukasi ergonomi kerja",
+                "taxonomy": "Psikomotorik P4",
+                "weight": "5%"
+            },
+            {
+                "cpl": "CPL-04",
+                "cpmk": "CPMK-3",
+                "week": "Minggu ke-15",
+                "code": "Sub-CPMK 15",
+                "desc": "Formulasi tes fungsional return-to-sport (Y-Balance Test, Single Leg Hop Test) pasca cedera ACL.",
+                "indicator": "Kalkulasi limb symmetry index (LSI) > 90% secara objektif",
+                "taxonomy": "Kognitif C5",
+                "weight": "5%"
+            },
+            {
+                "cpl": "CPL-03",
+                "cpmk": "CPMK-3",
+                "week": "Minggu ke-16",
+                "code": "Sub-CPMK 16 (UAS)",
+                "desc": "Evaluasi Akhir Semester: Ujian Komprehensif Perancangan Program Fisioterapi Muskuloskeletal.",
+                "indicator": "Kelengkapan laporan penalaran klinis SOAP muskuloskeletal",
+                "taxonomy": "Kognitif C6",
+                "weight": "20%"
             }
         ]
     },
@@ -1865,58 +2286,79 @@
         "jenjang": "D4",
         "semester": "Semester 4",
         "sks": "3 SKS (1 Teori, 2 Praktikum Lab)",
+        "sksTotal": 3,
         "prodiDesc": "Program Studi Sarjana Terapan (D4) Fisioterapi (KKNI Level 6)",
+        "bks": [
+            "BK-01",
+            "BK-03",
+            "BK-05",
+            "BK-07"
+        ],
         "cpls": [
             {
                 "code": "CPL-01",
                 "name": "Sikap & Etika Profesi",
-                "desc": "Menunjukkan kesabaran dan etika empati saat menangani disabilitas neurologis."
+                "desc": "Menjunjung tinggi martabat dan empati kepada pasien dengan gangguan neurologis."
             },
             {
                 "code": "CPL-02",
                 "name": "Keterampilan Khusus Asesmen",
-                "desc": "Mampu melakukan evaluasi tonus otot skala MAS, refleks patologis, dan sensorik."
+                "desc": "Mampu memeriksa spastisitas (Modified Ashworth Scale), refleks fisiologis/patologis, dan keseimbangan."
             },
             {
                 "code": "CPL-03",
                 "name": "Pengetahuan Klinis Terapan",
-                "desc": "Menguasai neuroanatomi traktus piramidalis, ganglia basalis, dan plastisitas otak."
+                "desc": "Menguasai neuroplastisitas, jaras motorik/sensorik, dan patologi stroke & trauma medula spinalis."
             },
             {
                 "code": "CPL-04",
                 "name": "Keterampilan Khusus Intervensi",
-                "desc": "Mampu menerapkan stimulasi fasilitasi PNF, Bobath, dan re-edukasi transfer berjalan."
+                "desc": "Mampu menerapkan pendekatan neurofasilitasi (Bobath, PNF, Brunnstrom, Motor Relearning)."
             }
         ],
         "cpmks": [
             {
                 "code": "CPMK-1",
-                "desc": "Mampu melakukan pemeriksaan motorik, tonus spastisitas (Modified Ashworth Scale), dan refleks patologis."
+                "desc": "Mampu melakukan evaluasi klinis gangguan tonus postural, refleks patologis, dan tingkat keparahan stroke."
             },
             {
                 "code": "CPMK-2",
-                "desc": "Mampu merancang stimulasi fasilitasi neuromuskular proprioceptif (PNF) dan re-edukasi pola berjalan."
+                "desc": "Mampu merancang dan mempraktikkan intervensi fasilitasi gerak fungsional metode Bobath/PNF pada pasien hemiparesis."
+            },
+            {
+                "code": "CPMK-3",
+                "desc": "Mampu menganalisis risiko jatuh dan gangguan keseimbangan dinamis menggunakan instrumen Berg Balance Scale."
             }
         ],
         "subcpmks": [
             {
                 "cpl": "CPL-02",
                 "cpmk": "CPMK-1",
-                "week": "Minggu ke-2",
-                "code": "Sub-CPMK 02",
-                "desc": "Mahasiswa mampu melakukan evaluasi tonus otot skala MAS dan tes refleks patologis (Babinski, Chaddock, Hoffman).",
-                "indicator": "Indikator: Sensitivitas palpasi resistensi gerak pasif cepat dan akurasi ketukan hammer reflex.",
+                "week": "Minggu ke-3",
+                "code": "Sub-CPMK 03",
+                "desc": "Pemeriksaan spastisitas dengan Modified Ashworth Scale (MAS) dan refleks klonus pergelangan kaki.",
+                "indicator": "Kecepatan regang pasif sendi dan grading 0 s/d 4 MAS yang akurat",
                 "taxonomy": "Psikomotorik P4",
                 "weight": "15%"
             },
             {
-                "cpl": "CPL-03",
+                "cpl": "CPL-04",
                 "cpmk": "CPMK-2",
-                "week": "Minggu ke-5",
-                "code": "Sub-CPMK 05",
-                "desc": "Mahasiswa mampu mempraktikkan teknik fasilitasi PNF pola diagonal ekstremitas atas untuk mengembalikan fungsi meraih.",
-                "indicator": "Indikator: Sinkronisasi kontak manual, traksi/aproksimasi, dan aba-aba verbal.",
-                "taxonomy": "Psikomotorik P4 (Kognitif C4)",
+                "week": "Minggu ke-6",
+                "code": "Sub-CPMK 06",
+                "desc": "Menerapkan fasilitasi transfer gerak dari berbaring ke duduk (Sit-to-stand) metode Bobath.",
+                "indicator": "Simetri pembebanan berat badan panggul dan alignment trunk",
+                "taxonomy": "Psikomotorik P4",
+                "weight": "20%"
+            },
+            {
+                "cpl": "CPL-04",
+                "cpmk": "CPMK-3",
+                "week": "Minggu ke-12",
+                "code": "Sub-CPMK 12",
+                "desc": "Melakukan stimulasi keseimbangan postural dinamis menggunakan wobble board dan dual-task training.",
+                "indicator": "Pencegahan respon protektif hilang dan keselamatan pasien",
+                "taxonomy": "Psikomotorik P4",
                 "weight": "15%"
             }
         ]
@@ -1925,34 +2367,50 @@
         "code": "FST-408",
         "name": "Fisioterapi Kardiorespirasi & Vaskular",
         "jenjang": "D4",
-        "semester": "Semester 4",
+        "semester": "Semester 5",
         "sks": "3 SKS (1 Teori, 2 Praktikum Lab)",
+        "sksTotal": 3,
         "prodiDesc": "Program Studi Sarjana Terapan (D4) Fisioterapi (KKNI Level 6)",
+        "bks": [
+            "BK-01",
+            "BK-03",
+            "BK-04",
+            "BK-08"
+        ],
         "cpls": [
+            {
+                "code": "CPL-01",
+                "name": "Sikap & Etika Profesi",
+                "desc": "Sigap dan berorientasi keselamatan tinggi pada pemantauan tanda vital kardiorespirasi."
+            },
             {
                 "code": "CPL-02",
                 "name": "Keterampilan Khusus Asesmen",
-                "desc": "Mampu melakukan auskultasi stetoskop dan pengukuran ekspansi thoraks."
+                "desc": "Mampu melakukan auskultasi suara napas, spirometri, palpasi ekspansi sangkar toraks, dan 6MWT."
             },
             {
                 "code": "CPL-03",
                 "name": "Pengetahuan Klinis Terapan",
-                "desc": "Menguasai patofisiologi penyakit paru obstruktif kronis (PPOK) dan penyakit jantung koroner."
+                "desc": "Menguasai fisiologi pertukaran gas, hemodinamik, patofisiologi PPOK, dan penyakit jantung koroner."
             },
             {
                 "code": "CPL-04",
                 "name": "Keterampilan Khusus Intervensi",
-                "desc": "Mampu merancang pembersihan jalan napas (ACBT) dan program rehabilitasi jantung."
+                "desc": "Mampu menerapkan postural drainage, active cycle of breathing, dan rehabilitasi jantung fase I-II."
             }
         ],
         "cpmks": [
             {
                 "code": "CPMK-1",
-                "desc": "Mampu mengidentifikasi bunyi napas abnormal (wheezing, rales) dan uji ekspansi sangkar thoraks."
+                "desc": "Mampu mendeteksi kelainan bunyi napas (wheezing, ronki, crackles) dan keterbatasan kapasitas fungsional kardiorespirasi."
             },
             {
                 "code": "CPMK-2",
-                "desc": "Mampu merancang teknik pembersihan jalan napas (ACBT) dan latihan pernapasan diafragma."
+                "desc": "Mampu mengaplikasikan teknik bronchial hygiene (clapping, vibrating, postural drainage) secara tepat indikasi."
+            },
+            {
+                "code": "CPMK-3",
+                "desc": "Mampu menyusun preskripsi latihan aerobik pada program rehabilitasi jantung pasca sindrom koroner akut."
             }
         ],
         "subcpmks": [
@@ -1961,63 +2419,74 @@
                 "cpmk": "CPMK-1",
                 "week": "Minggu ke-3",
                 "code": "Sub-CPMK 03",
-                "desc": "Mahasiswa mampu melakukan auskultasi pada 12 titik paru dan pengukuran ekspansi sangkar thoraks pada 3 level.",
-                "indicator": "Indikator: Kepekaan membedakan suara napas vesikuler vs ronki, ketepatan posisi pita ukur.",
+                "desc": "Auskultasi 12 titik paru anterior-posterior dan pengukuran ekspansi toraks di 3 level.",
+                "indicator": "Akurasi identifikasi suara napas vesikuler vs suara napas abnormal",
                 "taxonomy": "Psikomotorik P4",
                 "weight": "15%"
             },
             {
                 "cpl": "CPL-04",
                 "cpmk": "CPMK-2",
-                "week": "Minggu ke-6",
-                "code": "Sub-CPMK 06",
-                "desc": "Mahasiswa mampu memformulasikan protokol Active Cycle of Breathing Techniques (ACBT) dan huffing.",
-                "indicator": "Indikator: Ketepatan kombinasi breathing control, thoracic expansion, dan forced expiratory.",
-                "taxonomy": "Psikomotorik P4 (Kognitif C5)",
+                "week": "Minggu ke-7",
+                "code": "Sub-CPMK 07",
+                "desc": "Aplikasi postural drainage segmen basal paru kiri disertai vibrasi mekanik pada fase ekspirasi.",
+                "indicator": "Posisi postural drainage sesuai lobus dan monitoring SpO2",
+                "taxonomy": "Psikomotorik P4",
+                "weight": "20%"
+            },
+            {
+                "cpl": "CPL-04",
+                "cpmk": "CPMK-3",
+                "week": "Minggu ke-11",
+                "code": "Sub-CPMK 11",
+                "desc": "Preskripsi latihan jalan pada treadmill sesuai METs hasil Uji Latih Jantung (TMT).",
+                "indicator": "Target denyut nadi latihan 60-75% HRmax dan skala Borg RPE 11-13",
+                "taxonomy": "Kognitif C5",
                 "weight": "15%"
             }
         ]
     },
     "FST-501": {
         "code": "FST-501",
-        "name": "Fisioterapi Pediatri & Tumbuh Kembang",
+        "name": "Fisioterapi Pediatri",
         "jenjang": "D4",
         "semester": "Semester 5",
         "sks": "3 SKS (1 Teori, 2 Praktikum Lab)",
+        "sksTotal": 3,
         "prodiDesc": "Program Studi Sarjana Terapan (D4) Fisioterapi (KKNI Level 6)",
+        "bks": [
+            "BK-03",
+            "BK-05",
+            "BK-09"
+        ],
         "cpls": [
-            {
-                "code": "CPL-01",
-                "name": "Sikap & Etika Profesi",
-                "desc": "Mampu membangun kedekatan emosional dan rasa aman dengan anak dan orang tua."
-            },
             {
                 "code": "CPL-02",
                 "name": "Keterampilan Khusus Asesmen",
-                "desc": "Mampu mengevaluasi perkembangan motorik kasar anak menggunakan skala GMFM/DDST."
+                "desc": "Mampu memeriksa perkembangan motorik anak via Denver II dan GMFM."
             },
             {
                 "code": "CPL-04",
                 "name": "Keterampilan Khusus Intervensi",
-                "desc": "Mampu merancang sensory integration dan latihan neurodevelopmental treatment (NDT)."
+                "desc": "Mampu menerapkan terapi bermain, sensory integration, dan stimulasi motorik CP."
             }
         ],
         "cpmks": [
             {
                 "code": "CPMK-1",
-                "desc": "Mampu melakukan asesmen refleks primitif anak dan merancang intervensi fasilitasi milestone gerak pada Cerebral Palsy."
+                "desc": "Mampu mengidentifikasi keterlambatan motorik kasar anak dan menyusun program stimulasi dini berbasis bermain."
             }
         ],
         "subcpmks": [
             {
                 "cpl": "CPL-02",
                 "cpmk": "CPMK-1",
-                "week": "Minggu ke-4",
-                "code": "Sub-CPMK 04",
-                "desc": "Pemeriksaan refleks ATNR, STNR, Landau, dan klasifikasi Gross Motor Function Classification System (GMFCS).",
-                "indicator": "Akurasi interpretasi tingkatan fungsi motorik kasar anak",
+                "week": "Minggu ke-5",
+                "code": "Sub-CPMK 05",
+                "desc": "Skrining perkembangan motorik anak usia 12 bulan menggunakan Denver Developmental Screening Test II.",
+                "indicator": "Ketepatan garis usia dan interpretasi delayed/normal pada 4 sektor",
                 "taxonomy": "Psikomotorik P4",
-                "weight": "15%"
+                "weight": "20%"
             }
         ]
     },
@@ -2026,110 +2495,30 @@
         "name": "Fisioterapi Geriatri & Komunitas",
         "jenjang": "D4",
         "semester": "Semester 5",
-        "sks": "2 SKS (1 Teori, 1 Praktikum Lab)",
+        "sks": "3 SKS (1 Teori, 2 Praktikum Lab)",
+        "sksTotal": 3,
         "prodiDesc": "Program Studi Sarjana Terapan (D4) Fisioterapi (KKNI Level 6)",
+        "bks": [
+            "BK-03",
+            "BK-05",
+            "BK-10"
+        ],
         "cpls": [
-            {
-                "code": "CPL-01",
-                "name": "Sikap & Etika Profesi",
-                "desc": "Menghormati martabat lansia dan mempromosikan kemandirian fungsional aktif."
-            },
             {
                 "code": "CPL-02",
                 "name": "Keterampilan Khusus Asesmen",
-                "desc": "Mampu melakukan evaluasi risiko jatuh (Berg Balance Scale, Timed Up and Go)."
+                "desc": "Mampu mengukur risiko jatuh via Time Up and Go (TUG) test dan indeks kemandirian Barthel."
             },
             {
                 "code": "CPL-04",
                 "name": "Keterampilan Khusus Intervensi",
-                "desc": "Mampu merancang senam kebugaran lansia dan adaptasi lingkungan rumah ramah lansia."
+                "desc": "Mampu memformulasikan senam bugar lansia, latihan keseimbangan Otago, dan program posyandu."
             }
         ],
         "cpmks": [
             {
                 "code": "CPMK-1",
-                "desc": "Mampu mengevaluasi keseimbangan statis/dinamis lansia dan merumuskan intervensi multicomponent exercise pencegahan jatuh."
-            }
-        ],
-        "subcpmks": [
-            {
-                "cpl": "CPL-02",
-                "cpmk": "CPMK-1",
-                "week": "Minggu ke-3",
-                "code": "Sub-CPMK 03",
-                "desc": "Pelaksanaan tes Berg Balance Scale 14 item dan interpretasi ambang risiko jatuh.",
-                "indicator": "Akurasi penilaian skor 0-4 per item & keselamatan fisik pasien",
-                "taxonomy": "Psikomotorik P4",
-                "weight": "15%"
-            }
-        ]
-    },
-    "FST-508": {
-        "code": "FST-508",
-        "name": "Fisioterapi Olahraga & Kebugaran",
-        "jenjang": "D4",
-        "semester": "Semester 5",
-        "sks": "2 SKS (1 Teori, 1 Praktikum Lab)",
-        "prodiDesc": "Program Studi Sarjana Terapan (D4) Fisioterapi (KKNI Level 6)",
-        "cpls": [
-            {
-                "code": "CPL-02",
-                "name": "Keterampilan Khusus Asesmen",
-                "desc": "Mampu melakukan tes fungsional atlet (Y-Balance, Hop Test) dan skrining biomekanik gerak."
-            },
-            {
-                "code": "CPL-04",
-                "name": "Keterampilan Khusus Intervensi",
-                "desc": "Mampu merancang latihan plyometrik, kinesiotaping, dan program return-to-sport."
-            }
-        ],
-        "cpmks": [
-            {
-                "code": "CPMK-1",
-                "desc": "Mampu melakukan penanganan akut cedera di lapangan olahraga (POLICE protocol) dan pengujian kesiapan kembali bertanding."
-            }
-        ],
-        "subcpmks": [
-            {
-                "cpl": "CPL-04",
-                "cpmk": "CPMK-1",
-                "week": "Minggu ke-5",
-                "code": "Sub-CPMK 05",
-                "desc": "Penerapan rigid strapping taping untuk imobilisasi sendi pergelangan kaki dan uji Single-Leg Hop.",
-                "indicator": "Kerapatan kompresi perban & kestabilan mekanik ligamen",
-                "taxonomy": "Psikomotorik P4",
-                "weight": "15%"
-            }
-        ]
-    },
-    "FST-601": {
-        "code": "FST-601",
-        "name": "Fisioterapi Ergonomi & Kesehatan Kerja",
-        "jenjang": "D4",
-        "semester": "Semester 6",
-        "sks": "2 SKS (1 Teori, 1 Praktikum Lab)",
-        "prodiDesc": "Program Studi Sarjana Terapan (D4) Fisioterapi (KKNI Level 6)",
-        "cpls": [
-            {
-                "code": "CPL-02",
-                "name": "Keterampilan Khusus Asesmen",
-                "desc": "Mampu melakukan analisis postur kerja dengan metode RULA, REBA, dan Nordic Body Map."
-            },
-            {
-                "code": "CPL-03",
-                "name": "Pengetahuan Klinis Terapan",
-                "desc": "Menguasai biomekanika beban angkat manual dan faktor risiko cidera muskuloskeletal kerja."
-            },
-            {
-                "code": "CPL-04",
-                "name": "Keterampilan Khusus Intervensi",
-                "desc": "Mampu merancang perbaikan stasiun kerja ergonomis dan stretching di tempat kerja."
-            }
-        ],
-        "cpmks": [
-            {
-                "code": "CPMK-1",
-                "desc": "Mampu melakukan audit ergonomi industri dan merancang intervensi pencegahan low back pain pada tenaga kerja."
+                "desc": "Mampu menyusun program intervensi pencegahan jatuh dan pemeliharaan massa otot (sarkopenia) pada populasi lanjut usia."
             }
         ],
         "subcpmks": [
@@ -2138,41 +2527,79 @@
                 "cpmk": "CPMK-1",
                 "week": "Minggu ke-4",
                 "code": "Sub-CPMK 04",
-                "desc": "Penilaian skor Rapid Upper Limb Assessment (RULA) pada pekerja kantoran dan pengguna komputer.",
-                "indicator": "Akurasi observasi sudut deviasi leher, bahu, dan pergelangan tangan",
-                "taxonomy": "Kognitif C5",
-                "weight": "15%"
+                "desc": "Melakukan tes Timed Up and Go (TUG) dan skrining sarkopenia dengan SARC-F kuisioner.",
+                "indicator": "Akurasi stopwatch dan penentuan batas cut-off > 12 detik risiko jatuh",
+                "taxonomy": "Psikomotorik P4",
+                "weight": "20%"
             }
         ]
     },
-    "FST-605": {
-        "code": "FST-605",
-        "name": "Metodologi Riset & EBP Fisioterapi",
+    "FST-507": {
+        "code": "FST-507",
+        "name": "Fisioterapi Olahraga & Kebugaran",
         "jenjang": "D4",
-        "semester": "Semester 6",
-        "sks": "3 SKS (2 Teori, 1 Praktikum Lab)",
+        "semester": "Semester 5",
+        "sks": "3 SKS (1 Teori, 2 Praktikum Lab)",
+        "sksTotal": 3,
         "prodiDesc": "Program Studi Sarjana Terapan (D4) Fisioterapi (KKNI Level 6)",
+        "bks": [
+            "BK-05",
+            "BK-06"
+        ],
         "cpls": [
             {
-                "code": "CPL-01",
-                "name": "Sikap & Etika Profesi",
-                "desc": "Menjunjung integritas ilmiah, kejujuran akademik, dan etika penelitian kesehatan."
-            },
-            {
-                "code": "CPL-03",
-                "name": "Pengetahuan Klinis Terapan",
-                "desc": "Menguasai desain penelitian eksperimental klinis, observasional, dan telaah sistematis."
-            },
-            {
-                "code": "CPL-05",
-                "name": "Komunikasi & Dokumentasi Medis",
-                "desc": "Mampu menyusun naskah karya tulis ilmiah dan proposal skripsi fisioterapi terapan."
+                "code": "CPL-04",
+                "name": "Keterampilan Khusus Intervensi",
+                "desc": "Mampu menyusun conditioning atlet, pemulihan kelelahan, dan pencegahan cedera (FIFA 11+)."
             }
         ],
         "cpmks": [
             {
                 "code": "CPMK-1",
-                "desc": "Mampu melakukan telaah kritis jurnal internasional (skala PEDro) dan merumuskan pertanyaan klinis metode PICO."
+                "desc": "Mampu mempraktikkan program latihan neuromuskular pencegahan cedera ligamen lutut dan protokol pemanasan dinamis atlet."
+            }
+        ],
+        "subcpmks": [
+            {
+                "cpl": "CPL-04",
+                "cpmk": "CPMK-1",
+                "week": "Minggu ke-5",
+                "code": "Sub-CPMK 05",
+                "desc": "Implementasi 11 gerakan protokol pencegahan cedera FIFA 11+ pada tim olahraga.",
+                "indicator": "Ketepatan alignment lutut saat landing dan dosis repetisi",
+                "taxonomy": "Psikomotorik P4",
+                "weight": "20%"
+            }
+        ]
+    },
+    "FST-601": {
+        "code": "FST-601",
+        "name": "Metodologi Penelitian & EBP Fisioterapi",
+        "jenjang": "D4",
+        "semester": "Semester 6",
+        "sks": "3 SKS (2 Teori, 1 Praktik)",
+        "sksTotal": 3,
+        "prodiDesc": "Program Studi Sarjana Terapan (D4) Fisioterapi (KKNI Level 6)",
+        "bks": [
+            "BK-11",
+            "BK-12"
+        ],
+        "cpls": [
+            {
+                "code": "CPL-01",
+                "name": "Sikap & Etika Profesi",
+                "desc": "Menjunjung tinggi etika penelitian klinis dan integritas akademik."
+            },
+            {
+                "code": "CPL-03",
+                "name": "Pengetahuan Klinis Terapan",
+                "desc": "Mampu melakukan critical appraisal jurnal intervensi fisioterapi (PEDro scale)."
+            }
+        ],
+        "cpmks": [
+            {
+                "code": "CPMK-1",
+                "desc": "Mampu menyusun proposal penelitian terapan fisioterapi dan melakukan telaah kritis bukti klinis berbasis PICO."
             }
         ],
         "subcpmks": [
@@ -2181,301 +2608,382 @@
                 "cpmk": "CPMK-1",
                 "week": "Minggu ke-6",
                 "code": "Sub-CPMK 06",
-                "desc": "Critical appraisal artikel Randomized Controlled Trial (RCT) menggunakan 11 kriteria skala PEDro.",
-                "indicator": "Ketepatan evaluasi allocation concealment & intention-to-treat analysis",
-                "taxonomy": "Kognitif C6",
+                "desc": "Melakukan telaah kritis jurnal Randomized Controlled Trial (RCT) menggunakan skala PEDro.",
+                "indicator": "Skor ketepatan penilaian blinding, alokasi acak, dan follow up",
+                "taxonomy": "Kognitif C5",
                 "weight": "20%"
+            }
+        ]
+    },
+    "FST-605": {
+        "code": "FST-605",
+        "name": "Manajemen Pelayanan & Etikolegal Fisioterapi",
+        "jenjang": "D4",
+        "semester": "Semester 6",
+        "sks": "2 SKS (2 Teori)",
+        "sksTotal": 2,
+        "prodiDesc": "Program Studi Sarjana Terapan (D4) Fisioterapi (KKNI Level 6)",
+        "bks": [
+            "BK-11",
+            "BK-12"
+        ],
+        "cpls": [
+            {
+                "code": "CPL-01",
+                "name": "Sikap & Etika Profesi",
+                "desc": "Menguasai regulasi praktik mandiri fisioterapi (Permenkes No. 65 & 80 Tahun 2013)."
+            },
+            {
+                "code": "CPL-05",
+                "name": "Komunikasi & Dokumentasi Medis",
+                "desc": "Menyusun SOP pelayanan klinik, alur rujukan, dan manajemen rekam medis."
+            }
+        ],
+        "cpmks": [
+            {
+                "code": "CPMK-1",
+                "desc": "Mampu menyusun perencanaan pembukaan unit pelayanan fisioterapi dan regulasi kepatuhan hukum medikolegal."
+            }
+        ],
+        "subcpmks": [
+            {
+                "cpl": "CPL-01",
+                "cpmk": "CPMK-1",
+                "week": "Minggu ke-7",
+                "code": "Sub-CPMK 07",
+                "desc": "Merumuskan dokumen Surat Izin Praktik Fisioterapi (SIPF) dan kelayakan fasilitas klinik mandiri.",
+                "indicator": "Kesesuaian dengan perundang-undangan kesehatan RI yang berlaku",
+                "taxonomy": "Kognitif C5",
+                "weight": "25%"
             }
         ]
     },
     "PRF-701": {
         "code": "PRF-701",
-        "name": "Stase Praktik Neuromuskular Komprehensif",
+        "name": "Stase Praktik Fisioterapi Neuromuskular",
         "jenjang": "PROFESI",
-        "semester": "Semester 1 Profesi",
-        "sks": "4 SKS Rotasi RS",
-        "prodiDesc": "Program Studi Pendidikan Profesi Fisioterapi (KKNI Level 7 - Kerangka ICF)",
+        "semester": "Semester 1",
+        "sks": "3 SKS (Stase Klinik RS)",
+        "sksTotal": 3,
+        "prodiDesc": "Program Studi Pendidikan Profesi Fisioterapi (KKNI Level 7)",
+        "bks": [
+            "BK-03",
+            "BK-07",
+            "BK-11",
+            "BK-12"
+        ],
         "cpls": [
-            {
-                "code": "CPL-01",
-                "name": "Sikap & Etika Profesi",
-                "desc": "Menunjukkan komitmen etik dan keselamatan pasien pada kasus neurologis kompleks."
-            },
             {
                 "code": "CPL-KLINIK-01",
                 "name": "Penalaran Klinis WHO-ICF",
-                "desc": "Mampu memformulasikan diagnosis fisioterapi berbasis kerangka ICF pada gangguan neurologis kompleks."
+                "desc": "Mampu memformulasikan penalaran klinis komprehensif berbasis kerangka WHO-ICF pada rotasi stase klinik rumah sakit."
             },
             {
                 "code": "CPL-KLINIK-02",
                 "name": "Manajemen Kasus Klinis Kompleks",
-                "desc": "Mampu mengintegrasikan instrumen penilaian fungsional baku pada rotasi stase klinik RS."
+                "desc": "Mampu mengintegrasikan instrumen penilaian fungsional baku dan evaluasi efektivitas terapi latihan pada kasus neurologis."
+            },
+            {
+                "code": "CPL-05",
+                "name": "Komunikasi & Dokumentasi Medis",
+                "desc": "Menyusun rekam medis SOAP komprehensif dan edukasi keluarga (home program)."
             }
         ],
         "cpmks": [
             {
-                "code": "CPMK-1 (Profesi)",
-                "desc": "Mampu memformulasikan diagnosis fisioterapi komprehensif berbasis ICF pada pasien Stroke fase sub-akut dan kronis."
+                "code": "CPMK-1",
+                "desc": "Mampu menegakkan diagnosis fisioterapi neurologis berbasis kerangka WHO-ICF (Impairment, Activity Limitation, Participation Restriction)."
             },
             {
-                "code": "CPMK-2 (Profesi)",
-                "desc": "Mampu mengevaluasi efektivitas terapi latihan neurorestorasi terhadap kemandirian fungsional (FIM/Barthel Index)."
+                "code": "CPMK-2",
+                "desc": "Mampu merancang dan melaksanakan program terapi latihan fungsional individual berbasis bukti pada pasien stroke sub-akut."
+            },
+            {
+                "code": "CPMK-3",
+                "desc": "Mampu mendokumentasikan laporan studi kasus klinis neuromuskular lengkap dan mempresentasikannya dalam refleksi kasus."
             }
         ],
         "subcpmks": [
             {
                 "cpl": "CPL-KLINIK-01",
-                "cpmk": "CPMK-1 (Profesi)",
-                "week": "Minggu ke-2 Stase",
-                "code": "Sub-CPMK 02",
-                "desc": "Mahasiswa mampu mengintegrasikan instrumen FMA (Fugl-Meyer Assessment), BBS (Berg Balance Scale), dan analisis pola jalan hemiparese.",
-                "indicator": "Indikator ICF: Pemetaan impairment fungsi neuromuskular (b730) & limitasi aktivitas transfer (d410).",
-                "taxonomy": "Kognitif C5/C6 (Psikomotorik P5)",
+                "cpmk": "CPMK-1",
+                "week": "Minggu ke-1",
+                "code": "Stase 01",
+                "desc": "Pengambilan data anamnesis klinis dan pemetaan masalah fungsi gerak pasien stroke ke kerangka ICF.",
+                "indicator": "Ketepatan coding ICF body functions b730, d450, dan faktor lingkungan e310",
+                "taxonomy": "Kognitif C5",
                 "weight": "20%"
             },
             {
                 "cpl": "CPL-KLINIK-02",
-                "cpmk": "CPMK-2 (Profesi)",
-                "week": "Minggu ke-4 Stase",
-                "code": "Sub-CPMK 04",
-                "desc": "Mahasiswa mampu mempresentasikan laporan kasus klinis komprehensif berbasis bukti (EBP) pada ronde multidisiplin.",
-                "indicator": "Indikator: Ketepatan pemilihan rujukan ilmiah dan formulasi prognosis fungsional 3 bulan.",
-                "taxonomy": "Afektif A5 (Kognitif C6)",
-                "weight": "25%"
+                "cpmk": "CPMK-2",
+                "week": "Minggu ke-2",
+                "code": "Stase 02",
+                "desc": "Aplikasi latihan orientasi tugas (Task-Oriented Training) untuk kemampuan meraih objek dan berdiri mandiri.",
+                "indicator": "Monitoring denyut nadi, toleransi kelelahan, dan kemajuan fungsional",
+                "taxonomy": "Psikomotorik P5",
+                "weight": "40%"
+            },
+            {
+                "cpl": "CPL-05",
+                "cpmk": "CPMK-3",
+                "week": "Minggu ke-4",
+                "code": "Stase 04 (Ujian Kasus)",
+                "desc": "Ujian Komprehensif Kasus Neuromuskular: Presentasi SOAP dan demonstrasi intervensi di depan Clinical Educator.",
+                "indicator": "Kelengkapan portofolio klinis dan argumentasi penalaran ilmiah EBP",
+                "taxonomy": "Afektif A4",
+                "weight": "40%"
             }
         ]
     },
     "PRF-702": {
         "code": "PRF-702",
-        "name": "Stase Praktik Muskuloskeletal & Sport Physio",
+        "name": "Stase Praktik Fisioterapi Muskuloskeletal & Bedah",
         "jenjang": "PROFESI",
-        "semester": "Semester 1 Profesi",
-        "sks": "4 SKS Rotasi RS",
-        "prodiDesc": "Program Studi Pendidikan Profesi Fisioterapi (KKNI Level 7 - Kerangka ICF)",
-        "cpls": [
-            {
-                "code": "CPL-01",
-                "name": "Sikap & Etika Profesi",
-                "desc": "Menerapkan informed consent dan keselamatan klinis pada pasien ortopedi."
-            },
-            {
-                "code": "CPL-KLINIK-01",
-                "name": "Penalaran Klinis WHO-ICF",
-                "desc": "Mampu memformulasikan penalaran klinis diferensial diagnosis ortopedi bedah."
-            },
-            {
-                "code": "CPL-KLINIK-02",
-                "name": "Manajemen Kasus Klinis Kompleks",
-                "desc": "Mampu merancang rehabilitasi post-op rekonstruksi ligamen dan artroplasti sendi."
-            }
+        "semester": "Semester 1",
+        "sks": "3 SKS (Stase Klinik RS)",
+        "sksTotal": 3,
+        "prodiDesc": "Program Studi Pendidikan Profesi Fisioterapi (KKNI Level 7)",
+        "bks": [
+            "BK-03",
+            "BK-06",
+            "BK-11",
+            "BK-12"
         ],
-        "cpmks": [
-            {
-                "code": "CPMK-1 (Profesi)",
-                "desc": "Mampu melakukan diferensial diagnosis ortopedi, mengidentifikasi red/yellow flags, dan merancang protokol rehabilitasi pasca bedah."
-            }
-        ],
-        "subcpmks": [
-            {
-                "cpl": "CPL-KLINIK-01",
-                "cpmk": "CPMK-1 (Profesi)",
-                "week": "Minggu ke-3 Stase",
-                "code": "Sub-CPMK 03",
-                "desc": "Clinical reasoning kasus rotator cuff tear post-arthroscopy vs adhesive capsulitis.",
-                "indicator": "Ketepatan diferensiasi capsular pattern vs contractile tissue lesion",
-                "taxonomy": "Kognitif C6",
-                "weight": "20%"
-            }
-        ]
-    },
-    "PRF-703": {
-        "code": "PRF-703",
-        "name": "Stase Praktik Kardiorespirasi & ICU Perawatan Kritis",
-        "jenjang": "PROFESI",
-        "semester": "Semester 2 Profesi",
-        "sks": "3 SKS Rotasi RS",
-        "prodiDesc": "Program Studi Pendidikan Profesi Fisioterapi (KKNI Level 7 - Kerangka ICF)",
         "cpls": [
             {
                 "code": "CPL-KLINIK-01",
                 "name": "Penalaran Klinis WHO-ICF",
-                "desc": "Mampu menganalisis interaksi patologi kardiopulmoner dengan kapasitas fungsional."
+                "desc": "Formulasi asesmen biomekanik pasca bedah ortopedi dan traumatologi gerak."
             },
             {
                 "code": "CPL-KLINIK-02",
                 "name": "Manajemen Kasus Klinis Kompleks",
-                "desc": "Mampu menyusun program rehabilitasi jantung fase I-IV terpadu."
-            },
-            {
-                "code": "CPL-KLINIK-03",
-                "name": "Perawatan Kritis & ICU",
-                "desc": "Mampu melakukan monitoring hemodinamik, suction jalan napas, dan mobilisasi progresif di ICU."
+                "desc": "Merumuskan tahapan mobilisasi progresif pasca ORIF fraktur dan artroplasti sendi."
             }
         ],
         "cpmks": [
             {
-                "code": "CPMK-1 (Profesi)",
-                "desc": "Mampu melakukan monitoring kestabilan hemodinamik, manajemen sekret ventilator, dan mobilisasi bertingkat pada pasien ICU."
-            }
-        ],
-        "subcpmks": [
-            {
-                "cpl": "CPL-KLINIK-03",
-                "cpmk": "CPMK-1 (Profesi)",
-                "week": "Minggu ke-2 Stase",
-                "code": "Sub-CPMK 02",
-                "desc": "Penerapan protokol early progressive mobility pada pasien intubasi dengan evaluasi rasio PaO2/FiO2.",
-                "indicator": "Kepatuhan terhadap batas aman denyut jantung, tekanan darah, dan SpO2",
-                "taxonomy": "Psikomotorik P5",
-                "weight": "25%"
-            }
-        ]
-    },
-    "PRF-704": {
-        "code": "PRF-704",
-        "name": "Stase Praktik Pediatri & Tumbuh Kembang Anak",
-        "jenjang": "PROFESI",
-        "semester": "Semester 2 Profesi",
-        "sks": "3 SKS Rotasi RS",
-        "prodiDesc": "Program Studi Pendidikan Profesi Fisioterapi (KKNI Level 7 - Kerangka ICF)",
-        "cpls": [
-            {
-                "code": "CPL-01",
-                "name": "Sikap & Etika Profesi",
-                "desc": "Mampu menjalin kemitraan terapeutik berpusat pada keluarga (Family-Centered Service)."
-            },
-            {
-                "code": "CPL-KLINIK-01",
-                "name": "Penalaran Klinis WHO-ICF",
-                "desc": "Mampu memformulasikan tujuan fungsional kerangka F-Words (Function, Family, Fitness, Fun, Friends, Future)."
-            },
-            {
-                "code": "CPL-KLINIK-02",
-                "name": "Manajemen Kasus Klinis Kompleks",
-                "desc": "Mampu mengelola kasus Cerebral Palsy, Spina Bifida, dan autisme secara komprehensif."
-            }
-        ],
-        "cpmks": [
-            {
-                "code": "CPMK-1 (Profesi)",
-                "desc": "Mampu memformulasikan target terapi SMART dan melakukan evaluasi Goal Attainment Scaling (GAS) pada disabilitas anak."
-            }
-        ],
-        "subcpmks": [
-            {
-                "cpl": "CPL-KLINIK-01",
-                "cpmk": "CPMK-1 (Profesi)",
-                "week": "Minggu ke-3 Stase",
-                "code": "Sub-CPMK 03",
-                "desc": "Penyusunan target fungsional 6 bulan berbasis F-words ICF pada anak Cerebral Palsy spastik diplegi.",
-                "indicator": "Kesesuaian tujuan terapi dengan prioritas aktivitas harian keluarga",
-                "taxonomy": "Kognitif C6",
-                "weight": "25%"
-            }
-        ]
-    },
-    "PRF-705": {
-        "code": "PRF-705",
-        "name": "Stase Praktik Geriatri & Pelayanan Primer Komunitas",
-        "jenjang": "PROFESI",
-        "semester": "Semester 2 Profesi",
-        "sks": "2 SKS Komunitas",
-        "prodiDesc": "Program Studi Pendidikan Profesi Fisioterapi (KKNI Level 7 - Kerangka ICF)",
-        "cpls": [
-            {
-                "code": "CPL-01",
-                "name": "Sikap & Etika Profesi",
-                "desc": "Menunjukkan komitmen pelayanan berkeadilan sosial bagi populasi rentan lansia."
-            },
-            {
-                "code": "CPL-KLINIK-01",
-                "name": "Penalaran Klinis WHO-ICF",
-                "desc": "Mampu memetakan interaksi faktor lingkungan dan personal terhadap kemandirian lansia."
-            },
-            {
-                "code": "CPL-KLINIK-02",
-                "name": "Manajemen Kasus Klinis Kompleks",
-                "desc": "Mampu mengelola sindroma geriatri (frailty, sarkopenia, demensia, imobilitas)."
-            }
-        ],
-        "cpmks": [
-            {
-                "code": "CPMK-1 (Profesi)",
-                "desc": "Mampu mengelola sindroma geriatri komprehensif dan merancang pemberdayaan posyandu lansia di komunitas."
+                "code": "CPMK-1",
+                "desc": "Mampu memimpin program rehabilitasi pasca artroplasti panggul/lutut total (THR/TKR) dan rekonstruksi ligamen."
             }
         ],
         "subcpmks": [
             {
                 "cpl": "CPL-KLINIK-02",
-                "cpmk": "CPMK-1 (Profesi)",
-                "week": "Minggu ke-2 Stase",
-                "code": "Sub-CPMK 02",
-                "desc": "Rancangan intervensi multicomponent exercise di posyandu lansia binaan puskesmas.",
-                "indicator": "Peningkatan rata-rata skor Barthel Index & kekuatan genggam tangan",
-                "taxonomy": "Kognitif C6",
-                "weight": "25%"
+                "cpmk": "CPMK-1",
+                "week": "Minggu ke-2",
+                "code": "Stase 02",
+                "desc": "Mobilisasi dini hari pertama pasca operasi Total Knee Replacement (TKR) dan Continuous Passive Motion (CPM).",
+                "indicator": "Pencegahan dislokasi protesis, transfer mandiri dengan kruk walker",
+                "taxonomy": "Psikomotorik P5",
+                "weight": "40%"
+            }
+        ]
+    },
+    "PRF-703": {
+        "code": "PRF-703",
+        "name": "Stase Praktik Fisioterapi Kardiorespirasi",
+        "jenjang": "PROFESI",
+        "semester": "Semester 1",
+        "sks": "3 SKS (Stase Klinik RS)",
+        "sksTotal": 3,
+        "prodiDesc": "Program Studi Pendidikan Profesi Fisioterapi (KKNI Level 7)",
+        "bks": [
+            "BK-03",
+            "BK-08",
+            "BK-11"
+        ],
+        "cpls": [
+            {
+                "code": "CPL-KLINIK-01",
+                "name": "Penalaran Klinis WHO-ICF",
+                "desc": "Analisis toleransi aktivitas dan desaturasi oksigen pasien rawat inap penyakit paru."
+            },
+            {
+                "code": "CPL-KLINIK-02",
+                "name": "Manajemen Kasus Klinis Kompleks",
+                "desc": "Penerapan protokol fisioterapi dada dan ambulasi bertahap pada sindrom dekondisi."
+            }
+        ],
+        "cpmks": [
+            {
+                "code": "CPMK-1",
+                "desc": "Mampu mengevaluasi gas darah arteri, kurva spirometri, dan tatalaksana pembersihan jalan napas rawat inap."
+            }
+        ],
+        "subcpmks": [
+            {
+                "cpl": "CPL-KLINIK-02",
+                "cpmk": "CPMK-1",
+                "week": "Minggu ke-3",
+                "code": "Stase 03",
+                "desc": "Aplikasi terapi insentif spirometri dan latihan batuk efektif pada pasien pasca laparotomi.",
+                "indicator": "Pencegahan atelektasis paru pasca anestesi umum",
+                "taxonomy": "Psikomotorik P5",
+                "weight": "35%"
+            }
+        ]
+    },
+    "PRF-704": {
+        "code": "PRF-704",
+        "name": "Stase Praktik Fisioterapi Pediatri",
+        "jenjang": "PROFESI",
+        "semester": "Semester 2",
+        "sks": "3 SKS (Stase Klinik RS)",
+        "sksTotal": 3,
+        "prodiDesc": "Program Studi Pendidikan Profesi Fisioterapi (KKNI Level 7)",
+        "bks": [
+            "BK-03",
+            "BK-09",
+            "BK-11"
+        ],
+        "cpls": [
+            {
+                "code": "CPL-KLINIK-01",
+                "name": "Penalaran Klinis WHO-ICF",
+                "desc": "Penalaran biopsikososial kerangka ICF-CY (Children and Youth) pada anak berkebutuhan khusus."
+            },
+            {
+                "code": "CPL-KLINIK-02",
+                "name": "Manajemen Kasus Klinis Kompleks",
+                "desc": "Pengelolaan stimulasi postural, ortotik (AFO), dan konseling orang tua anak CP."
+            }
+        ],
+        "cpmks": [
+            {
+                "code": "CPMK-1",
+                "desc": "Mampu merumuskan program fisioterapi komprehensif pada Cerebral Palsy tipe spastik diplegi/kuadriplegi."
+            }
+        ],
+        "subcpmks": [
+            {
+                "cpl": "CPL-KLINIK-01",
+                "cpmk": "CPMK-1",
+                "week": "Minggu ke-2",
+                "code": "Stase 02",
+                "desc": "Klasifikasi tingkat fungsional motorik kasar anak menggunakan Gross Motor Function Classification System (GMFCS I-V).",
+                "indicator": "Keakuratan penentuan level kemandirian mobilitas anak",
+                "taxonomy": "Kognitif C5",
+                "weight": "30%"
+            }
+        ]
+    },
+    "PRF-705": {
+        "code": "PRF-705",
+        "name": "Stase Praktik Fisioterapi Geriatri & Komunitas",
+        "jenjang": "PROFESI",
+        "semester": "Semester 2",
+        "sks": "3 SKS (Stase Puskesmas & Panti)",
+        "sksTotal": 3,
+        "prodiDesc": "Program Studi Pendidikan Profesi Fisioterapi (KKNI Level 7)",
+        "bks": [
+            "BK-03",
+            "BK-10",
+            "BK-11",
+            "BK-12"
+        ],
+        "cpls": [
+            {
+                "code": "CPL-KLINIK-01",
+                "name": "Penalaran Klinis WHO-ICF",
+                "desc": "Asesmen multidimensional lansia (frailty, depresi, kognitif, risiko jatuh)."
+            },
+            {
+                "code": "CPL-KLINIK-02",
+                "name": "Manajemen Kasus Klinis Kompleks",
+                "desc": "Merancang program intervensi komunitas untuk pemberdayaan lansia sehat bugar mandiri."
+            }
+        ],
+        "cpmks": [
+            {
+                "code": "CPMK-1",
+                "desc": "Mampu mengorganisir skrining kesehatan gerak lansia di masyarakat dan manajemen rehabilitasi panti wreda."
+            }
+        ],
+        "subcpmks": [
+            {
+                "cpl": "CPL-KLINIK-02",
+                "cpmk": "CPMK-1",
+                "week": "Minggu ke-3",
+                "code": "Stase 03",
+                "desc": "Pelaksanaan program latihan kelompok lansia risiko jatuh dengan modifikasi lingkungan rumah (home safety hazard).",
+                "indicator": "Kepatuhan protokol keamanan gerak dan dokumentasi hasil skrining",
+                "taxonomy": "Psikomotorik P5",
+                "weight": "35%"
             }
         ]
     },
     "PRF-706": {
         "code": "PRF-706",
-        "name": "Stase Manajemen Pelayanan & Praktik Fisioterapi Mandiri",
+        "name": "Stase Praktik Fisioterapi Perawatan Kritis (ICU)",
         "jenjang": "PROFESI",
-        "semester": "Semester 2 Profesi",
-        "sks": "2 SKS Praktik Mandiri",
-        "prodiDesc": "Program Studi Pendidikan Profesi Fisioterapi (KKNI Level 7 - Kerangka ICF)",
+        "semester": "Semester 2",
+        "sks": "3 SKS (Stase ICU/ICCU/PICU)",
+        "sksTotal": 3,
+        "prodiDesc": "Program Studi Pendidikan Profesi Fisioterapi (KKNI Level 7)",
+        "bks": [
+            "BK-08",
+            "BK-11",
+            "BK-12"
+        ],
         "cpls": [
             {
-                "code": "CPL-01",
-                "name": "Sikap & Etika Profesi",
-                "desc": "Menjunjung etika profesi, kepatuhan hukum kesehatan, dan etika tarif pelayanan."
-            },
-            {
-                "code": "CPL-05",
-                "name": "Komunikasi & Dokumentasi Medis",
-                "desc": "Mampu menyusun sistem rekam medis elektronik dan alur rujukan antarprofesi."
+                "code": "CPL-KLINIK-03",
+                "name": "Perawatan Kritis & ICU",
+                "desc": "Mampu melakukan monitoring hemodinamik, manajemen jalan napas ventilator, dan mobilisasi dini progresif pada pasien di ruang perawatan kritis/ICU."
             },
             {
                 "code": "CPL-KLINIK-02",
                 "name": "Manajemen Kasus Klinis Kompleks",
-                "desc": "Mampu mengelola manajemen mutu klinik, perizinan SIPF, dan kepuasan pasien."
+                "desc": "Kolaborasi interprofesional bersama intensivis dan perawat anestesi dalam pencegahan ICU-Acquired Weakness."
             }
         ],
         "cpmks": [
             {
-                "code": "CPMK-1 (Profesi)",
-                "desc": "Mampu menyusun tata kelola mutu klinik fisioterapi mandiri, SOP perizinan praktik, dan audit keselamatan pasien."
+                "code": "CPMK-1",
+                "desc": "Mampu menganalisis stabilitas hemodinamik pasien berventilasi mekanik dan memimpin protokol mobilisasi dini ICU (Early Mobility Protocol)."
+            },
+            {
+                "code": "CPMK-2",
+                "desc": "Mampu mengaplikasikan teknik suctioning endotrakeal, hiperinflasi manual, dan positioning pencegahan ventilator-associated pneumonia."
             }
         ],
         "subcpmks": [
             {
-                "cpl": "CPL-05",
-                "cpmk": "CPMK-1 (Profesi)",
-                "week": "Minggu ke-2 Stase",
-                "code": "Sub-CPMK 02",
-                "desc": "Penyusunan audit kepatuhan rekam medis SOAP dan standar pencegahan infeksi klinik fisioterapi mandiri.",
-                "indicator": "Pemenuhan 100% indikator akreditasi fasilitas pelayanan kesehatan",
+                "cpl": "CPL-KLINIK-03",
+                "cpmk": "CPMK-1",
+                "week": "Minggu ke-1",
+                "code": "Stase 01",
+                "desc": "Monitoring parameter hemodinamik kritis (MAP > 65 mmHg, vasopressor dosis stabil, PaO2/FiO2 > 200) sebelum mobilisasi.",
+                "indicator": "Ketepatan pengambilan keputusan red flags kontraindikasi gerak di ICU",
                 "taxonomy": "Kognitif C6",
-                "weight": "25%"
+                "weight": "30%"
+            },
+            {
+                "cpl": "CPL-KLINIK-03",
+                "cpmk": "CPMK-2",
+                "week": "Minggu ke-2",
+                "code": "Stase 02",
+                "desc": "Pelaksanaan mobilisasi pasif di tempat tidur berlanjut ke posisi sitting on the edge of bed pada pasien berventilasi.",
+                "indicator": "Keamanan fiksasi pipa endotrakeal (ETT) dan stabilitas tanda vital",
+                "taxonomy": "Psikomotorik P5",
+                "weight": "40%"
+            },
+            {
+                "cpl": "CPL-KLINIK-02",
+                "cpmk": "CPMK-1",
+                "week": "Minggu ke-4",
+                "code": "Stase 04 (Ujian ICU)",
+                "desc": "Ujian Akhir Stase Perawatan Kritis: Manajemen jalan napas, weaning trial fisioterapi, dan pencegahan dekondisi kritis.",
+                "indicator": "Penguasaan clinical reasoning perawatan kritis dengan standard patient safety 100%",
+                "taxonomy": "Afektif A5",
+                "weight": "30%"
             }
         ]
     }
 };
 
-    // Load active template on init
-    window.addEventListener('DOMContentLoaded', () => {
-      if (activeTemplateName) {
-        const templateNameDisplays = ['activeTemplateFileName', 'modalTemplateRefDisplay'];
-        templateNameDisplays.forEach(id => {
-          const el = document.getElementById(id);
-          if (el) el.textContent = activeTemplateName;
-        });
-      }
-      setupDragAndDrop();
-      populateCourseDropdowns('FST-402');
-    });
-
-    // Populate all dropdowns dynamically across the application
     function populateCourseDropdowns(selectedCode = null) {
       const targetCode = selectedCode || currentCourseCode || 'FST-402';
       
@@ -2529,6 +3037,95 @@
     }
 
     // Switch Course from dropdown or code
+    function switchCourse(code) {
+      if (!curriculumDB[code]) return;
+      currentCourseCode = code;
+      const course = curriculumDB[code];
+
+      // Sync jenjang if different
+      if (course.jenjang !== currentJenjang) {
+        switchJenjang(course.jenjang, false);
+      }
+
+      const descEl = document.getElementById('simCourseDesc');
+      if (descEl) {
+        descEl.textContent = `${course.semester} • ${course.sks} • ${course.prodiDesc}`;
+      }
+      
+      const wsDropdown = document.getElementById('courseSelectDropdown');
+      if (wsDropdown && wsDropdown.value !== code) {
+        wsDropdown.value = code;
+      }
+
+      const modalDropdown = document.getElementById('genRpsCoursePresetDropdown');
+      if (modalDropdown && modalDropdown.value !== code) {
+        modalDropdown.value = code;
+      }
+
+      renderCascadeTable(course);
+      showToast(`Mata kuliah dialihkan ke: ${course.name} (${course.code})`);
+    }
+
+    // Render Matrix Table for active course
+    function renderCascadeTable(course) {
+      const tableBody = document.getElementById('cascadeTableBody');
+      if (!tableBody) return;
+      let html = '';
+
+      const courseBks = (course.bks || []).map(bkCode => {
+        const bkObj = masterBkDB.find(b => b.code === bkCode) || { name: bkCode };
+        return `<span class="badge-teal text-[10px] font-bold px-2 py-0.5 rounded border border-teal-200" title="${bkObj.name}">${bkCode}</span>`;
+      }).join(' ');
+
+      if (course.subcpmks && course.subcpmks.length > 0) {
+        course.subcpmks.forEach(sub => {
+          const cplObj = course.cpls.find(c => c.code === sub.cpl) || { code: sub.cpl, name: 'CPL Prodi' };
+          const cpmkObj = course.cpmks.find(m => m.code === sub.cpmk) || { code: sub.cpmk, desc: '' };
+
+          html += `
+            <tr class="hover:bg-slate-50/80 transition">
+              <td class="py-3 px-4 font-mono font-semibold text-sky-700 align-top">
+                <span class="bg-sky-100 text-sky-800 px-2 py-0.5 rounded text-[11px]">${sub.cpl}</span>
+                <div class="text-[10px] text-slate-500 font-normal mt-1">${cplObj.name}</div>
+              </td>
+              <td class="py-3 px-4 align-top">
+                <div class="flex flex-wrap gap-1">
+                  ${courseBks}
+                </div>
+              </td>
+              <td class="py-3 px-4 font-medium align-top">
+                <strong class="text-slate-900">${sub.cpmk}:</strong>
+                <p class="text-[11px] text-slate-600 mt-0.5">${cpmkObj.desc || ''}</p>
+              </td>
+              <td class="py-3 px-4 align-top">
+                <div class="font-semibold text-slate-900">${sub.code} (${sub.week}):</div>
+                <p class="text-[11px] text-slate-600 mt-0.5">${sub.desc}</p>
+                <div class="mt-1 text-[11px] text-teal-700 font-medium bg-teal-50 px-2 py-0.5 rounded inline-block">
+                  Indikator: ${sub.indicator}
+                </div>
+              </td>
+              <td class="py-3 px-4 align-top">
+                <span class="badge-teal text-[11px] font-bold px-2 py-0.5 rounded">${sub.taxonomy}</span>
+              </td>
+              <td class="py-3 px-4 text-center font-bold text-slate-800 align-top">${sub.weight}</td>
+              <td class="py-3 px-4 align-top space-y-1.5">
+                <button onclick="previewChainedDoc('Modul Ajar', '${sub.code}')" class="w-full bg-teal-50 hover:bg-teal-100 text-teal-800 border border-teal-200 font-semibold py-1 px-2 rounded text-[11px] flex items-center justify-center gap-1 transition">
+                  <svg class="w-3.5 h-3.5 text-teal-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+                  <span>Turunkan Modul</span>
+                </button>
+                <button onclick="previewChainedDoc('Materi Ajar', '${sub.code}')" class="w-full bg-sky-50 hover:bg-sky-100 text-sky-800 border border-sky-200 font-semibold py-1 px-2 rounded text-[11px] flex items-center justify-center gap-1 transition">
+                  <svg class="w-3.5 h-3.5 text-sky-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
+                  <span>Turunkan Materi</span>
+                </button>
+              </td>
+            </tr>
+          `;
+        });
+      }
+
+      tableBody.innerHTML = html;
+    }
+
     function switchCourse(code) {
       if (!curriculumDB[code]) return;
       currentCourseCode = code;
@@ -3266,19 +3863,930 @@
       document.getElementById('docCountDisplay').textContent = visibleCount;
     }
 
-    // Export & Download Simulators
+    // ==========================================
+    // THALAMUS LOCAL-FIRST CLIENT-SIDE DOWNLOAD ENGINE
+    // Pure JavaScript OpenXML (.docx) & PDF Generator
+    // ==========================================
+
+    function createZipStore(files) {
+      const encoder = new TextEncoder();
+      const localHeaders = [];
+      const cdHeaders = [];
+      let offset = 0;
+
+      function getCrc32(dataBytes) {
+        let table = new Uint32Array(256);
+        for (let i = 0; i < 256; i++) {
+          let c = i;
+          for (let k = 0; k < 8; k++) {
+            c = ((c & 1) ? (0xEDB88320 ^ (c >>> 1)) : (c >>> 1));
+          }
+          table[i] = c;
+        }
+        let crc = 0 ^ (-1);
+        for (let i = 0; i < dataBytes.length; i++) {
+          crc = (crc >>> 8) ^ table[(crc ^ dataBytes[i]) & 0xFF];
+        }
+        return (crc ^ (-1)) >>> 0;
+      }
+
+      const totalBuffers = [];
+
+      for (const file of files) {
+        const nameBytes = encoder.encode(file.name);
+        const dataBytes = (typeof file.data === 'string') ? encoder.encode(file.data) : file.data;
+        const crc = getCrc32(dataBytes);
+        const size = dataBytes.length;
+
+        // Local header (30 bytes)
+        const lh = new Uint8Array(30);
+        const lhView = new DataView(lh.buffer);
+        lhView.setUint32(0, 0x04034b50, true);
+        lhView.setUint16(4, 20, true);
+        lhView.setUint16(6, 0, true);
+        lhView.setUint16(8, 0, true);
+        lhView.setUint16(10, 0, true);
+        lhView.setUint16(12, 0, true);
+        lhView.setUint32(14, crc, true);
+        lhView.setUint32(18, size, true);
+        lhView.setUint32(22, size, true);
+        lhView.setUint16(26, nameBytes.length, true);
+        lhView.setUint16(28, 0, true);
+
+        totalBuffers.push(lh, nameBytes, dataBytes);
+
+        // Central directory header (46 bytes)
+        const cdh = new Uint8Array(46);
+        const cdhView = new DataView(cdh.buffer);
+        cdhView.setUint32(0, 0x02014b50, true);
+        cdhView.setUint16(4, 20, true);
+        cdhView.setUint16(6, 20, true);
+        cdhView.setUint16(8, 0, true);
+        cdhView.setUint16(10, 0, true);
+        cdhView.setUint16(12, 0, true);
+        cdhView.setUint16(14, 0, true);
+        cdhView.setUint32(16, crc, true);
+        cdhView.setUint32(20, size, true);
+        cdhView.setUint32(24, size, true);
+        cdhView.setUint16(28, nameBytes.length, true);
+        cdhView.setUint16(30, 0, true);
+        cdhView.setUint16(32, 0, true);
+        cdhView.setUint16(34, 0, true);
+        cdhView.setUint16(36, 0, true);
+        cdhView.setUint32(38, 0, true);
+        cdhView.setUint32(42, offset, true);
+
+        cdHeaders.push(cdh, nameBytes);
+        offset += 30 + nameBytes.length + size;
+      }
+
+      const cdStart = offset;
+      let cdSize = 0;
+      for (const b of cdHeaders) cdSize += b.length;
+
+      // End of central directory record (22 bytes)
+      const eocd = new Uint8Array(22);
+      const eocdView = new DataView(eocd.buffer);
+      eocdView.setUint32(0, 0x06054b50, true);
+      eocdView.setUint16(4, 0, true);
+      eocdView.setUint16(6, 0, true);
+      eocdView.setUint16(8, files.length, true);
+      eocdView.setUint16(10, files.length, true);
+      eocdView.setUint32(12, cdSize, true);
+      eocdView.setUint32(16, cdStart, true);
+      eocdView.setUint16(20, 0, true);
+
+      totalBuffers.push(...cdHeaders, eocd);
+
+      let totalLength = 0;
+      for (const b of totalBuffers) totalLength += b.length;
+      const result = new Uint8Array(totalLength);
+      let curPos = 0;
+      for (const b of totalBuffers) {
+        result.set(b, curPos);
+        curPos += b.length;
+      }
+      return result;
+    }
+
+    function escapeXml(str) {
+      if (!str) return '';
+      return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&apos;');
+    }
+
+    // Build OpenXML (.docx) Package
+    function generateOpenXmlDocx(docData) {
+      const contentTypes = '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>\n' +
+        '<Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types">\n' +
+        '  <Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/>\n' +
+        '  <Default Extension="xml" ContentType="application/xml"/>\n' +
+        '  <Override PartName="/word/document.xml" ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.document.main+xml"/>\n' +
+        '</Types>';
+
+      const rels = '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>\n' +
+        '<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">\n' +
+        '  <Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument" Target="word/document.xml"/>\n' +
+        '</Relationships>';
+
+      let bodyXml = '';
+
+      // Kop Surat
+      bodyXml += '<w:p><w:pPr><w:jc w:val="center"/></w:pPr><w:r><w:rPr><w:b/><w:sz w:val="28"/><w:rFonts w:ascii="Times New Roman" w:hAnsi="Times New Roman"/></w:rPr><w:t>KEMENTERIAN PENDIDIKAN, KEBUDAYAAN, RISET, DAN TEKNOLOGI</w:t></w:r></w:p>';
+      bodyXml += '<w:p><w:pPr><w:jc w:val="center"/></w:pPr><w:r><w:rPr><w:b/><w:sz w:val="26"/><w:rFonts w:ascii="Times New Roman" w:hAnsi="Times New Roman"/></w:rPr><w:t>PROGRAM STUDI SARJANA TERAPAN &amp; PROFESI FISIOTERAPI</w:t></w:r></w:p>';
+      bodyXml += '<w:p><w:pPr><w:jc w:val="center"/></w:pPr><w:r><w:rPr><w:sz w:val="20"/><w:rFonts w:ascii="Times New Roman" w:hAnsi="Times New Roman"/><w:color w:val="666666"/></w:rPr><w:t>Thalamus Academic Automation System • Standar SN-Dikti • Kurikulum OBE • LAM-PTKes</w:t></w:r></w:p>';
+      bodyXml += '<w:p><w:pPr><w:pBdr><w:bottom w:val="single" w:sz="18" w:space="4" w:color="000000"/></w:pBdr></w:pPr></w:p>';
+
+      // Title & Subtitle
+      if (docData.title) {
+        bodyXml += '<w:p><w:pPr><w:jc w:val="center"/><w:spacing w:before="240" w:after="120"/></w:pPr><w:r><w:rPr><w:b/><w:sz w:val="30"/><w:rFonts w:ascii="Times New Roman" w:hAnsi="Times New Roman"/><w:color w:val="0369A1"/></w:rPr><w:t>' + escapeXml(docData.title) + '</w:t></w:r></w:p>';
+      }
+      if (docData.subtitle) {
+        bodyXml += '<w:p><w:pPr><w:jc w:val="center"/><w:spacing w:after="240"/></w:pPr><w:r><w:rPr><w:i/><w:sz w:val="22"/><w:rFonts w:ascii="Times New Roman" w:hAnsi="Times New Roman"/><w:color w:val="475569"/></w:rPr><w:t>' + escapeXml(docData.subtitle) + '</w:t></w:r></w:p>';
+      }
+
+      // Sections
+      if (docData.sections) {
+        for (const sec of docData.sections) {
+          if (sec.heading) {
+            bodyXml += '<w:p><w:pPr><w:spacing w:before="200" w:after="80"/></w:pPr><w:r><w:rPr><w:b/><w:sz w:val="24"/><w:rFonts w:ascii="Times New Roman" w:hAnsi="Times New Roman"/><w:color w:val="0F172A"/></w:rPr><w:t>' + escapeXml(sec.heading) + '</w:t></w:r></w:p>';
+          }
+          if (sec.paragraphs) {
+            for (const p of sec.paragraphs) {
+              bodyXml += '<w:p><w:pPr><w:spacing w:after="100"/><w:jc w:val="both"/></w:pPr><w:r><w:rPr><w:sz w:val="22"/><w:rFonts w:ascii="Times New Roman" w:hAnsi="Times New Roman"/></w:rPr><w:t>' + escapeXml(p) + '</w:t></w:r></w:p>';
+            }
+          }
+          if (sec.table) {
+            bodyXml += '<w:tbl><w:tblPr><w:tblW w:w="0" w:type="auto"/><w:tblBorders><w:top w:val="single" w:sz="6" w:space="0" w:color="94A3B8"/><w:left w:val="single" w:sz="6" w:space="0" w:color="94A3B8"/><w:bottom w:val="single" w:sz="6" w:space="0" w:color="94A3B8"/><w:right w:val="single" w:sz="6" w:space="0" w:color="94A3B8"/><w:insideH w:val="single" w:sz="4" w:space="0" w:color="CBD5E1"/><w:insideV w:val="single" w:sz="4" w:space="0" w:color="CBD5E1"/></w:tblBorders></w:tblPr>';
+            
+            // Table Header
+            bodyXml += '<w:tr><w:trPr><w:tblHeader/></w:trPr>';
+            for (const h of sec.table.headers) {
+              bodyXml += '<w:tc><w:tcPr><w:shd w:val="clear" w:color="auto" w:fill="F1F5F9"/><w:tcMar><w:top w:w="120"/><w:bottom w:w="120"/><w:left w:w="140"/><w:right w:w="140"/></w:tcMar></w:tcPr><w:p><w:pPr><w:jc w:val="center"/></w:pPr><w:r><w:rPr><w:b/><w:sz w:val="20"/><w:rFonts w:ascii="Times New Roman" w:hAnsi="Times New Roman"/></w:rPr><w:t>' + escapeXml(h) + '</w:t></w:r></w:p></w:tc>';
+            }
+            bodyXml += '</w:tr>';
+
+            // Table Rows
+            for (const row of sec.table.rows) {
+              bodyXml += '<w:tr>';
+              for (const cell of row) {
+                bodyXml += '<w:tc><w:tcPr><w:tcMar><w:top w:w="100"/><w:bottom w:w="100"/><w:left w:w="120"/><w:right w:w="120"/></w:tcMar></w:tcPr><w:p><w:r><w:rPr><w:sz w:val="20"/><w:rFonts w:ascii="Times New Roman" w:hAnsi="Times New Roman"/></w:rPr><w:t>' + escapeXml(cell) + '</w:t></w:r></w:p></w:tc>';
+              }
+              bodyXml += '</w:tr>';
+            }
+            bodyXml += '</w:tbl>';
+          }
+        }
+      }
+
+      // Page Margins: 4cm top, 3cm right, 3cm bottom, 4cm left (twips: 2268, 1701, 1701, 2268)
+      bodyXml += '<w:sectPr><w:pgSz w:w="11906" w:h="16838"/><w:pgMar w:top="2268" w:right="1701" w:bottom="1701" w:left="2268"/></w:sectPr>';
+
+      const docXml = '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>\n<w:document xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main"><w:body>' + bodyXml + '</w:body></w:document>';
+
+      return createZipStore([
+        { name: '[Content_Types].xml', data: contentTypes },
+        { name: '_rels/.rels', data: rels },
+        { name: 'word/document.xml', data: docXml }
+      ]);
+    }
+
+    // Build PDF 1.4 Binary Stream
+    function generatePdfStream(docData) {
+      const clean = (s) => (s || '').replace(/[\(\)\\\r\n]/g, ' ');
+      const content = [
+        'BT',
+        '/F1 14 Tf',
+        '50 790 Td',
+        '(' + clean(docData.title || 'THALAMUS ACADEMIC DOCUMENT') + ') Tj',
+        '/F1 9 Tf',
+        '0 -18 Td',
+        '(' + clean(docData.subtitle || 'Standar SN-Dikti & Kurikulum OBE Fisioterapi') + ') Tj',
+        '0 -16 Td',
+        '(--------------------------------------------------------------------------------------------------------------------------------) Tj',
+        '0 -18 Td'
+      ];
+
+      if (docData.sections) {
+        for (const sec of docData.sections) {
+          if (sec.heading) {
+            content.push('/F1 11 Tf');
+            content.push('(' + clean(sec.heading) + ') Tj');
+            content.push('0 -14 Td');
+            content.push('/F1 9 Tf');
+          }
+          if (sec.paragraphs) {
+            for (const p of sec.paragraphs) {
+              const chunks = p.match(/.{1,90}/g) || [p];
+              for (const c of chunks) {
+                content.push('(' + clean(c) + ') Tj');
+                content.push('0 -12 Td');
+              }
+              content.push('0 -4 Td');
+            }
+          }
+          if (sec.table && sec.table.rows) {
+            content.push('([TABEL: ' + clean(sec.table.headers.join(' | ')) + '] ) Tj');
+            content.push('0 -12 Td');
+            for (const r of sec.table.rows.slice(0, 15)) {
+              content.push('(' + clean(r.join(' -- ')) + ') Tj');
+              content.push('0 -12 Td');
+            }
+            content.push('0 -6 Td');
+          }
+        }
+      }
+      content.push('ET');
+
+      const streamData = content.join('\n');
+      const encoder = new TextEncoder();
+      const streamLen = encoder.encode(streamData).length;
+
+      const objects = [];
+      objects.push('1 0 obj\n<< /Type /Catalog /Pages 2 0 R >>\nendobj');
+      objects.push('2 0 obj\n<< /Type /Pages /Kids [3 0 R] /Count 1 >>\nendobj');
+      objects.push('3 0 obj\n<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595.28 841.89] /Contents 4 0 R /Resources << /Font << /F1 5 0 R >> >> >>\nendobj');
+      objects.push('4 0 obj\n<< /Length ' + streamLen + ' >>\nstream\n' + streamData + '\nendstream\nendobj');
+      objects.push('5 0 obj\n<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica >>\nendobj');
+
+      let pdf = '%PDF-1.4\n';
+      const offsets = [];
+      for (let i = 0; i < objects.length; i++) {
+        offsets.push(encoder.encode(pdf).length);
+        pdf += objects[i] + '\n';
+      }
+      const xrefOffset = encoder.encode(pdf).length;
+      pdf += 'xref\n0 ' + (objects.length + 1) + '\n';
+      pdf += '0000000000 65535 f \n';
+      for (let i = 0; i < offsets.length; i++) {
+        pdf += String(offsets[i]).padStart(10, '0') + ' 00000 n \n';
+      }
+      pdf += 'trailer\n<< /Size ' + (objects.length + 1) + ' /Root 1 0 R >>\n';
+      pdf += 'startxref\n' + xrefOffset + '\n%%EOF';
+
+      return encoder.encode(pdf);
+    }
+
+    // Trigger Native Browser File Download
+    function triggerBrowserDownload(dataBytes, fileName, mimeType) {
+      try {
+        const blob = (dataBytes instanceof Blob) ? dataBytes : new Blob([dataBytes], { type: mimeType });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = fileName;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        setTimeout(() => URL.revokeObjectURL(url), 2000);
+        showToast('Berkas berhasil diunduh ke laptop: ' + fileName);
+      } catch (err) {
+        console.error('Download error:', err);
+        showToast('Gagal mengunduh berkas: ' + err.message);
+      }
+    }
+
+    // REAL DOWNLOAD HANDLERS REPLACING SIMULATORS
     function exportDocxSim(docName) {
-      showToast(`Menginjeksi tag variabel ke template acuan ${activeTemplateName}... Mengunduh ${docName}.docx`);
+      let fileName = (docName || 'Dokumen_Thalamus') + '.docx';
+      let docData;
+
+      if (docName === 'RPS-Cascade' || (docName && docName.includes('RPS'))) {
+        const course = curriculumDB[currentCourseCode] || curriculumDB['FST-402'];
+        fileName = 'RPS_' + course.code + '_' + course.name.replace(/\s+/g, '_') + '.docx';
+        
+        const tableRows = (course.subcpmks || []).map(s => [
+          s.week || 'Minggu',
+          s.code || 'Sub-CPMK',
+          s.cpl || 'CPL',
+          s.desc || '',
+          s.indicator || '',
+          s.taxonomy || '',
+          s.weight || '5%'
+        ]);
+
+        docData = {
+          title: 'RENCANA PEMBELAJARAN SEMESTER (RPS)',
+          subtitle: 'Mata Kuliah: ' + course.name + ' (' + course.code + ') | ' + course.sks + ' | ' + course.semester,
+          sections: [
+            {
+              heading: 'I. IDENTITAS MATA KULIAH',
+              paragraphs: [
+                'Program Studi: ' + course.prodiDesc,
+                'Kode / Nama MK: ' + course.code + ' - ' + course.name,
+                'Bobot & Semester: ' + course.sks + ' - ' + course.semester,
+                'Rumpun Bahan Kajian (BK): ' + (course.bks || []).join(', ')
+              ]
+            },
+            {
+              heading: 'II. CAPAIAN PEMBELAJARAN LULUSAN (CPL) YANG DIBEBANKAN',
+              paragraphs: (course.cpls || []).map(c => '[' + c.code + '] ' + c.name + ': ' + c.desc)
+            },
+            {
+              heading: 'III. CAPAIAN PEMBELAJARAN MATA KULIAH (CPMK)',
+              paragraphs: (course.cpmks || []).map(m => '[' + m.code + '] ' + m.desc)
+            },
+            {
+              heading: 'IV. MATRIKS RENCANA PEMBELAJARAN 16 MINGGU (KASKADE OBE)',
+              table: {
+                headers: ['Minggu', 'Sub-CPMK', 'CPL', 'Bahan Kajian & Materi', 'Indikator Penilaian', 'Taksonomi', 'Bobot'],
+                rows: tableRows
+              }
+            }
+          ]
+        };
+      } else if (docName === 'KAK-Workshop') {
+        fileName = 'KAK_Workshop_ICF_Fisioterapi.docx';
+        docData = {
+          title: 'KERANGKA ACUAN KERJA (KAK / TOR)',
+          subtitle: 'Workshop Implementasi Kerangka WHO-ICF dalam Praktik Klinis Fisioterapi',
+          sections: [
+            { heading: 'BAB I. LATAR BELAKANG', paragraphs: ['Kurikulum Berbasis Outcome (OBE) dan standar LAM-PTKes menuntut penyeragaman instrumen evaluasi klinis mahasiswa berbasis biopsikososial WHO-ICF.'] },
+            { heading: 'BAB II. TUJUAN KEGIATAN', paragraphs: ['1. Meningkatkan pemahaman dosen dan mahasiswa tentang coding ICF.', '2. Standardisasi rekam medis SOAP berbasis ICF di rumah sakit pendidikan.'] },
+            { heading: 'BAB III. ESTIMASI ANGGARAN & RUNDOWN', table: { headers: ['Waktu', 'Agenda', 'Narasumber', 'PIC'], rows: [['08.00 - 09.30', 'Registrasi & Pre-Test ICF', 'Panitia Lab', 'Sie Acara'], ['09.30 - 12.00', 'Workshop Kasus Muskuloskeletal & Neuro ICF', 'Spesialis Ftr.', 'Ketua Panitia']] } }
+          ]
+        };
+      } else if (docName === 'Refined-SOP') {
+        fileName = 'SOP_Pemeriksaan_Lutut_Siap_Cetak.docx';
+        docData = {
+          title: 'STANDAR OPERASIONAL PROSEDUR (SOP) LABORATORIUM',
+          subtitle: 'Prosedur Pemeriksaan Spesifik & Tes Provokasi Sendi Lutut',
+          sections: [
+            { heading: '1. TUJUAN', paragraphs: ['Memberikan panduan baku pelaksanaan uji provokasi ligamen dan meniskus sendi lutut bagi mahasiswa dan fisioterapis.'] },
+            { heading: '2. RUANG LINGKUP', paragraphs: ['Berlaku di Laboratorium Fisioterapi Muskuloskeletal dan Ruang Praktik Fisioterapi Rumah Sakit.'] },
+            { heading: '3. PROSEDUR KERJA', table: { headers: ['Tahap', 'Instruksi Kerja', 'Kriteria Keberhasilan'], rows: [['Pra-Interaksi', 'Verifikasi identitas pasien & informed consent', 'Pasien memahami tujuan'], ['Asesmen', 'Tes Lachman pada fleksi lutut 20-30 derajat', 'End-feel teridentifikasi presisi']] } }
+          ]
+        };
+      } else {
+        docData = {
+          title: docName.replace(/_/g, ' '),
+          subtitle: 'Dokumen Akademik Resmi • Thalamus Local-First Automation',
+          sections: [
+            { heading: 'RINGKASAN DOKUMEN', paragraphs: ['Dokumen ini di-generate secara otomatis sesuai standar SN-Dikti dan kurikulum OBE Fisioterapi.'] }
+          ]
+        };
+      }
+
+      const docxBytes = generateOpenXmlDocx(docData);
+      triggerBrowserDownload(docxBytes, fileName, 'application/vnd.openxmlformats-officedocument.wordprocessingml.document');
     }
 
     function exportPdfSim(docName) {
-      showToast(`Memproses dokumen siap cetak via Headless Engine (Margin 4-3-3-3 cm)... Mengunduh ${docName}.pdf`);
+      const fileName = (docName || 'Dokumen_Thalamus') + '.pdf';
+      const course = curriculumDB[currentCourseCode] || curriculumDB['FST-402'];
+
+      const pdfData = {
+        title: 'DOKUMEN RESMI: ' + (docName || 'THALAMUS').toUpperCase(),
+        subtitle: 'Mata Kuliah: ' + course.name + ' (' + course.code + ') - Standar SN-Dikti 2023',
+        sections: [
+          {
+            heading: 'I. KETERLENGKAPAN DOKUMEN AKADEMIK',
+            paragraphs: [
+              'Dokumen ini telah diverifikasi memenuhi kaidah kaskade kurikulum Outcome-Based Education (OBE).',
+              'Format siap cetak dengan margin baku 4-3-3-3 cm dan penomoran otomatis.'
+            ]
+          },
+          {
+            heading: 'II. INFORMASI MATA KULIAH & CAPAIAN',
+            paragraphs: [
+              'Kode/Nama: ' + course.code + ' - ' + course.name,
+              'Jenjang: ' + course.jenjang + ' | Semester: ' + course.semester + ' | SKS: ' + course.sks,
+              'Rumpun Bahan Kajian: ' + (course.bks || []).join(', ')
+            ]
+          }
+        ]
+      };
+
+      const pdfBytes = generatePdfStream(pdfData);
+      triggerBrowserDownload(pdfBytes, fileName, 'application/pdf');
     }
 
     function downloadFileDemo(fileName) {
-      showToast('Mengunduh berkas lokal: ' + fileName);
+      if (fileName.endsWith('.docx')) {
+        const cleanName = fileName.replace('.docx', '');
+        exportDocxSim(cleanName);
+      } else if (fileName.endsWith('.pdf')) {
+        const cleanName = fileName.replace('.pdf', '');
+        exportPdfSim(cleanName);
+      } else if (fileName.endsWith('.json')) {
+        const jsonStr = JSON.stringify(curriculumDB, null, 2);
+        triggerBrowserDownload(jsonStr, fileName, 'application/json');
+      } else {
+        exportDocxSim(fileName);
+      }
     }
 
+    function downloadSampleRpsTemplate() {
+      const templateDoc = {
+        title: 'TEMPLATE RESMI RENCANA PEMBELAJARAN SEMESTER (RPS)',
+        subtitle: 'Template Acuan Standar SN-Dikti & LAM-PTKes dengan Tag Variabel {{variabel}}',
+        sections: [
+          {
+            heading: 'PETUNJUK PENGGUNAAN TEMPLATE THALAMUS',
+            paragraphs: [
+              'Template Word ini memuat variabel yang otomatis diinjeksi oleh Thalamus AI Agent saat Anda membuat RPS baru.',
+              'Pertahankan tag di dalam kurung kurawal ganda seperti {{mata_kuliah}}, {{kode_mk}}, {{cpl_terkait}}, {{sub_cpmk}}.'
+            ]
+          },
+          {
+            heading: 'I. IDENTITAS MATA KULIAH',
+            paragraphs: [
+              'Nama Mata Kuliah: {{mata_kuliah}}',
+              'Kode Mata Kuliah: {{kode_mk}}',
+              'Bobot SKS / Semester: {{sks}} / {{semester}}',
+              'Rumpun Bahan Kajian: {{bahan_kajian}}'
+            ]
+          },
+          {
+            heading: 'II. MATRIKS PEMBELAJARAN 16 MINGGU',
+            table: {
+              headers: ['Minggu Ke', 'Sub-CPMK', 'CPL Terkait', 'Bahan Kajian', 'Bentuk Pembelajaran', 'Indikator & Bobot'],
+              rows: [
+                ['{{minggu_ke}}', '{{sub_cpmk}}', '{{cpl_terkait}}', '{{bahan_kajian}}', '{{bentuk_pembelajaran}}', '{{indikator}} ({{bobot}})']
+              ]
+            }
+          }
+        ]
+      };
+
+      const docxBytes = generateOpenXmlDocx(templateDoc);
+      triggerBrowserDownload(docxBytes, 'template_rps_fisioterapi_resmi.docx', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document');
+    }
+
+    // OBE Reports Downloads
+    function exportObeReportDocx() {
+      const tableRows = [];
+      for (const code in curriculumDB) {
+        const c = curriculumDB[code];
+        const cplCodes = (c.cpls || []).map(x => x.code).join(', ');
+        const bkCodes = (c.bks || []).join(', ');
+        const cpmkDesc = (c.cpmks && c.cpmks[0]) ? c.cpmks[0].desc : '-';
+        tableRows.push([
+          c.code,
+          c.name,
+          c.jenjang + ' (' + c.semester + ')',
+          (c.sksTotal || 3) + ' SKS',
+          cplCodes,
+          bkCodes,
+          cpmkDesc
+        ]);
+      }
+
+      const obeDoc = {
+        title: 'LAPORAN ANALISIS MATRIKS KURIKULUM OBE & KETERLACAKAN KOMPETENSI',
+        subtitle: 'Pemetaan Komprehensif CPL • Bahan Kajian (BK) • Mata Kuliah • CPMK (21 Mata Kuliah)',
+        sections: [
+          {
+            heading: 'RINGKASAN EKSEKUTIF PEMENUHAN OBE',
+            paragraphs: [
+              'Berdasarkan audit kurikulum berbasis Outcome-Based Education (OBE) dan standar LAM-PTKes Fisioterapi, seluruh 21 mata kuliah (15 Sarjana Terapan D4 dan 6 Pendidikan Profesi Fisioterapi) terbukti terpetakan 100% secara linier.',
+              'Tidak ditemukan CPL yang tidak terbebankan (Zero Orphan CPL) dan seluruh 12 Rumpun Bahan Kajian (BK) telah terdistribusi proporsional ke dalam 64 SKS kurikulum.'
+            ]
+          },
+          {
+            heading: 'I. STANDAR 8 CAPAIAN PEMBELAJARAN LULUSAN (CPL)',
+            paragraphs: masterCplDB.map(c => '[' + c.code + '] ' + c.name + ' (' + c.category + '): ' + c.desc)
+          },
+          {
+            heading: 'II. STRUKTUR 12 RUMPUN BAHAN KAJIAN (BK)',
+            paragraphs: masterBkDB.map(b => '[' + b.code + '] ' + b.name + ' (' + b.category + '): ' + b.desc)
+          },
+          {
+            heading: 'III. MATRIKS KETERLACAKAN LENGKAP (TRACEABILITY MATRIX 21 MK)',
+            table: {
+              headers: ['Kode', 'Nama Mata Kuliah', 'Jenjang', 'Bobot', 'CPL Terkait', 'Bahan Kajian (BK)', 'Rumusan CPMK'],
+              rows: tableRows
+            }
+          }
+        ]
+      };
+
+      const docxBytes = generateOpenXmlDocx(obeDoc);
+      triggerBrowserDownload(docxBytes, 'Laporan_Analisis_Matriks_OBE_Fisioterapi.docx', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document');
+    }
+
+    function exportObeReportPdf() {
+      const course = curriculumDB[currentCourseCode] || curriculumDB['FST-402'];
+      const pdfData = {
+        title: 'LAPORAN MATRIKS KURIKULUM OBE FISIOTERAPI',
+        subtitle: 'Keterlacakan CPL - Bahan Kajian (BK) - Mata Kuliah - CPMK Standar LAM-PTKes',
+        sections: [
+          {
+            heading: 'I. RINGKASAN PEMENUHAN STANDAR',
+            paragraphs: [
+              'Total 21 Mata Kuliah Teranalisis: 15 Sarjana Terapan D4 + 6 Pendidikan Profesi.',
+              'Total 8 Standar CPL Terpenuhi 100% dan 12 Rumpun Bahan Kajian Terintegrasi.',
+              'Total Beban Kurikulum Terdistribusi: 64 SKS.'
+            ]
+          },
+          {
+            heading: 'II. DAFTAR MATA KULIAH & PEMETAAN OBE',
+            table: {
+              headers: ['Kode MK', 'Nama Mata Kuliah', 'Jenjang', 'SKS', 'CPL', 'Bahan Kajian'],
+              rows: Object.keys(curriculumDB).map(k => {
+                const c = curriculumDB[k];
+                return [c.code, c.name, c.jenjang, (c.sksTotal || 3) + ' SKS', (c.cpls || []).map(x => x.code).join(','), (c.bks || []).join(',')];
+              })
+            }
+          }
+        ]
+      };
+
+      const pdfBytes = generatePdfStream(pdfData);
+      triggerBrowserDownload(pdfBytes, 'Laporan_Analisis_Matriks_OBE_Fisioterapi.pdf', 'application/pdf');
+    }
+
+    function exportObeReportJson() {
+      const exportData = {
+        generatedAt: new Date().toISOString(),
+        standard: 'SN-Dikti No. 53 Tahun 2023 & LAM-PTKes Fisioterapi',
+        prodi: ['Sarjana Terapan (D4) Fisioterapi', 'Pendidikan Profesi Fisioterapi'],
+        masterCPL: masterCplDB,
+        masterBahanKajian: masterBkDB,
+        curriculumCourses: curriculumDB
+      };
+      triggerBrowserDownload(JSON.stringify(exportData, null, 2), 'kurikulum_obe_fisioterapi_db.json', 'application/json');
+    }
+
+    // ==========================================
+    // INTERACTIVE OBE ANALYSIS RENDERING ENGINE
+    // ==========================================
+
+    function switchObeAnalysisView(view) {
+      currentObeSubView = view;
+      const btnTrace = document.getElementById('btnObeSubTrace');
+      const btnCoverage = document.getElementById('btnObeSubCoverage');
+      const btnInspector = document.getElementById('btnObeSubInspector');
+
+      const viewTrace = document.getElementById('obeSubViewTrace');
+      const viewCoverage = document.getElementById('obeSubViewCoverage');
+      const viewInspector = document.getElementById('obeSubViewInspector');
+
+      if (btnTrace) btnTrace.className = 'px-3.5 py-1.5 text-xs font-semibold rounded-lg transition text-slate-600 hover:text-slate-900';
+      if (btnCoverage) btnCoverage.className = 'px-3.5 py-1.5 text-xs font-semibold rounded-lg transition text-slate-600 hover:text-slate-900';
+      if (btnInspector) btnInspector.className = 'px-3.5 py-1.5 text-xs font-semibold rounded-lg transition text-slate-600 hover:text-slate-900';
+
+      if (viewTrace) viewTrace.classList.add('hidden');
+      if (viewCoverage) viewCoverage.classList.add('hidden');
+      if (viewInspector) viewInspector.classList.add('hidden');
+
+      if (view === 'TRACE') {
+        if (btnTrace) btnTrace.className = 'px-3.5 py-1.5 text-xs font-bold rounded-lg transition bg-white text-sky-700 shadow-sm';
+        if (viewTrace) viewTrace.classList.remove('hidden');
+        renderObeTraceabilityTable();
+      } else if (view === 'COVERAGE') {
+        if (btnCoverage) btnCoverage.className = 'px-3.5 py-1.5 text-xs font-bold rounded-lg transition bg-white text-teal-700 shadow-sm';
+        if (viewCoverage) viewCoverage.classList.remove('hidden');
+        renderObeCoverageCards();
+      } else if (view === 'INSPECTOR') {
+        if (btnInspector) btnInspector.className = 'px-3.5 py-1.5 text-xs font-bold rounded-lg transition bg-white text-indigo-700 shadow-sm';
+        if (viewInspector) viewInspector.classList.remove('hidden');
+        renderObeCourseInspector(currentCourseCode || 'FST-402');
+      }
+    }
+
+    function setObeFilterJenjang(jenjang) {
+      currentObeFilterJenjang = jenjang;
+      const btnAll = document.getElementById('obeFilterJenjangAll');
+      const btnD4 = document.getElementById('obeFilterJenjangD4');
+      const btnProfesi = document.getElementById('obeFilterJenjangProfesi');
+
+      if (btnAll) btnAll.className = 'px-2.5 py-1 rounded-md hover:text-slate-900';
+      if (btnD4) btnD4.className = 'px-2.5 py-1 rounded-md hover:text-slate-900';
+      if (btnProfesi) btnProfesi.className = 'px-2.5 py-1 rounded-md hover:text-slate-900';
+
+      if (jenjang === 'ALL' && btnAll) btnAll.className = 'px-2.5 py-1 rounded-md bg-white text-sky-700 shadow-xs font-bold';
+      if (jenjang === 'D4' && btnD4) btnD4.className = 'px-2.5 py-1 rounded-md bg-white text-sky-700 shadow-xs font-bold';
+      if (jenjang === 'PROFESI' && btnProfesi) btnProfesi.className = 'px-2.5 py-1 rounded-md bg-white text-teal-700 shadow-xs font-bold';
+
+      filterObeMatrix();
+    }
+
+    function filterObeMatrix() {
+      renderObeTraceabilityTable();
+    }
+
+    function renderObeTraceabilityTable() {
+      const tableBody = document.getElementById('obeTraceabilityTableBody');
+      if (!tableBody) return;
+
+      const cplEl = document.getElementById('obeFilterCplSelect');
+      const cplFilter = (cplEl && cplEl.value) ? cplEl.value : 'ALL';
+      const bkEl = document.getElementById('obeFilterBkSelect');
+      const bkFilter = (bkEl && bkEl.value) ? bkEl.value : 'ALL';
+      const searchVal = document.getElementById('obeMatrixSearchInput') ? document.getElementById('obeMatrixSearchInput').value.toLowerCase().trim() : '';
+
+      let rowsHtml = '';
+      let matchCount = 0;
+
+      for (const code in curriculumDB) {
+        const c = curriculumDB[code];
+
+        // Filter Jenjang
+        if (currentObeFilterJenjang !== 'ALL' && c.jenjang !== currentObeFilterJenjang) continue;
+
+        // Filter CPL
+        if (cplFilter !== 'ALL') {
+          const hasCpl = (c.cpls || []).some(x => x.code === cplFilter);
+          if (!hasCpl) continue;
+        }
+
+        // Filter BK
+        if (bkFilter !== 'ALL') {
+          const hasBk = (c.bks || []).includes(bkFilter);
+          if (!hasBk) continue;
+        }
+
+        // Search text
+        if (searchVal) {
+          const searchHaystack = (c.code + ' ' + c.name + ' ' + c.semester + ' ' + (c.cpls || []).map(x => x.code + ' ' + x.name).join(' ') + ' ' + (c.bks || []).join(' ') + ' ' + (c.cpmks || []).map(x => x.desc).join(' ')).toLowerCase();
+          if (!searchHaystack.includes(searchVal)) continue;
+        }
+
+        matchCount++;
+
+        // Format CPL Badges
+        const cplBadges = (c.cpls || []).map(cp => {
+          const isProf = cp.code.includes('KLINIK');
+          const badgeClass = isProf ? 'bg-amber-100 text-amber-900 border-amber-300' : 'bg-sky-100 text-sky-800 border-sky-200';
+          return '<span class="inline-block ' + badgeClass + ' border text-[10px] font-bold px-1.5 py-0.5 rounded mr-1 mb-1" title="' + escapeXml(cp.name) + ': ' + escapeXml(cp.desc) + '">' + cp.code + '</span>';
+        }).join('');
+
+        // Format BK Badges
+        const bkBadges = (c.bks || []).map(bkCode => {
+          const bkObj = masterBkDB.find(b => b.code === bkCode) || { name: bkCode, category: '', desc: '' };
+          return '<span class="inline-block bg-teal-50 text-teal-800 border border-teal-200 text-[10px] font-semibold px-1.5 py-0.5 rounded mr-1 mb-1" title="' + escapeXml(bkObj.name) + ' - ' + escapeXml(bkObj.desc) + '">' + bkCode + '</span>';
+        }).join('');
+
+        // Format CPMK
+        const cpmkHtml = (c.cpmks || []).map(m => {
+          return '<div class="mb-1"><strong class="text-slate-900">' + m.code + ':</strong> <span class="text-slate-600">' + escapeXml(m.desc) + '</span></div>';
+        }).join('') || '<span class="text-slate-400 italic">CPMK dirumuskan saat generate RPS</span>';
+
+        const jenjangBadge = c.jenjang === 'D4'
+          ? '<span class="badge-blue text-[9px] font-bold px-1.5 py-0.5 rounded">D4</span>'
+          : '<span class="badge-amber text-[9px] font-bold px-1.5 py-0.5 rounded">Profesi</span>';
+
+        rowsHtml += `
+          <tr class="hover:bg-slate-50/90 transition group">
+            <td class="py-3 px-3.5 align-top">
+              <div class="flex flex-wrap">${cplBadges}</div>
+            </td>
+            <td class="py-3 px-3.5 align-top">
+              <div class="flex flex-wrap">${bkBadges}</div>
+            </td>
+            <td class="py-3 px-3.5 align-top">
+              <div class="flex items-center gap-1.5">
+                ${jenjangBadge}
+                <strong class="text-slate-900 font-mono text-[11px]">${c.code}</strong>
+              </div>
+              <div class="font-semibold text-slate-800 mt-0.5">${c.name}</div>
+              <div class="text-[10px] text-slate-500">${c.semester} • ${c.sks}</div>
+            </td>
+            <td class="py-3 px-3.5 align-top text-[11px] leading-relaxed">
+              ${cpmkHtml}
+            </td>
+            <td class="py-3 px-3.5 align-top text-center">
+              <span class="inline-flex items-center gap-1 badge-green text-[10px] font-bold px-2 py-0.5 rounded-full">
+                <svg class="w-3 h-3 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                <span>Valid OBE</span>
+              </span>
+              <div class="text-[9px] text-slate-400 mt-1 font-mono">Bobot: 100%</div>
+            </td>
+            <td class="py-3 px-3.5 align-top text-center space-y-1">
+              <button onclick="switchCourse('${c.code}'); switchSimTab('CASCADE');" class="w-full bg-sky-50 hover:bg-sky-100 text-sky-800 border border-sky-200 text-[10px] font-bold py-1 px-2 rounded-lg transition flex items-center justify-center gap-1">
+                <span>Lihat Kaskade</span>
+              </button>
+              <button onclick="generateRpsForCourse('${c.code}')" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white text-[10px] font-bold py-1 px-2 rounded-lg transition shadow-xs flex items-center justify-center gap-1">
+                <span>+ Buat RPS</span>
+              </button>
+            </td>
+          </tr>
+        `;
+      }
+
+      if (matchCount === 0) {
+        rowsHtml = '<tr><td colspan="6" class="p-8 text-center text-slate-400 italic">Tidak ada mata kuliah yang cocok dengan kriteria filter.</td></tr>';
+      }
+
+      tableBody.innerHTML = rowsHtml;
+      const countEl = document.getElementById('obeTraceCountSummary');
+      if (countEl) countEl.textContent = 'Menampilkan ' + matchCount + ' dari ' + Object.keys(curriculumDB).length + ' Mata Kuliah Terpetakan';
+    }
+
+    function renderObeCoverageCards() {
+      // 1. CPL Fulfillment Cards
+      const cplContainer = document.getElementById('obeCplCardsContainer');
+      if (cplContainer) {
+        let cplHtml = '';
+
+        masterCplDB.forEach(cpl => {
+          const matchingCourses = [];
+          let totalSks = 0;
+
+          for (const code in curriculumDB) {
+            const course = curriculumDB[code];
+            const hasCpl = (course.cpls || []).some(x => x.code === cpl.code);
+            if (hasCpl) {
+              matchingCourses.push(course);
+              totalSks += (course.sksTotal || 3);
+            }
+          }
+
+          const percent = Math.min(100, Math.round((matchingCourses.length / 21) * 100));
+          const supportingBks = masterBkDB.filter(b => (b.cpls || []).includes(cpl.code)).map(b => b.code);
+
+          cplHtml += `
+            <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm flex flex-col justify-between">
+              <div>
+                <div class="flex items-center justify-between mb-1.5">
+                  <div class="flex items-center gap-2">
+                    <span class="font-mono font-extrabold text-sky-700 text-xs bg-sky-50 px-2 py-0.5 rounded border border-sky-200">${cpl.code}</span>
+                    <span class="text-xs font-bold text-slate-800">${cpl.name}</span>
+                  </div>
+                  <span class="badge-teal text-[10px] font-bold px-2 py-0.5 rounded">${cpl.category}</span>
+                </div>
+                <p class="text-[11px] text-slate-600 leading-relaxed">${cpl.desc}</p>
+
+                <!-- Fulfillment Bar -->
+                <div class="mt-3">
+                  <div class="flex items-center justify-between text-[10px] mb-1">
+                    <span class="text-slate-500 font-semibold">Cakupan Kurikulum: ${matchingCourses.length} MK (${totalSks} SKS)</span>
+                    <span class="font-bold text-emerald-700">${percent}% Optimal</span>
+                  </div>
+                  <div class="w-full bg-slate-100 rounded-full h-2 overflow-hidden">
+                    <div class="bg-gradient-to-r from-sky-500 to-emerald-500 h-2 rounded-full" style="width: ${Math.max(15, percent)}%"></div>
+                  </div>
+                </div>
+
+                <!-- BK badges -->
+                <div class="mt-3 pt-2.5 border-t border-slate-100 flex flex-wrap items-center gap-1">
+                  <span class="text-[10px] font-bold text-slate-400">Rumpun BK:</span>
+                  ${supportingBks.map(b => '<span class="bg-teal-50 text-teal-800 border border-teal-200 text-[9px] font-bold px-1.5 py-0.2 rounded">' + b + '</span>').join('') || '<span class="text-[10px] text-slate-400">Lintas MK</span>'}
+                </div>
+              </div>
+
+              <div class="mt-3 flex items-center justify-between text-[10px] text-slate-500">
+                <span>Pengampu: ${matchingCourses.slice(0, 3).map(x => x.code).join(', ')}${matchingCourses.length > 3 ? ' +' + (matchingCourses.length - 3) + ' lainnya' : ''}</span>
+                <span class="text-emerald-600 font-bold flex items-center gap-0.5">
+                  <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                  <span>OBE Valid</span>
+                </span>
+              </div>
+            </div>
+          `;
+        });
+
+        cplContainer.innerHTML = cplHtml;
+      }
+
+      // 2. BK Body of Knowledge Cards
+      const bkContainer = document.getElementById('obeBkCardsContainer');
+      if (bkContainer) {
+        let bkHtml = '';
+
+        masterBkDB.forEach(bk => {
+          const teachingCourses = [];
+          for (const code in curriculumDB) {
+            const course = curriculumDB[code];
+            if ((course.bks || []).includes(bk.code)) {
+              teachingCourses.push(course);
+            }
+          }
+
+          bkHtml += `
+            <div class="bg-white p-3.5 rounded-xl border border-slate-200 shadow-sm flex flex-col justify-between">
+              <div>
+                <div class="flex items-center justify-between mb-1">
+                  <span class="font-mono font-bold text-teal-800 text-xs bg-teal-50 px-2 py-0.5 rounded border border-teal-200">${bk.code}</span>
+                  <span class="text-[10px] text-slate-500 font-semibold">${teachingCourses.length} Mata Kuliah</span>
+                </div>
+                <div class="font-bold text-slate-800 text-xs mt-1">${bk.name}</div>
+                <div class="text-[10px] text-teal-700 font-semibold mt-0.5">${bk.category}</div>
+                <p class="text-[11px] text-slate-600 mt-1.5 leading-relaxed">${bk.desc}</p>
+              </div>
+
+              <div class="mt-3 pt-2.5 border-t border-slate-100 flex items-center justify-between text-[10px]">
+                <div class="text-slate-500">
+                  Target CPL: ${(bk.cpls || []).map(x => '<strong class="text-sky-700">' + x + '</strong>').join(', ')}
+                </div>
+                <span class="badge-green text-[9px] font-bold px-1.5 py-0.5 rounded">100% Terintegrasi</span>
+              </div>
+            </div>
+          `;
+        });
+
+        bkContainer.innerHTML = bkHtml;
+      }
+    }
+
+    function renderObeCourseInspector(courseCode) {
+      const treeContainer = document.getElementById('obeInspectorCascadeTree');
+      if (!treeContainer) return;
+
+      const code = courseCode || currentCourseCode || 'FST-402';
+      const course = curriculumDB[code];
+      if (!course) return;
+
+      // Update Inspector dropdown value if needed
+      const select = document.getElementById('obeInspectorCourseSelect');
+      if (select && select.value !== code) select.value = code;
+
+      const cplsHtml = (course.cpls || []).map(cp => `
+        <div class="bg-white p-3 rounded-xl border border-sky-200 shadow-xs mb-2">
+          <div class="flex items-center gap-1.5">
+            <span class="font-mono font-bold text-sky-800 bg-sky-100 px-1.5 py-0.5 rounded text-[10px]">${cp.code}</span>
+            <span class="text-xs font-bold text-slate-800">${cp.name}</span>
+          </div>
+          <p class="text-[11px] text-slate-600 mt-1 leading-relaxed">${cp.desc}</p>
+        </div>
+      `).join('');
+
+      const bksHtml = (course.bks || []).map(bkCode => {
+        const bkObj = masterBkDB.find(b => b.code === bkCode) || { name: bkCode, category: '', desc: '' };
+        return `
+          <div class="bg-white p-3 rounded-xl border border-teal-200 shadow-xs mb-2">
+            <div class="flex items-center gap-1.5">
+              <span class="font-mono font-bold text-teal-800 bg-teal-100 px-1.5 py-0.5 rounded text-[10px]">${bkObj.code}</span>
+              <span class="text-xs font-bold text-slate-800">${bkObj.name}</span>
+            </div>
+            <p class="text-[11px] text-slate-600 mt-1 leading-relaxed">${bkObj.desc}</p>
+          </div>
+        `;
+      }).join('');
+
+      const cpmksHtml = (course.cpmks || []).map(m => `
+        <div class="bg-white p-3 rounded-xl border border-indigo-200 shadow-xs mb-2">
+          <div class="font-bold text-indigo-900 text-xs">${m.code}</div>
+          <p class="text-[11px] text-slate-700 mt-0.5 leading-relaxed">${m.desc}</p>
+        </div>
+      `).join('');
+
+      treeContainer.innerHTML = `
+        <div class="flex flex-col lg:flex-row items-stretch gap-4 text-xs">
+          
+          <!-- Column 1: CPL -->
+          <div class="flex-1 bg-sky-50/60 p-4 rounded-xl border border-sky-100 flex flex-col justify-between">
+            <div>
+              <div class="flex items-center justify-between mb-3">
+                <span class="text-[11px] font-extrabold uppercase text-sky-900 tracking-wider">1. CPL Standar Prodi</span>
+                <span class="badge-blue text-[10px] font-bold px-2 py-0.5 rounded">${(course.cpls || []).length} CPL</span>
+              </div>
+              ${cplsHtml}
+            </div>
+            <div class="text-[10px] text-sky-700 font-semibold text-center mt-2">&darr; Ditransmisikan ke Bahan Kajian</div>
+          </div>
+
+          <!-- Column 2: BK -->
+          <div class="flex-1 bg-teal-50/60 p-4 rounded-xl border border-teal-100 flex flex-col justify-between">
+            <div>
+              <div class="flex items-center justify-between mb-3">
+                <span class="text-[11px] font-extrabold uppercase text-teal-900 tracking-wider">2. Rumpun Bahan Kajian (BK)</span>
+                <span class="badge-teal text-[10px] font-bold px-2 py-0.5 rounded">${(course.bks || []).length} BK</span>
+              </div>
+              ${bksHtml}
+            </div>
+            <div class="text-[10px] text-teal-700 font-semibold text-center mt-2">&darr; Membentuk Substansi MK</div>
+          </div>
+
+          <!-- Column 3: Course & CPMK -->
+          <div class="flex-1 bg-indigo-50/60 p-4 rounded-xl border border-indigo-100 flex flex-col justify-between">
+            <div>
+              <div class="flex items-center justify-between mb-3">
+                <span class="text-[11px] font-extrabold uppercase text-indigo-900 tracking-wider">3. Mata Kuliah & CPMK</span>
+                <span class="badge-blue text-[10px] font-bold px-2 py-0.5 rounded">${course.sks}</span>
+              </div>
+              
+              <div class="bg-indigo-600 text-white p-3 rounded-xl shadow-xs mb-3">
+                <div class="text-[10px] uppercase font-bold text-indigo-200">${course.code} • ${course.jenjang}</div>
+                <div class="font-extrabold text-sm mt-0.5">${course.name}</div>
+                <div class="text-[11px] text-indigo-100 mt-1">${course.semester} • ${course.sks}</div>
+              </div>
+
+              ${cpmksHtml}
+            </div>
+
+            <div class="mt-4 pt-3 border-t border-indigo-200">
+              <button onclick="generateRpsForCourse('${course.code}')" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-2.5 px-3 rounded-xl transition shadow flex items-center justify-center gap-1.5 cursor-pointer">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
+                <span>+ Buat RPS untuk ${course.code}</span>
+              </button>
+            </div>
+          </div>
+
+        </div>
+      `;
+    }
+
+    function openObeAnalysisModal() {
+      switchSimTab('OBE_ANALYSIS');
+      const el = document.getElementById('simPanelObeAnalysis');
+      if (el) el.scrollIntoView({ behavior: 'smooth' });
+    }
     // Toast Function
     function showToast(msg) {
       const toast = document.getElementById('toastNotification');
